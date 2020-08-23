@@ -11,11 +11,11 @@ One key is in general private, and other one is public.
 
 Thus definition given [here](https://youtu.be/T4Df5_cojAs?t=128)
 
-1. Any message encrypted with Bob's public key can only be decrypted wiht Bob's private key.
+1. Any message encrypted with Bob's public key can only be decrypted with Bob's private key.
 In that case Recipient (Bob) give public key to sender (Alice). 
 Sender (Alice) use recipient (Bob) public key to encode message, recipient (Bob) use its private key to decode the message.
 
-2. Anyone with access to Alice's public key can verify that a message (signature)
+2. Anyone with access to Alice's public key can verify that a message (**signature**)
 could only have been created by someone with access to Alice's private key. (it was encrypted using private key here)
 
 In that case Alice encrypt message using her private key. Bob check tries to decode (digital signature) using Alice public key. 
@@ -101,10 +101,10 @@ She sends it back to robber (thinking it is bob).  Robber decodes Alice message.
 **Solution**: Certificate Authority (CA)
 
 - Bob in exchange of money :) request CA to sign a certificate which contains Bob's public key,
-- CA signs Bob's certificate and encode it with it CA private key,
+- CA signs Bob's certificate and encode it with it CA private key (**signature**),
 - When Alice to communicate with Bob: Bob sends his certificate to Alice which contains Bob's public key,
 - Alice browser embeds CA public key, if she can decode the certificate sent by Bob (signature): 
-Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  She can get Bob's public key. Then communication happens as described in 
+Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  She can get Bob's public key in certificate. Then communication happens as described in 
 [Symetric and aysmetric section](#symetic-and-asymetric).
 
 
