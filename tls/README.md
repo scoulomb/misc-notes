@@ -37,18 +37,19 @@ Alice (client) -> Bob (server)
 
 #### Symetric cryptography is not sufficient bcecause an attacker could steal chiffer key. This key is exchanged between Alice and Bob.
 
+````
+@startuml
+title Symetric cryptography
 
-    @startuml
-    title Symetric cryptography
-    
-    Alice->Bob: exchange key in clear
-    Alice -> Robber: steal the key
-    Alice -> Alice : encode message with public key
-    Alice -> Bob : send message to  bob
-    Alice -> Robber : steal message 
-    Robber -> Robber : decode the message
-    Bob -> Bob : decode message with key wiht key
-    @enduml
+Alice->Bob: exchange key in clear
+Alice -> Robber: steal the key
+Alice -> Alice : encode message with public key
+Alice -> Bob : send message to  bob
+Alice -> Robber : steal message 
+Robber -> Robber : decode the message
+Bob -> Bob : decode message with key wiht key
+@enduml
+````
 
 
 #### This why asymetric is used.
@@ -61,16 +62,17 @@ Using asymmetric cryptography has an higer cost than symmetric.
 This is the reason why, they generate a chiffer, Alice and Bob exchange this chiffer in asymmetric way,
 and then continue to exchange and continue using this chiffer with symmetric cryptography.
 
+````
+@startuml
+title ASymetric cryptography
 
-    @startuml
-    title ASymetric cryptography
-    
-    Alice -> Bob : initiate authent
-    Bob -> Alice : send BOB public key
-    Alice -> Alice : encode message with BOB public key
-    Alice -> Bob : send message to  bob
-    Bob -> Bob : decode message with key wiht BOB private key
-    @enduml
+Alice -> Bob : initiate authent
+Bob -> Alice : send BOB public key
+Alice -> Alice : encode message with BOB public key
+Alice -> Bob : send message to  bob
+Bob -> Bob : decode message with key wiht BOB private key
+@enduml
+````
 
 ### Man in the middle attach and need of a CA
 
@@ -78,25 +80,26 @@ and then continue to exchange and continue using this chiffer with symmetric cry
 Robber intercepts Bob's  public key and replace by Robber key. Alice encrypts the message using robber key (believing it is the one of Bob).
 She sends it back to robber (thinking it is bob).  Robber decodes Alice message. He reencodes it using Bob's public key (to not arouse suspicions) and send it to bob.
 
-    @startuml
-    title ASymetric cryptography and man in the middle attack
-    
-    actor Alice 
-    actor Robber 
-    actor Bob
-    
-    Alice -> Bob : initiate authent
-    Bob -> Robber : send BOB public key to Alice but stolen by Robber
-    Robber -> Robber : save BOB pulic key
-    Robber -> Alice : Send ROBBER public key instead of bob public key
-    Alice -> Alice : encode message with ROBBER public key (believing it is the one of Bob)
-    Alice -> Robber : send message to Robber (believing it is  Bob)
-    Robber -> Robber: decode message using ROOBER private key. He is happy
-    Robber -> Robber: encode message using BOB public key (to not make Bob suspicious)
-    Robber -> Bob: send message to bob
-    Bob -> Bob : decode message with key wiht BOB private key
-    @enduml
+````
+@startuml
+title ASymetric cryptography and man in the middle attack
 
+actor Alice 
+actor Robber 
+actor Bob
+
+Alice -> Bob : initiate authent
+Bob -> Robber : send BOB public key to Alice but stolen by Robber
+Robber -> Robber : save BOB pulic key
+Robber -> Alice : Send ROBBER public key instead of bob public key
+Alice -> Alice : encode message with ROBBER public key (believing it is the one of Bob)
+Alice -> Robber : send message to Robber (believing it is  Bob)
+Robber -> Robber: decode message using ROOBER private key. He is happy
+Robber -> Robber: encode message using BOB public key (to not make Bob suspicious)
+Robber -> Bob: send message to bob
+Bob -> Bob : decode message with key wiht BOB private key
+@enduml
+````
 
 **Solution**: Certificate Authority (CA)
 
@@ -107,40 +110,41 @@ She sends it back to robber (thinking it is bob).  Robber decodes Alice message.
 Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  She can get Bob's public key in certificate. Then communication happens as described in 
 [Symetric and aysmetric section](#symetic-and-asymetric).
 
+````
+@startuml
+title ASymetric cryptography and man in the middle attack, and certificate authority
+    
+actor Alice 
+actor Robber 
+actor Bob
+actor CA
 
-    @startuml
-    title ASymetric cryptography and man in the middle attack, and certificate authority
-        
-    actor Alice 
-    actor Robber 
-    actor Bob
-    actor CA
-    
-    == one time request ==
-    
-    Bob -> CA : send money to request CA to sign certificate which contains Bob public key
-    CA -> CA : sign Bob certificate by encoding it using CA private key
-    CA -> Bob : provide certicate to Bob
-    
-    == usual request ==
-    
-    Alice -> Bob : initiate authent
-    
-    alt original bob
-        Bob -> Alice : send BOB certificate which contains BOB public key
-        Alice -> Alice : decode BOB certificate with CA public key (signature)
-        Alice-> Alice: Certificate is approved, and server identity is proved
-        Alice -> Alice: get BOB public key in certificate
-        Alice -> Alice : encode message with BOB public key
-        Alice -> Bob : send message to  bob
-        Bob -> Bob : decode message with key wiht BOB private key
-    else robber
-        Bob -> Robber: steal certificate and replace by its own 
-        Robber -> Alice: send message with altered certificate 
-        Alice -> Alice : decode Altered (Robber)certificate with CA public key (signature), failure
-        Alice->Alice: Refuse to talk with Bob
-    end
-    @enduml
+== one time request ==
+
+Bob -> CA : send money to request CA to sign certificate which contains Bob public key
+CA -> CA : sign Bob certificate by encoding it using CA private key
+CA -> Bob : provide certicate to Bob
+
+== usual request ==
+
+Alice -> Bob : initiate authent
+
+alt original bob
+    Bob -> Alice : send BOB certificate which contains BOB public key
+    Alice -> Alice : decode BOB certificate with CA public key (signature)
+    Alice-> Alice: Certificate is approved, and server identity is proved
+    Alice -> Alice: get BOB public key in certificate
+    Alice -> Alice : encode message with BOB public key
+    Alice -> Bob : send message to  bob
+    Bob -> Bob : decode message with key wiht BOB private key
+else robber
+    Bob -> Robber: steal certificate and replace by its own 
+    Robber -> Alice: send message with altered certificate 
+    Alice -> Alice : decode Altered (Robber)certificate with CA public key (signature), failure
+    Alice->Alice: Refuse to talk with Bob
+end
+@enduml
+````
 
 ### More
 
