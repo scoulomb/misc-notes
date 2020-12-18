@@ -161,6 +161,8 @@ https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/ (not th
 
 I mirrored the page [cloudfare.md](cloudfare.md)
 
+Some CA like let's encrypt are free.
+
 ## Link with http over socket
 
 When we implemented our own http client here: https://github.com/scoulomb/http-over-socket/blob/main/main.py
