@@ -43,11 +43,11 @@ title Symetric cryptography
 
 Alice->Bob: exchange key in clear
 Alice -> Robber: steal the key
-Alice -> Alice : encode message with public key
+Alice -> Alice : encode message with the key
 Alice -> Bob : send message to  bob
 Alice -> Robber : steal message 
 Robber -> Robber : decode the message
-Bob -> Bob : decode message with key wiht key
+Bob -> Bob : decode message with key
 @enduml
 ````
 
@@ -57,10 +57,6 @@ Bob -> Bob : decode message with key wiht key
 - Bob sends public key to Alice,
 - Alice encrypts message with Bob's public key,
 - Bob decrypts message with its private key.
-
-Using asymmetric cryptography has an higer cost than symmetric.
-This is the reason why, they generate a chiffer, Alice and Bob exchange this chiffer in asymmetric way,
-and then continue to exchange and continue using this chiffer with symmetric cryptography.
 
 ````
 @startuml
@@ -74,11 +70,19 @@ Bob -> Bob : decode message with key wiht BOB private key
 @enduml
 ````
 
+Using asymmetric cryptography (public key crypto) has an higher cost than symmetric.
+This is the reason why, they generate a chiffer, Alice and Bob exchange this chiffer in asymmetric way,
+and then continue to exchange and continue using this chiffer with symmetric cryptography.
+
 ### Man in the middle attach and need of a CA
 
 **Problem**: The public key can be intercepted and substituted (man in the middle attach)
-Robber intercepts Bob's  public key and replace by Robber key. Alice encrypts the message using robber key (believing it is the one of Bob).
-She sends it back to robber (thinking it is bob).  Robber decodes Alice message. He reencodes it using Bob's public key (to not arouse suspicions) and send it to bob.
+- Robber intercepts Bob's  public key and replace by Robber key.
+- Alice encrypts the message using robber key (believing it is the one of Bob).
+- She sends it back to robber (thinking it is bob). 
+- Robber decodes Alice message. 
+- He reencodes it using Bob's public key (to not arouse suspicions) 
+- and send it to bob.
 
 ````
 @startuml
@@ -103,12 +107,15 @@ Bob -> Bob : decode message with key wiht BOB private key
 
 **Solution**: Certificate Authority (CA)
 
-- Bob in exchange of money :) request CA to sign a certificate which contains Bob's public key,
+- Bob in exchange of money :) (some CA like let's encrypt are now free) request CA to sign a certificate which contains Bob's public key,
 - CA signs Bob's certificate and encode it with it CA private key (**signature**),
 - When Alice to communicate with Bob: Bob sends his certificate to Alice which contains Bob's public key,
 - Alice browser embeds CA public key, if she can decode the certificate sent by Bob (signature): 
-Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  She can get Bob's public key in certificate. Then communication happens as described in 
-[Symetric and aysmetric section](#symetic-and-asymetric).
+Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  
+- She can get Bob's public key in certificate. Then communication happens as described in 
+[Symetric and aysmetric section](#symetic-and-asymetric). And bob can use his private key to decode.
+
+=> Explain why when we generate a certificate and use it, we have the certificate and the private key.
 
 ````
 @startuml
@@ -123,7 +130,7 @@ actor CA
 
 Bob -> CA : send money to request CA to sign certificate which contains Bob public key
 CA -> CA : sign Bob certificate by encoding it using CA private key
-CA -> Bob : provide certicate to Bob
+CA -> Bob : provide certicate (fullchain.pem) to Bob which contains pub key and a private key (privkey.pem)
 
 == usual request ==
 
@@ -136,7 +143,7 @@ alt original bob
     Alice -> Alice: get BOB public key in certificate
     Alice -> Alice : encode message with BOB public key
     Alice -> Bob : send message to  bob
-    Bob -> Bob : decode message with key wiht BOB private key
+    Bob -> Bob : decode message with BOB private key
 else robber
     Bob -> Robber: steal certificate and replace by its own 
     Robber -> Alice: send message with altered certificate 
@@ -161,3 +168,6 @@ Bob does not have the gurantee he is talking to Alice.
 - https://www.youtube.com/watch?v=4nGrOpo0Cuc
 - https://www.youtube.com/watch?v=T4Df5_cojAs
 
+## Application 
+
+It has been applied here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
