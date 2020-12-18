@@ -66,13 +66,13 @@ Alice -> Bob : initiate authent
 Bob -> Alice : send BOB public key
 Alice -> Alice : encode message with BOB public key
 Alice -> Bob : send message to  bob
-Bob -> Bob : decode message with key wiht BOB private key
+Bob -> Bob : decode message with BOB private key
 @enduml
 ````
 
 Using asymmetric cryptography (public key crypto) has an higher cost than symmetric.
-This is the reason why, they generate a chiffer, Alice and Bob exchange this chiffer in asymmetric way,
-and then continue to exchange and continue using this chiffer with symmetric cryptography.
+This is the reason why, they use a session key, Alice and Bob exchange this session key in asymmetric way,
+and then continue to exchange and continue using this session key with symmetric cryptography.
 
 ### Man in the middle attach and need of a CA
 
@@ -107,16 +107,6 @@ Bob -> Bob : decode message with key wiht BOB private key
 
 **Solution**: Certificate Authority (CA)
 
-- Bob in exchange of money :) (some CA like let's encrypt are now free) request CA to sign a certificate which contains Bob's public key,
-- CA signs Bob's certificate and encode it with it CA private key (**signature**),
-- When Alice to communicate with Bob: Bob sends his certificate to Alice which contains Bob's public key,
-- Alice browser embeds CA public key, if she can decode the certificate sent by Bob (signature): 
-Certificate is approved, and server identity is proved. Otherwise Alice refuses the connection.  
-- She can get Bob's public key in certificate. Then communication happens as described in 
-[Symetric and aysmetric section](#symetic-and-asymetric). And bob can use his private key to decode.
-
-=> Explain why when we generate a certificate and use it, we have the certificate and the private key.
-
 ````
 @startuml
 title ASymetric cryptography and man in the middle attack, and certificate authority
@@ -129,29 +119,59 @@ actor CA
 == one time request ==
 
 Bob -> CA : send money to request CA to sign certificate which contains Bob public key
-CA -> CA : sign Bob certificate by encoding it using CA private key
+CA -> CA : sign Bob certificate by encoding it using CA private key (signature mode)
 CA -> Bob : provide certicate (fullchain.pem) to Bob which contains pub key and a private key (privkey.pem)
 
 == usual request ==
 
-Alice -> Bob : initiate authent
+Alice -> Bob : send 'client hello' message. It includes which TLS version the client supports, the cipher suites supported, and a string of random bytes known as the "client random."
+Bob -> Alice : send 'server hello' with BOB certificate which contains BOB public key, cipher and "server random"
 
 alt original bob
-    Bob -> Alice : send BOB certificate which contains BOB public key
-    Alice -> Alice : decode BOB certificate with CA public key (signature)
-    Alice-> Alice: Certificate is approved, and server identity is proved
-    Alice -> Alice: get BOB public key in certificate
-    Alice -> Alice : encode message with BOB public key
-    Alice -> Bob : send message to  bob
-    Bob -> Bob : decode message with BOB private key
+    Alice -> Alice : Authentification - Alice decode BOB certificate with CA public key  embedded in browser (signature)
+    Alice-> Alice: Authentification - Certificate is approved, and server identity is proved (client is interaction with domain owner)
+    Alice -> Alice: get BOB public key from certificate
+    Alice -> Alice : encode premaster secret with BOB public key
+    Alice -> Bob : send premaster secret
+    Bob -> Bob : decode premaster secret with BOB private key
+    Bob -> Bob: Generate session keys from the client random, the server random, and the premaster secret.
+    Alice -> Alice:  Also generate session keys and should reach same result as Bob
+    Alice -> Bob: send client is ready with session key (symetric)
+    Bob -> Alice: send server is ready with session key (symetric)
 else robber
     Bob -> Robber: steal certificate and replace by its own 
     Robber -> Alice: send message with altered certificate 
-    Alice -> Alice : decode Altered (Robber)certificate with CA public key (signature), failure
-    Alice->Alice: Refuse to talk with Bob
+    Alice -> Alice : decode Altered (Robber)certificate with CA public key (signature)
+    Alice->Alice: It failed and refuse to talk with Bob
 end
 @enduml
 ````
+
+Then they continue with the session key.
+
+This explain why when we generate a certificate we have:
+- a cert file with public key
+- a key file with private key 
+
+See actual application here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
+
+
+This is known as TLS handshake diagram is aligned with explanation given here:
+https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/ (not the Diffie-Hellman)
+
+I mirrored the page [cloudfare.md](cloudfare.md)
+
+## Link with http over socket
+
+When we implemented our own http client here: https://github.com/scoulomb/http-over-socket/blob/main/main.py
+This part (tls handshake):
+
+````python
+https_context.wrap_socket(raw_socket, server_hostname=connection.hostname)
+````
+
+matches this part of the flow explained here!
+while the initial connect is shown in [cloudfare.md](cloudfare.md)
 
 ### More
 
@@ -167,7 +187,3 @@ Bob does not have the gurantee he is talking to Alice.
 - https://www.youtube.com/watch?v=7W7WPMX7arI
 - https://www.youtube.com/watch?v=4nGrOpo0Cuc
 - https://www.youtube.com/watch?v=T4Df5_cojAs
-
-## Application 
-
-It has been applied here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
