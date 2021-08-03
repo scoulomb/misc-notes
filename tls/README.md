@@ -177,8 +177,8 @@ while the initial connect is shown in [cloudfare.md](cloudfare.md)
 
 ### More
 
-- mutual authent is same think but in 2 ways.
-In what we described Alice has the guarantee she talks to Bob, but not vice-vesa
+- mutual authent is same thing but in 2 ways.
+In what we described Alice has the guarantee she talks to Bob, but not vice-vesa (known as mtls)
 Bob does not have the gurantee he is talking to Alice.
 
 - From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryptography and computer security, a self-signed certificate is a certificate that is not signed by a certificate authority (CA).
