@@ -92,7 +92,7 @@ https://www.youtube.com/watch?v=N0lDorek38I
 Match prcessor relasese date 
 
 https://cpu.userbenchmark.com/Compare/Intel-Core-i5-8365U-vs-Intel-Core-i5-1135G7/m774761vsm1286124 (latitude compared with vostro proc)
-q2 2019 vs q3 2021 (1135gt equipped laptop of 2021)
+q2 2019 vs q3 2020 (1135gt equipped laptop of 2021)
 
 
 ## Manual and drivers
