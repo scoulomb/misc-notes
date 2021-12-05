@@ -24,8 +24,11 @@ https://www.dell.com/fr-fr/work/shop/ordinateurs-portables-professionnels/latitu
 	sur dell premier e offre cyber week il est a 642,37 et jusqu au 19dec
 	https://www.dell.com/premier/FR/fr/RC1414802/?gacd=10031881-5237-5761040-315422679-0&dgc=ST&gclid=Cj0KCQiA47GNBhDrARIsAKfZ2rBP988QLkw8Pvls5HVjG3KH5I2qoqUqjekhmV6cmHAFMgTei0WyZxgaApLDEALw_wcB&gclsrc=aw.ds#/deals/fr-offres?tabName=frfr-availnow%3F
 	il faut compter la taxe
+
 		
-	
+	ALSO note latutude 5420 is at 1295 instead of 1992 so it means 1 years ago actual vaue of 5410 was 1100euros
+	https://www.dell.com/fr-fr/work/shop/ordinateurs-portables-professionnels/latitude-5420/spd/latitude-5420-laptop/s018l542014fr
+
 
 ## Taking a look at CPU
 
