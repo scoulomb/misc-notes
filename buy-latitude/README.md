@@ -93,3 +93,19 @@ Match prcessor relasese date
 
 https://cpu.userbenchmark.com/Compare/Intel-Core-i5-8365U-vs-Intel-Core-i5-1135G7/m774761vsm1286124 (latitude compared with vostro proc)
 q2 2019 vs q3 2021 (1135gt equipped laptop of 2021)
+
+
+## Manual and drivers
+
+https://www.dell.com/support/manuals/fr-fr/latitude-14-5400-laptop/latitude_5400_setupspecs/technical-specifications?guid=guid-26cc9b57-795f-4689-8649-667d70d1f3bd&lang=en-us
+https://www.dell.com/support/home/fr-fr/product-support/product/latitude-14-5400-laptop/drivers
+
+## RAM addition on 5400
+
+sodimm 	2 x SoDIMM slots
+2666Mhz
+ddr4
+
+https://www.amazon.fr/dp/B0846JMGS4/ref=sspa_dk_detail_2?pd_rd_i=B0846JMGS4&pd_rd_w=gOfzr&pf_rd_p=c2093833-029c-4c81-8b25-2f17e8aa03bd&pd_rd_wg=fN7Na&pf_rd_r=WJSS8257SCBTQXPZB3C9&pd_rd_r=e57d0b01-69e0-4746-ad02-e38def244311&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFOWVVSWjZNWUQ1RFkmZW5jcnlwdGVkSWQ9QTA3NTcyODlEUVBYRVc5NERUS0MmZW5jcnlwdGVkQWRJZD1BMDA2MzQzOTMySkRPRDJLV1UxOUsmd2lkZ2V0TmFtZT1zcF9kZXRhaWwmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl&th=1
+add ram is 40 euros
+
