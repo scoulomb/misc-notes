@@ -1,0 +1,53 @@
+﻿Dell Virtual Assistant (12/6/2021, 1:17:52 PM): Bonjour ! Je suis l’Assistant automatisé de Dell. Je vais vous aider à trouver ce dont vous avez besoin. 
+Dell Virtual Assistant (12/6/2021, 1:17:53 PM): CONTACTUS:Sur quelle gamme de produits ou de services pouvons-nous vous aider ? Si votre demande concerne un suivi de commande ou une assistance technique sur un produit que vous possédez déjà, merci de bien vouloir vous rendre sur notre ContactUsURL. 
+Dell Virtual Assistant (12/6/2021, 1:17:55 PM): Menu Options:
+	Particuliers
+	Professionnels 
+sylvain coulombel (12/6/2021, 1:17:56 PM): Professionnels 
+Dell Virtual Assistant (12/6/2021, 1:17:58 PM): Pour une utilisation Professionnels, nous proposons les produits suivants. Veuillez sélectionner l’option pour laquelle vous avez besoin d’aide. 
+Dell Virtual Assistant (12/6/2021, 1:17:59 PM): Menu Options:
+	Ordinateur Portable ou Bureau
+	Serveurs et Stockage 
+sylvain coulombel (12/6/2021, 1:18:01 PM): Ordinateur Portable ou Bureau 
+Dell Virtual Assistant (12/6/2021, 1:18:03 PM): Voulez-vous recevoir une copie de votre discussion Chat par email après la session ? 
+Dell Virtual Assistant (12/6/2021, 1:18:04 PM): Menu Options:
+	Oui
+	Non 
+sylvain coulombel (12/6/2021, 1:18:06 PM): Oui 
+Dell Virtual Assistant (12/6/2021, 1:18:07 PM): Très bien. Nous allons vous mettre en contact avec un conseiller commercial. 
+Dell Advisor - Imane (12/6/2021, 1:18:29 PM): bonjour 
+Dell Advisor - Imane (12/6/2021, 1:18:37 PM): comment puis je vous aider? 
+sylvain coulombel (12/6/2021, 1:19:07 PM): Bonjour, je souhaiterais savoir si le dell latitude 5410 etait dispo avec le port thunderbolt en option, on ne peut pas selectionner cette customisation sur le sitw 
+sylvain coulombel (12/6/2021, 1:19:23 PM): https://www.dell.com/fr-fr/work/shop/ordinateurs-portables-professionnels/latitude-5410-build-your-own/spd/latitude-14-5410-laptop/gxctol541014emea 
+sylvain coulombel (12/6/2021, 1:19:41 PM): en vs remerciant 
+Dell Advisor - Imane (12/6/2021, 1:20:56 PM): cette option n'est plus disponible car le 5410 est en fin de vie 
+Dell Advisor - Imane (12/6/2021, 1:21:12 PM): je vous recommande le 5420 
+Dell Advisor - Imane (12/6/2021, 1:21:17 PM): https://www.dell.com/fr-fr/work/shop/ordinateurs-portables-professionnels/ordinateur-portable-professionnel-latitude-5420/spd/latitude-5420-laptop 
+sylvain coulombel (12/6/2021, 1:21:48 PM): hmm avez vous une reco dans le meme budget ~700 euros 
+Dell Advisor - Imane (12/6/2021, 1:22:25 PM): c'est le moins cher avec le port thunderbolt 
+sylvain coulombel (12/6/2021, 1:24:14 PM): je voulais re-utiliser mon replicateur Dell tb16 mais je peux m'en passerai au pire 
+Dell Advisor - Imane (12/6/2021, 1:25:03 PM): vous pouvez la brancher via usb c 
+sylvain coulombel (12/6/2021, 1:26:16 PM): le dell tb16 fonctionnera avec le power et display port? 
+sylvain coulombel (12/6/2021, 1:26:27 PM): sur usb c du 5410 
+sylvain coulombel (12/6/2021, 1:26:29 PM): ? 
+sylvain coulombel (12/6/2021, 1:27:30 PM): je pense qu il me faudra changer pour un dock wd19 ? 
+sylvain coulombel (12/6/2021, 1:27:49 PM): si je n'ai pas le thunderbolt 
+Dell Advisor - Imane (12/6/2021, 1:27:51 PM): c'est la WD19S qiu est disponible 
+Dell Advisor - Imane (12/6/2021, 1:28:23 PM): https://www.dell.com/fr-fr/work/shop/station-d-accueil-dell-wd19s-130-w/apd/210-azbx/accessoires-pour-ordinateurs 
+sylvain coulombel (12/6/2021, 1:28:50 PM): super 
+sylvain coulombel (12/6/2021, 1:29:14 PM): savez vous si la sortie HDMI de cette docking est en 2.0, 2.1 our 1.4 
+Dell Advisor - Imane (12/6/2021, 1:29:35 PM): oui 
+Dell Advisor - Imane (12/6/2021, 1:29:37 PM): voici les ports 
+Dell Advisor - Imane (12/6/2021, 1:29:37 PM): Ports et emplacements :
+1. USB-C 3.1 de 2e génération | 2. Port USB-A 3.1 de 1re génération avec technologie PowerShare | 3. DisplayPort 1.4 (x2) | 4. HDMI 2.0b | 5. DisplayPort sur USB-C multifonction | 6. Double port USB-A 3.1 de 1re génération | 7. Port Gigabit Ethernet RJ45 | 8. Entrée d’alimentation 
+sylvain coulombel (12/6/2021, 1:29:56 PM): top ce n'est pas du 1.4 
+sylvain coulombel (12/6/2021, 1:30:10 PM): je vois quelle est en promo quand se termine t -elle? 
+Dell Advisor - Imane (12/6/2021, 1:30:32 PM): la promo expire ce soir 
+sylvain coulombel (12/6/2021, 1:30:59 PM): tres bien 
+sylvain coulombel (12/6/2021, 1:31:14 PM): et pour le latitude 5410 egalement? 
+Dell Advisor - Imane (12/6/2021, 1:31:49 PM): oui pour tous les article sur le site 
+sylvain coulombel (12/6/2021, 1:32:04 PM): note, ca sent la fin du cyber week ;) 
+Dell Advisor - Imane (12/6/2021, 1:32:35 PM): oui c'est le dernier jour des promo 
+sylvain coulombel (12/6/2021, 1:32:57 PM): merci pour toutes ces infos je vais opter pour le 5410 a priori, bonne fin de journee! 
+Dell Advisor - Imane (12/6/2021, 1:33:25 PM): je vous en prie 
+Dell Advisor - Imane (12/6/2021, 1:33:29 PM): bonne journée à vous 
