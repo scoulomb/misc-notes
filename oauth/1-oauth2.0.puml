@@ -1,0 +1,33 @@
+@startuml
+participant Client as C
+participant "Security Provider" as SP 
+participant Server as S 
+participant ForwardingServer as FWDS 
+
+
+== OAuth 2: Single server ==
+
+C -> SP: Get token (login)
+SP --> C: Access Token
+C -> S: Action + Access token
+S -> SP: Get user info + permission from access token
+SP --> S: user infos + permission in Security Provider specific format
+S -> S: Verify permssion 
+S -> S: Perform action
+S --> C: Answer to client  
+
+
+== OAuth 2: Forwarding server ==
+
+C -> SP: Get token (login)
+SP --> C: Access Token
+C -> FWDS: Action + Access token
+FWDS -> S: Forward Action' + Access Token
+S -> SP: Get user info + permission from access token
+SP --> S: user infos + permission in Security Provider specific format
+S -> S: Verify permssion 
+S -> S: Perform action
+S --> FWDS: answer
+FWDS --> C: Answer to client  
+
+@enduml

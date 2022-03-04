@@ -1,0 +1,21 @@
+@startuml
+participant Client as C
+participant Server as S 
+participant Database as DB
+ 
+
+== Basic Auth ==
+
+
+C -> S: Action  + Basic Auth header (username:password in base64)
+S -> DB: Get userame and password in database
+DB --> S: return (username and password) or no record
+S -> S: check username and password in db match
+S -> DB : Retrieve user permssion from database
+DB --> S: Return permssion 
+S -> S : Perform actions
+S --> C: Answer to client  
+
+'Digest is similar to basic auth except we receive a password hash
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+participant "Resource Owner (user)" as RO
+participant Client as C
+participant "Security Provider" as SP #Cyan
+participant Server as S #Cyan
+
+== OAuth 2: Single server with authorization code flow ==
+' https://youtu.be/996OiexHze0?t=1170
+
+RO -> C: Perform action
+C --> RO: Please login with your identity provider and redirect to SP
+RO -> SP: Send credentials
+SP --> RO: login success and ask for specific permissions to resource owner
+RO -> SP: Accept 
+SP -> RO: Give authorization code and redirect to Client
+C -> SP: Exchange authorization code for an access token
+SP --> C: Give Access token
+C -> S: Get resources 
+S -> SP: Get user infos + permission 
+SP --> S: user infos + permission in Security Provider specific format
+S -> S: Verify permssion 
+S -> S: Perform action
+S --> C: Answer to client  
+
+
+
+@enduml
