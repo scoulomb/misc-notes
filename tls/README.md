@@ -1,191 +1,100 @@
-# TLS explained to myself
-
-## Basic concept
-
-[For the reamaining of this article. Alice is message sender, Bob is the receiver](https://fr.wikipedia.org/wiki/Alice_et_Bob).
-
-- Symetric cryptography: We use same key to encode and decode.
-- Asymetric cryptography: we generate two keys, key1 and key2.
-When we encode with key 1 we can decode with key 2  and vice versa.
-One key is in general private, and other one is public.
-
-Thus definition given [here](https://youtu.be/T4Df5_cojAs?t=128)
-
-1. Any message encrypted with Bob's public key can only be decrypted with Bob's private key.
-In that case Recipient (Bob) give public key to sender (Alice). 
-Sender (Alice) use recipient (Bob) public key to encode message, recipient (Bob) use its private key to decode the message.
-
-2. Anyone with access to Alice's public key can verify that a message (**signature**)
-could only have been created by someone with access to Alice's private key. (it was encrypted using private key here)
-
-In that case Alice encrypt message using her private key. Bob check tries to decode (digital signature) using Alice public key. 
-If he can decode, it proves Alice had encrypted this message.
-This is what a CA does.
-
-I had read:
-It makes no sense to encrypt anything with your private key, 
-because the message could then be decrypted by the public key that everybody has access to. 
-When somebody wants to send you a secret message, they encrypt it using your public key, and then only you can decrypt it, 
-because only you know your private key
--> not the case for signature
-
-## Application to TLS
-
-Alice (client) -> Bob (server)
-
-### Symetic and asymetric
-
-#### Symetric cryptography is not sufficient bcecause an attacker could steal chiffer key. This key is exchanged between Alice and Bob.
-
-````
-@startuml
-title Symetric cryptography
-
-Alice->Bob: exchange key in clear
-Alice -> Robber: steal the key
-Alice -> Alice : encode message with the key
-Alice -> Bob : send message to  bob
-Alice -> Robber : steal message 
-Robber -> Robber : decode the message
-Bob -> Bob : decode message with key
-@enduml
-````
+# README - TLS certificates
 
 
-#### This why asymetric is used.
+## TLS Basic
 
-- Bob sends public key to Alice,
-- Alice encrypts message with Bob's public key,
-- Bob decrypts message with its private key.
+- [TLS certificate](./tls-certificate.md)
 
-````
-@startuml
-title ASymetric cryptography
+## TLS deep-dive
 
-Alice -> Bob : initiate authent
-Bob -> Alice : send BOB public key
-Alice -> Alice : encode message with BOB public key
-Alice -> Bob : send message to  bob
-Bob -> Bob : decode message with BOB private key
-@enduml
-````
+TLS in details
 
-Using asymmetric cryptography (public key crypto) has an higher cost than symmetric.
-This is the reason why, they use a session key, Alice and Bob exchange this session key in asymmetric way,
-and then continue to exchange and continue using this session key with symmetric cryptography.
+### Cloudfare blogpost
 
-### Man in the middle attach and need of a CA
-
-**Problem**: The public key can be intercepted and substituted (man in the middle attach)
-- Robber intercepts Bob's  public key and replace by Robber key.
-- Alice encrypts the message using robber key (believing it is the one of Bob).
-- She sends it back to robber (thinking it is bob). 
-- Robber decodes Alice message. 
-- He reencodes it using Bob's public key (to not arouse suspicions) 
-- and send it to bob.
-
-````
-@startuml
-title ASymetric cryptography and man in the middle attack
-
-actor Alice 
-actor Robber 
-actor Bob
-
-Alice -> Bob : initiate authent
-Bob -> Robber : send BOB public key to Alice but stolen by Robber
-Robber -> Robber : save BOB pulic key
-Robber -> Alice : Send ROBBER public key instead of bob public key
-Alice -> Alice : encode message with ROBBER public key (believing it is the one of Bob)
-Alice -> Robber : send message to Robber (believing it is  Bob)
-Robber -> Robber: decode message using ROOBER private key. He is happy
-Robber -> Robber: encode message using BOB public key (to not make Bob suspicious)
-Robber -> Bob: send message to bob
-Bob -> Bob : decode message with key wiht BOB private key
-@enduml
-````
-
-**Solution**: Certificate Authority (CA)
-
-````
-@startuml
-title ASymetric cryptography and man in the middle attack, and certificate authority
-    
-actor Alice 
-actor Robber 
-actor Bob
-actor CA
-
-== one time request ==
-
-Bob -> CA : send money to request CA to sign certificate which contains Bob public key
-CA -> CA : sign Bob certificate by encoding it using CA private key (signature mode)
-CA -> Bob : provide certicate (fullchain.pem) to Bob which contains pub key and a private key (privkey.pem)
-
-== usual request ==
-
-Alice -> Bob : send 'client hello' message. It includes which TLS version the client supports, the cipher suites supported, and a string of random bytes known as the "client random."
-Bob -> Alice : send 'server hello' with BOB certificate which contains BOB public key, cipher and "server random"
-
-alt original bob
-    Alice -> Alice : Authentification - Alice decode BOB certificate with CA public key  embedded in browser (signature)
-    Alice-> Alice: Authentification - Certificate is approved, and server identity is proved (client is interaction with domain owner)
-    Alice -> Alice: get BOB public key from certificate
-    Alice -> Alice : encode premaster secret with BOB public key
-    Alice -> Bob : send premaster secret
-    Bob -> Bob : decode premaster secret with BOB private key
-    Bob -> Bob: Generate session keys from the client random, the server random, and the premaster secret.
-    Alice -> Alice:  Also generate session keys and should reach same result as Bob
-    Alice -> Bob: send client is ready with session key (symetric)
-    Bob -> Alice: send server is ready with session key (symetric)
-else robber
-    Bob -> Robber: steal certificate and replace by its own 
-    Robber -> Alice: send message with altered certificate 
-    Alice -> Alice : decode Altered (Robber)certificate with CA public key (signature)
-    Alice->Alice: It failed and refuse to talk with Bob
-end
-@enduml
-````
-
-Then they continue with the session key.
-
-This explain why when we generate a certificate we have:
-- a cert file with public key
-- a key file with private key 
-
-See actual application here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
+- [Cloudfare blogpost](./cloudfare.md) as mentioned [TLS certificate](./tls-certificate.md#man-in-the-middle-attach-and-need-of-a-ca)
 
 
-This is known as TLS handshake diagram is aligned with explanation given here:
-https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/ (not the Diffie-Hellman)
+### tls13.ulfheim.net
 
-I mirrored the page [cloudfare.md](cloudfare.md)
+#### Post
 
-Some CA like let's encrypt are free.
+- https://tls.ulfheim.net/ and https://github.com/scoulomb/illustrated-tls
 
-## Link with http over socket
+#### Note 1: Ephemeral Diffie-Helman
 
-When we implemented our own http client here: https://github.com/scoulomb/http-over-socket/blob/main/main.py
-This part (tls handshake):
 
-````python
-https_context.wrap_socket(raw_socket, server_hostname=connection.hostname)
-````
+In  https://tls.ulfheim.net/, the pre-master key is not sent to the client (unlike nominal case in Cloudfare blogpost and [TLS certificate](./tls-certificate.md))
 
-matches this part of the flow explained here!
-while the initial connect is shown in [cloudfare.md](cloudfare.md)
+This the second case in cloud fare blogpost
 
-### More
+From [Cloudfare blogpost](./cloudfare.md)
 
-- mutual authent is same thing but in 2 ways.
-In what we described Alice has the guarantee she talks to Bob, but not vice-vesa (known as mtls)
-Bob does not have the gurantee he is talking to Alice.
+> All TLS handshakes make use of asymmetric encryption (the public and private key), but not all will use the private key in the process of generating session keys. For instance, an ephemeral Diffie-Hellman handshake proceeds as follows:
 
-- From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryptography and computer security, a self-signed certificate is a certificate that is not signed by a certificate authority (CA).
+In diffie-hellman Shared encryption key is computed by using
 
-## Links
+- Client (PreMasterSecret encryption key calaculation) via
+    - server random (from Server Hello)
+    - client random (from Client Hello)
+    - server public key (from Server Key Exchange)
+    - client private key (from Client Key Generation) 
+- Server  (MasterSecret encryption key calaculation which is equal to PreMasterSecret) via
+    - server random (from Server Hello)
+    - client random (from Client Hello)
+    - client public key (from Client Key Exchange)
+    - server private key (from Server Key Generation) 
 
-- https://medium.com/sitewards/the-magic-of-tls-x509-and-mutual-authentication-explained-b2162dec4401
-- https://www.youtube.com/watch?v=7W7WPMX7arI
-- https://www.youtube.com/watch?v=4nGrOpo0Cuc
-- https://www.youtube.com/watch?v=T4Df5_cojAs
+We use: https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman to reach same secret (PreMasterSecret == MasterSecret)
+
+
+From master and premaster key we compute on both side the same key data
+
+- client MAC key
+- server MAC key
+- client write key
+- server write key
+- client write IV
+- server write IV
+
+#### Note 2: SNI data
+
+Note when we perform the client hello we exchange SNI information 
+
+> Extension - Server Name
+The client has provided the name of the server it is contacting, also known as SNI (Server Name Indication).
+Without this extension a HTTPS server would not be able to provide service for multiple hostnames on a single IP address (virtual hosts) because it couldn't know which hostname's certificate to send until after the TLS session was negotiated and the HTTP request was made.-  00 00 - assigned value for extension "server name"
+>-    00 18 - 0x18 (24) bytes of "server name" extension data follows
+> -    00 16 - 0x16 (22) bytes of first (and only) list entry follows
+> -    00 - list entry is type 0x00 "DNS hostname"
+> -    00 13 - 0x13 (19) bytes of hostname follows
+> -    65 78 61 ... 6e 65 74 - "example.ulfheim.net" 
+
+
+## SAN vs SNI
+
+### SAN and SNI
+
+https://serverfault.com/questions/807959/what-is-the-difference-between-san-and-sni-ssl-certificates
+
+
+> SAN (Subject Alternative Name) is part of the X509 certificate spec, where the certificate has a field with a list of alternative names that are also valid for the subject (in addition to the single Common Name / CN). This field and wildcard names are essentially the two ways of using one certificate for multiple names.
+
+> SNI (Server Name Indication) is a TLS protocol extension that is sort of a TLS protocol equivalent of the HTTP Host-header. When a client sends this, it allows the server to pick the proper certificate to present to the client without having the limitation of using separate IP addresses on the server side (much like how the HTTP Host header is heavily used for plain HTTP).
+
+> Do note that SNI is not something that is reflected in the certificate and it actually achieves kind of the opposite of what the question asks for; it simplifies having many certificates, not using one certificate for many things.
+
+> On the other hand, it depends heavily on the situation which path is actually preferable. As an example, what the question asks for is almost assuredly not what you actually want if you need certificates for different entities.
+
+### F5 - TLS termination 
+
+We can setup SNI certificate on F5.
+
+From https://support.f5.com/csp/article/K13452
+
+> With the introduction of TLS SNI, the client that supports TLS SNI can indicate the name of the server to which the client is attempting to connect, in the ClientHello packet, during the SSL handshake process. The server that supports TLS SNI can use this information to select the appropriate SSL certificate to return to the client in the ServerHello packet during the SSL handshake. As a result, the client can establish secure connections to the secure website from the list of multiple secure websites that are hosted on a single virtual server.
+
+Also there is an interesting usage of F5 irule
+
+> Note that there is no automatic mechanism which allows the BIG-IP system to select SSL profile based on Server Name value received in the client SSL Hello message. However, with additional help of an iRule you can force selection of proper ServerSSL profile based on the host-name header value received in initial HTTP request from the client.
+
+
