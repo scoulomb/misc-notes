@@ -1,21 +1,46 @@
 @startuml
-participant Client as C
-participant Server as S 
+participant "Resource Owner" as RO
+participant "Forwarding Client\nPublic client\nWebapp" as FWDC
+participant "Server of forwarding client\n(Private) Client of Resource server" as C 
+participant "Resource Server" as RS 
 participant Database as DB
- 
+
 
 == Basic Auth ==
 
+RO -> FWDC: Action
+FWDC -> C: Action
+C -> RS: Action  + Basic Auth header (username:password in base64)
+RS -> DB: Get userame and password in database
+DB --> RS: return (username and password) or no record
+RS -> RS: check username and password (or hash) in db match
+RS -> DB : Retrieve user permssion from database
+DB --> RS: Return permssion 
+RS -> RS : Perform actions
+RS --> C: Answer to client  
+C --> FWDC: Answer to client  
 
-C -> S: Action  + Basic Auth header (username:password in base64)
-S -> DB: Get userame and password in database
-DB --> S: return (username and password) or no record
-S -> S: check username and password in db match
-S -> DB : Retrieve user permssion from database
-DB --> S: Return permssion 
-S -> S : Perform actions
-S --> C: Answer to client  
+' Digest is similar to basic auth except we receive a password hash
+' This describes the case where client is a webapp talking directly to the resourceRServer
 
-'Digest is similar to basic auth except we receive a password hash
+' Below we describe the case where we have a a server dedicated to the resource accessed by resource owner
+
+== Basic Auth with external Resource Server ==
+
+RO -> FWDC: Action
+FWDC -> C: Action  + Basic Auth header (username:password in base64)
+C -> RS: Get resource + username:password forward
+RS  -> DB: Get userame and password (or hash) in database
+DB --> RS: return (username and password) or no record
+RS -> RS: check username and password in db match
+RS -> DB : Retrieve user permssion from database
+DB --> RS: Return permssion 
+RS -> C : Provide resource
+C -> C: Process resource
+C --> FWDC: Answer to client  
+
 
 @enduml
+
+' If resource server is Facebook, intermediate server knows user's Facebook credentials
+' We will wee how oauth solves this issue

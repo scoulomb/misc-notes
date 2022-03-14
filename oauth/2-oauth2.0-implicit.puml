@@ -1,0 +1,35 @@
+' https://www.oauth.com/playground/
+
+@startuml
+participant "Resource Owner" as RO
+participant "Client" as C 
+participant "Security Provider" as SP 
+participant "Resource Server" as RS 
+
+
+== OAuth 2: Implicit flow ==
+
+
+RO -> C: Interact 
+C -> C: Generate state
+C -> C: Store state
+C -> SP: https://authorization-server.com/authorize?\nresponse_type=token\n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi\n&redirect_uri=https://www.oauth.com/playground/implicit.html\n&scope=photo\n&state=1JthMyfll00SQnAw
+SP -> C: Redirect to Security Provider prompt for username and password panel
+C -> RO: redirect to Security Provider prompt 
+RO -> SP: Provide username and password
+RO -> SP: Approve the scope
+SP -> C: Redirect to redirect_uri: https://www.oauth.com/playground/implicit.html#state=1JthMyfll00SQnAw&access_token=pY4MWF5jkV-T0vuokfxy1zhDjKZxYu-wfLvZU282PG5i0Owq27F37vAFUhV3gRs8xLs7FeJ4&token_type=Bearer&expires_in=86400&scope=photos
+C -> C: Check state parameter match
+C -> C: Extract Access Token:\npY4MWF5jkV-T0vuokfxy1zhDjKZxYu-wfLvZU282PG5i0Owq27F37vAFUhV3gRs8xLs7FeJ4 
+alt
+C -> RS: Get resource from the server using the token
+else
+C -> SP: Get user info + permission from access token
+SP --> C: user infos + permission in Security Provider specific format
+C -> C: Verify permssion 
+C -> C: Perform action
+C --> C: Answer
+end
+
+' Match exactly https://www.oauth.com/playground/implicit.html
+

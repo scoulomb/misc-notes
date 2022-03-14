@@ -1,0 +1,17 @@
+' https://www.oauth.com/playground/
+
+@startuml
+participant "Robotic Client" as C 
+participant "Security Provider" as SP 
+participant "Resource Server" as RS 
+
+
+== OAuth 2: refresh token (it is also a grant type) ==
+
+C -> RS: Get resource or user info, permission from access token
+RS -> C: HTTP/1.1 401 Unauthorized \nWWW-Authenticate: Bearer error="invalid_token" \nerror_description="The access token expired" \nContent-type: application/json \n \n{ \n  "error": "invalid_token", \n  "error_description": "The access token expired" \n}
+C -> SP: POST /oauth/token HTTP/1.1 \nHost: authorization-server.com \n \ngrant_type=refresh_token \n&refresh_token=xxxxxxxxxxx \n&client_id=xxxxxxxxxx \n&client_secret=xxxxxxxxxx
+SP -> C: { \n  "access_token": "BWjcyMzY3ZDhiNmJkNTY", \n  "refresh_token": "Srq2NjM5NzA2OWJjuE7c", \n  "token_type": "Bearer", \n  "expires": 3600 \n}
+' The response will be a new access token, and optionally a new refresh token, just like you received when exchanging the authorization code for an access token.
+
+@enduml

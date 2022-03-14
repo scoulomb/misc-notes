@@ -1,0 +1,71 @@
+@startuml
+
+' From https://www.oauth.com/playground/oidc.html
+' > OpenID Connect supports many of the same flows as OAuth 2.0.
+' > At the end of the OpenID Connect process, the client ends up with an "ID Token",
+' > which contains information about the user who signed in. 
+' > This token is encoded and signed, and the client is expected to parse it directly.
+' > When a client uses an OpenID Connect flow, 
+' > it can request an access token in addition to an ID token.
+
+' > In this example, we'll cover the OpenID Connect Authorization Code flow and request an ID token as well as an access token.
+
+' Match exactly: https://www.oauth.com/playground/oidc.html
+
+
+participant "Resource Owner" as RO
+participant "Forwarding Client\nPublic client\nWebapp" as FWDC
+participant "Server of forwarding client\n(Private) Client of Resource server" as C 
+participant "Security Provider" as SP 
+participant "Resource Server" as RS 
+
+
+== OAuth 2: Authorization code flow (forwarding client and private client) where we add OIDC ==
+
+RO -> FWDC: Interact 
+FWDC -> C: Action 
+C -> C: Generate state
+C -> C: Store state
+C -> SP: https://authorization-server.com/authorize? \nresponse_type=code \n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi \n&redirect_uri=https://www.oauth.com/playground/oidc.html \n&scope=openid+profile+email+photos \n&state=yY2kCGSOYqwd8zis \n&nonce=hOR3YA1tRifTZa9W
+SP -> C: redirect to Security Provider prompt for username and password panel
+C -> FWDC: redirect to Security Provider prompt 
+FWDC -> RO: redirect to Security Provider prompt 
+RO -> SP: Provide username and password
+RO -> SP: Approve the scope\n(Note we allow to share your name and email address )
+SP -> C: Redirect to redirect_uri:\nhttps://www.oauth.com/playground/oidc.html?state=yY2kCGSOYqwd8zis&code=9O5vcLbcjCsc9g1xKCu2y75x9El4SVS3zMGjHPB2gk90qFMk
+C -> C: Check state parameter match
+C -> SP: Exchange Authorization code for Access Token\POST https://authorization-server.com/token \n \ngrant_type=authorization_code \n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi \n&client_secret=a_ztnqdmPB1IhOdxC5lkUDbQCutT67Lxo6DhPxvvL9DgCwLW \n&redirect_uri=https://www.oauth.com/playground/oidc.html \n&code=9O5vcLbcjCsc9g1xKCu2y75x9El4SVS3zMGjHPB2gk90qFMk 
+SP -> C: Answer with the Access Token + ID token (Refresh token optionally)
+Note bottom
+{
+  "token_type": "Bearer",
+  "expires_in": 86400,
+  "access_token": "8apuUWaqw3KHbMXtm7gRl3iamFCxv7p6hij-t4L6T43I8YtmUffQ1wz1LBj57SKG7rUkGujw",
+  "scope": "openid profile email photo",
+  "id_token": "eyJraWQiOiJzMTZ0cVNtODhwREo4VGZCXzdrSEtQUkF[...]U9xhxj4Q"
+}
+end note
+alt
+ C -> RS: Get resource from the server using the access_token
+else
+ C -> SP: Get user info + permission from access_token
+ SP --> C: user infos + permission in Security Provider specific format
+ C -> C: Verify permssion 
+ C -> C: Perform action
+ C --> FWDC: answer
+else
+C -> C: Retrieve security provider certificate from local storage\n(it was retrieved previously from security provider using dedicated endpoint)
+Note bottom
+NEW: It is possible to get permission and name from the id_token
+end note
+C -> C: Validate id_token 
+C -> C: Decode and retriveve permission from id_token
+end
+
+' Match https://www.oauth.com/playground/oidc.html 
+
+' For server to accept ID token from google we just need to use a public certificate from google
+' (the one which was used to sign the token)
+
+
+@enduml

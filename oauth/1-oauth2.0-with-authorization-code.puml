@@ -1,0 +1,156 @@
+' https://www.oauth.com/playground/
+
+@startuml
+participant "Resource Owner" as RO
+participant "Forwarding Client\nPublic client\nWebapp" as FWDC
+participant "Server of forwarding client\n(Private) Client of Resource server" as C 
+participant "Security Provider" as SP 
+participant "Resource Server" as RS 
+
+
+== OAuth 2: Authorization code flow (forwarding client and private client) ==
+
+RO -> FWDC: Interact 
+FWDC -> C: Action 
+C -> C: Generate state
+C -> C: Store state
+C -> SP: https://authorization-server.com/authorize?\nresponse_type=code\n&client_id=w9-kycvRkaaYOFL0OPYtmnAa\n&redirect_uri=https://www.oauth.com/playground/authorization-code.html\n&scope=photo+offline_access\n&state=ebIVJQFuBs88QmFr
+SP -> C: redirect to Security Provider prompt for username and password panel
+C -> FWDC: redirect to Security Provider prompt 
+FWDC -> RO: redirect to Security Provider prompt 
+' I suppose we have to reforward 
+RO -> SP: Provide username and password
+RO -> SP: Approve the scope
+SP -> C: Redirect to redirect_uri:\nhttps://www.oauth.com/playground/authorization-code.html?\nstate=ebIVJQFuBs88QmFr\n&code=qktZCQ1lCmzcW1N2EaNv2gRsQbEgMmGq3ryTbZXLAkrOZqnh
+C -> C: Check state parameter match
+C -> SP: Exchange Authorization code for Access Token\nPOST https://authorization-server.com/token\ngrant_type=authorization_code\n&client_id=w9-kycvRkaaYOFL0OPYtmnAa\n&client_secret=A0Z5Vkwx5ocu1HONYIuT4OuvEfd3UE-5lqJMMBSEC6Qbpzjo\n&redirect_uri=https://www.oauth.com/playground/authorization-code.html\n&code=qktZCQ1lCmzcW1N2EaNv2gRsQbEgMmGq3ryTbZXLAkrOZqnh
+SP -> C: Answer with the Access Token, Refresh token
+Note bottom
+{
+  "token_type": "Bearer",
+  "expires_in": 86400,
+  "access_token": "mymUHLm0mwneaz2kIQx1-Y5JKU_Zp2VfMx6GieKM-cAEnSSmukp4S_U46wadzkL6wZ8KxclB",
+  "scope": "photo offline_access",
+  "refresh_token": "FmmV88nO2sVhhyMu3u1V7-KF"
+}
+end note
+' I suppose we have user info or access to resource
+alt
+ C -> RS: Get resource from the server using the token
+else
+ C -> SP: Get user info + permission from access token
+ SP --> C: user infos + permission in Security Provider specific format
+ C -> C: Verify permssion 
+ C -> C: Perform action
+ C --> FWDC: answer
+end
+
+' Quoting https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type
+' > The code exchange step ensures that an attacker isn’t able to intercept the access token,
+' > since the access token is always sent via a secure backchannel between the application and the OAuth server.
+'
+' > If you’re using the Authorization Code flow in a mobile app, or any other type of application 
+' > that can’t store a client secret,
+' > then you should also use the PKCE extension, 
+' > which provides protections against other attacks where the authorization code may be intercepted.
+
+
+' Match https://www.oauth.com/playground/authorization-code.html if we consider C is the oauth.com UI
+
+
+== OAuth 2: Authorization code flow with PKCE extension (Public client) ==
+
+
+RO -> FWDC: Interact 
+FWDC -> FWDC: Generate state
+FWDC -> FWDC: Store state
+FWDC -> FWDC: Generate code verifier\n: xzhdk0XZuXarN-v_CSr26lrjxzGscTdXYkRywuzn-xi-k7Jo
+FWDC -> FWDC: Generate code challenge\n: base64url(sha256(code_verifier))\n: Tn83lG2yoh6_lLFk5PDBB3zVitfv26siaFzDqI7nlGc
+FWDC -> FWDC: Store code verifier
+FWDC -> SP: https://authorization-server.com/authorize?\nresponse_type=code\n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi\n&redirect_uri=https://www.oauth.com/playground/authorization-code-with-pkce.html\n&scope=photo+offline_access\n&state=POUJEblzmWxv3I-H\n&code_challenge=Tn83lG2yoh6_lLFk5PDBB3zVitfv26siaFzDqI7nlGc\n&code_challenge_method=S256\ncode challenge is sent
+SP -> FWDC: Redirect to Security Provider prompt for username and password panel
+FWDC -> RO: redirect to Security Provider prompt 
+RO -> SP: Provide username and password
+RO -> SP: Approve the scope
+SP -> FWDC: Redirect to redirect_uri: https://www.oauth.com/playground/authorization-code-with-pkce.html?state=F4s_qfof1g2FqJdQ&code=1Wc_0dX12RQSvVulCVYfNjsiB0zAxa69osdQcURrlpdXsNTI
+FWDC -> FWDC: Check state parameter match
+FWDC -> SP: Exchange Authorization code for Access Token\nNote we send the code verifier\n\nPOST https://authorization-server.com/token\n\ngrant_type=authorization_code\n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi\nclient_secret=a_ztnqdmPB1IhOdxC5lkUDbQCutT67Lxo6DhPxvvL9DgCwLW\n&redirect_uri=https://www.oauth.com/playground/authorization-code-with-pkce.html\n&code=1Wc_0dX12RQSvVulCVYfNjsiB0zAxa69osdQcURrlpdXsNTI\n&code_verifier=xzhdk0XZuXarN-v_CSr26lrjxzGscTdXYkRywuzn-xi-k7Jo
+SP -> SP: Check code verifier against code challenge
+SP -> FWDC: Answer with the Access Token, Refresh token
+Note bottom
+{
+  "token_type": "Bearer",
+  "expires_in": 86400,
+  "access_token": "0AA3mU5jgqInyLfW6eIuhdlQhtbMGaIsgq8QksmVLtrMKRLPXkON7XV3STkRiod-Ph-xA1bs",
+  "scope": "photo offline_access",
+  "refresh_token": "N4JlBbLwdySL0lwoqNuZMsEv"
+}
+end note
+alt
+FWDC -> RS: Get resource from the server using the token
+else
+FWDC -> SP: Get user info + permission from access token
+SP --> FWDC: user infos + permission in Security Provider specific format
+FWDC -> FWDC: Verify permssion 
+FWDC -> FWDC: Perform action
+C --> FWDC: answer
+end
+
+' When using PKCE client secret is optional 
+' Orginally developed for use-case when the Security Provider is talking directly to a public client 
+' And we do not want to store private key
+' However it is possible to have a private client and also use the PKCE extension, 
+' It is even recommended as more secure
+
+' Match exactly https://www.oauth.com/playground/authorization-code-with-pkce.html
+
+
+== OAuth 2: Authorization code flow with PKCE extension (Private client) ==
+
+
+RO -> FWDC: Interact 
+FWDC -> C: Action 
+C -> C: Generate state
+C -> C: Store state
+C -> C: Generate code verifier\n: xzhdk0XZuXarN-v_CSr26lrjxzGscTdXYkRywuzn-xi-k7Jo
+C -> C: Generate code challenge\n: base64url(sha256(code_verifier))\n: Tn83lG2yoh6_lLFk5PDBB3zVitfv26siaFzDqI7nlGc
+C -> C: Store code verifier
+C -> SP: https://authorization-server.com/authorize?\nresponse_type=code\n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi\n&redirect_uri=https://www.oauth.com/playground/authorization-code-with-pkce.html\n&scope=photo+offline_access\n&state=POUJEblzmWxv3I-H\n&code_challenge=Tn83lG2yoh6_lLFk5PDBB3zVitfv26siaFzDqI7nlGc\n&code_challenge_method=S256\ncode challenge is sent
+SP -> C: Redirect to Security Provider prompt for username and password panel
+C -> FWDC: redirect to Security Provider prompt 
+FWDC -> RO: redirect to Security Provider prompt
+RO -> SP: Provide username and password
+RO -> SP: Approve the scope
+SP -> C: Redirect to redirect_uri: https://www.oauth.com/playground/authorization-code-with-pkce.html?state=F4s_qfof1g2FqJdQ&code=1Wc_0dX12RQSvVulCVYfNjsiB0zAxa69osdQcURrlpdXsNTI
+C -> C: Check state parameter match
+C -> SP: Exchange Authorization code for Access Token\nNote we send the code verifier\n\nPOST https://authorization-server.com/token\n\ngrant_type=authorization_code\n&client_id=MPDaeW1x6CtTKtJsyFCxJXpi\nclient_secret=a_ztnqdmPB1IhOdxC5lkUDbQCutT67Lxo6DhPxvvL9DgCwLW\n&redirect_uri=https://www.oauth.com/playground/authorization-code-with-pkce.html\n&code=1Wc_0dX12RQSvVulCVYfNjsiB0zAxa69osdQcURrlpdXsNTI\n&code_verifier=xzhdk0XZuXarN-v_CSr26lrjxzGscTdXYkRywuzn-xi-k7Jo
+SP -> SP: Check code verifier against code challenge
+SP -> C: Answer with the Access Token, Refresh token
+Note bottom
+{
+  "token_type": "Bearer",
+  "expires_in": 86400,
+  "access_token": "0AA3mU5jgqInyLfW6eIuhdlQhtbMGaIsgq8QksmVLtrMKRLPXkON7XV3STkRiod-Ph-xA1bs",
+  "scope": "photo offline_access",
+  "refresh_token": "N4JlBbLwdySL0lwoqNuZMsEv"
+}
+end note
+alt
+C -> RS: Get resource from the server using the token
+else
+C -> SP: Get user info + permission from access token
+SP --> C: user infos + permission in Security Provider specific format
+C -> C: Verify permssion 
+C -> C: Perform action
+C --> FWDC: answer
+end
+
+@enduml
+
+' Match exactly https://www.oauth.com/playground/authorization-code-with-pkce.html if we consider C is the oauth.com UI
+
+' userinfos and permssions are given in security provider specific format
+
+' Security provider can belong to same company as resource server (example google calendar)
+' Or be a differnent one (sign in with google etc...). In that case developer will have to define an application.
+' Note we have to duplicate the permission in each security provider we implement

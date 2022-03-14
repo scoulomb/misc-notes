@@ -1,0 +1,39 @@
+' https://www.oauth.com/playground/
+
+@startuml
+participant "Resource Owner" as RO
+participant "User friendly input device" as UFD 
+participant "Device (Smart TV,\nhifi player\n...)" as D 
+participant "Security Provider" as SP 
+participant "Resource Server" as RS 
+
+
+== OAuth 2: Device flow ==
+
+
+RO -> D: Interact 
+D -> SP: Request a device code\nPOST https://example.okta.com/device\n\nclient_id=https://www.oauth.com/playground/
+SP -> D: The response from the server includes the device code,\na code to display to the user,\nand the URL the user should visit to enter the code.\n\n{ \n  "device_code": "NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA", \n  "user_code": "BDWD-HQPK", \n  "verification_uri": "https://example.okta.com/device", \n  "interval": 5, \n  "expires_in": 1800 \n}
+
+D -> RO: Present the verification_uri and user_code to the user and instruct them to enter the code at the URL. 
+
+
+D -> SP:  Poll token endpoint\nPOST https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
+SP -> D:  Before the user has finished signing in\nand approving the request,\nthe authorization server will\nreturn a status indicating the authorization\nis still pending. \n\nHTTP/1.1 400 Bad Request \n \n{ \n  "error": "authorization_pending" \n}
+
+RO -> UFD: Go to URL
+UFD -> SP: Sign-in with credentials + device code
+
+D -> SP:  Poll token endpoint\nPOST https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
+SP -> D:  HTTP/1.1 200 OK \n \n{ \n  "token_type": "Bearer", \n  "access_token": "RsT5OjbzRn430zqMLgV3Ia", \n  "expires_in": 3600, \n  "refresh_token": "b7a3fac6b10e13bb3a276c2aab35e97298a060e0ede5b43ed1f720a8" \n}
+alt
+D -> RS: Get resource from the server using the token
+else
+D -> SP: Get user info + permission from access token
+SP --> D: user infos + permission in Security Provider specific format
+D -> D: Verify permssion 
+D -> D: Perform action
+D --> D: Answer
+end
+
+' Match exactly https://www.oauth.com/playground/device-code.html
