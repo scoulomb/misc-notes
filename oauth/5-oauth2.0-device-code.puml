@@ -18,13 +18,13 @@ SP -> D: The response from the server includes the device code,\na code to displ
 D -> RO: Present the verification_uri and user_code to the user and instruct them to enter the code at the URL. 
 
 
-D -> SP:  Poll token endpoint\nPOST https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
+D -> SP:  Poll token endpoint\nGET https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
 SP -> D:  Before the user has finished signing in\nand approving the request,\nthe authorization server will\nreturn a status indicating the authorization\nis still pending. \n\nHTTP/1.1 400 Bad Request \n \n{ \n  "error": "authorization_pending" \n}
 
 RO -> UFD: Go to URL
 UFD -> SP: Sign-in with credentials + device code
 
-D -> SP:  Poll token endpoint\nPOST https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
+D -> SP:  Poll token endpoint\nGET https://example.okta.com/token \n \ngrant_type=urn:ietf:params:oauth:grant-type:device_code \n&client_id=https://www.oauth.com/playground/ \n&device_code=NGU5OWFiNjQ5YmQwNGY3YTdmZTEyNzQ3YzQ1YSA
 SP -> D:  HTTP/1.1 200 OK \n \n{ \n  "token_type": "Bearer", \n  "access_token": "RsT5OjbzRn430zqMLgV3Ia", \n  "expires_in": 3600, \n  "refresh_token": "b7a3fac6b10e13bb3a276c2aab35e97298a060e0ede5b43ed1f720a8" \n}
 alt
 D -> RS: Get resource from the server using the token

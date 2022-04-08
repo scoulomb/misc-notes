@@ -6,7 +6,7 @@ participant "Forwarding Client\nPublic client\nWebapp" as FWDC
 participant "Server of forwarding client\n(Private) Client of Resource server" as C 
 participant "Security Provider" as SP 
 participant "Resource Server" as RS 
-
+' use concrete case
 
 == OAuth 2: Authorization code flow (forwarding client and private client) ==
 
@@ -22,6 +22,7 @@ FWDC -> RO: redirect to Security Provider prompt
 RO -> SP: Provide username and password
 RO -> SP: Approve the scope
 SP -> C: Redirect to redirect_uri:\nhttps://www.oauth.com/playground/authorization-code.html?\nstate=ebIVJQFuBs88QmFr\n&code=qktZCQ1lCmzcW1N2EaNv2gRsQbEgMmGq3ryTbZXLAkrOZqnh
+' Actually it will redirect to webapp which redirects to server
 C -> C: Check state parameter match
 C -> SP: Exchange Authorization code for Access Token\nPOST https://authorization-server.com/token\ngrant_type=authorization_code\n&client_id=w9-kycvRkaaYOFL0OPYtmnAa\n&client_secret=A0Z5Vkwx5ocu1HONYIuT4OuvEfd3UE-5lqJMMBSEC6Qbpzjo\n&redirect_uri=https://www.oauth.com/playground/authorization-code.html\n&code=qktZCQ1lCmzcW1N2EaNv2gRsQbEgMmGq3ryTbZXLAkrOZqnh
 SP -> C: Answer with the Access Token, Refresh token
@@ -37,6 +38,7 @@ end note
 ' I suppose we have user info or access to resource
 alt
  C -> RS: Get resource from the server using the token
+ ' we have to call security provider to check token validity
 else
  C -> SP: Get user info + permission from access token
  SP --> C: user infos + permission in Security Provider specific format

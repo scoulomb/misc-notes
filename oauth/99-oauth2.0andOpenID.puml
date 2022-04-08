@@ -47,6 +47,7 @@ Note bottom
 end note
 alt
  C -> RS: Get resource from the server using the access_token
+  ' we have to call security provider to check token validity
 else
  C -> SP: Get user info + permission from access_token
  SP --> C: user infos + permission in Security Provider specific format
@@ -54,7 +55,7 @@ else
  C -> C: Perform action
  C --> FWDC: answer
 else
-C -> C: Retrieve security provider certificate from local storage\n(it was retrieved previously from security provider using dedicated endpoint)
+C -> C: Retrieve security provider certificate/public key from local storage\n(it was retrieved previously from security provider using dedicated endpoint)
 Note bottom
 NEW: It is possible to get permission and name from the id_token
 end note

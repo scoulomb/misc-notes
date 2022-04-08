@@ -2,7 +2,7 @@
 participant "Resource Owner" as RO
 participant "Forwarding Client\nPublic client\nWebapp" as FWDC
 participant "Server of forwarding client\n(Private) Client of Resource server" as C 
-participant "Resource Server" as RS 
+participant "Permission or Resource Server" as RS 
 participant Database as DB
 
 
