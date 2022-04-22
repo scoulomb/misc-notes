@@ -1,5 +1,12 @@
 # Other methods
 
+## Use recent machine
+
+- Make OS recovery tool: https://www.dell.com/support/home/fr-fr/drivers/osiso/recoverytool
+- Boot to usb: https://www.dell.com/support/kbdoc/fr-fr/000126121/acc%C3%A8s-%C3%A0-la-configuration-syst%C3%A8me-uefi-bios-sous-windows-sur-votre-syst%C3%A8me-dell (access option via windows, search uefi and advanced startup)
+- But had issue with Intel RST: https://help.ubuntu.com/rst
+
+
 ## Use Vagrant 
 
 ### Could use Rancher

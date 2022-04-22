@@ -6,7 +6,7 @@ For example to explore tools like ArgoCD:
 - https://argo-cd.readthedocs.io/en/stable/
 - https://www.youtube.com/watch?v=MeU5_k9ssrs
 
-## Setup physical machine with Ubuntu and ssh access
+## Setup physical (old) machine with Ubuntu and ssh access
 
 ### Create a Ubuntu bootable key with Rufus
 

@@ -32,3 +32,6 @@ but can use file application
 flac can work with music station if
 add video station from multimedia station + cayin from video station
 
+## kube
+
+See [lab env](../lab-env/others.md#use-nas).
