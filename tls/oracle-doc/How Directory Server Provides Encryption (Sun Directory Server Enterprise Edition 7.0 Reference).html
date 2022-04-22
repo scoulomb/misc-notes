@@ -1,0 +1,804 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>How Directory Server Provides Encryption (Sun Directory Server Enterprise Edition 7.0 Reference) </title><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><link type="text/css" rel="stylesheet" href="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/default.html"><link type="text/css" rel="stylesheet" href="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/www.html"><link type="text/css" rel="stylesheet" href="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/dsc.html"><script type="text/javascript" async="" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/infinity_common.js"></script><script language="javascript1.2" type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/sniff.html"></script><script>window.ohcglobal || document.write('<script src="/en/dcommon/js/global.js">\x3C/script>')</script><script src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/global.js"></script><style id="banner_footer_style" type="text/css">#footer-banner ul li:nth-child(2) {  margin-left: 0;}#footer-banner {  z-index: 9999;  position: fixed;  margin: 0 auto 0 auto;  bottom: 0; left: 0; right: 0;  background-color: #EBEBEB !important;  border-top: 1px solid #ACB7BF;  color: #1958AA;  padding: 0.0em 1em;  text-align: center;  font-size: 12px !important;  line-height: 15px;  font-weight: normal;  font-family: Arial;  clear: both;}#teconsent {  display: inline-block;}#footer-banner ul {  list-style: none;  font-size: 12px !important;  padding: 0;  margin: 0;  margin-right: 20px;}#footer-banner li {  display: inline-block;}#footer-banner li + li:before {  content: "|";  margin-right: 4px;  margin-left: 4px;  color: #aaa;}#footer-banner a {  color: #1958AA;  text-decoration: none;  font-size: 12px !important;}#footer-banner a:focus, #footer-banner a:hover {  color: #1958AA;  text-decoration: underline;}</style><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_docs.js"></script><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/odc.js"></script><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/analytics-production.js" async="true" defer="true"></script><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/common.js" async="true" defer="true"></script><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/analytics.js" async="true" defer="true"></script></head><body><div id="a0v0" class="a0 a0v0"><div class="a2w0"><div id="a2v7" class="a2"><div class="a2w1"><div class="a2w2"><div class="a2w3"><div class="a2w4"><div class="a2topiclinks"><div class="a2x1"></div><a id="sunlogo" title="Oracle Home Page" href="http://www.oracle.com/"><img alt="Oracle Homeage" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/a.html" width="98" height="58" border="0"></a><img alt="test" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/a.html" id="venuespacer" width="1" height="33" border="0"></div></div></div></div></div></div></div><div id="breadcrumb"><a href="http://www.oracle.com/technetwork/indexes/documentation/index.html">Documentation Home</a> &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/index.html">Sun Directory Server Enterprise Edition 7.0 Reference </a>  &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i267g/index.html">Part&nbsp;I Directory Server Reference </a>  &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i269u/index.html">Chapter&nbsp;5 Directory Server Security </a>   &nbsp;&gt; How Directory Server Provides Encryption</div><br><div class="pagetitle" id="sharepage">Sun Directory Server Enterprise Edition 7.0 Reference</div><div class="d8 d8v1" style="margin: 10px;"><div class="d8w1"><div class="d8w2"><div class="d8w3"><div class="d8w4"><ul><li class="d8left"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzcu/index.html"><em>Previous</em>: How Directory Server Provides Authentication</a></li><li class="d8right"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/fnyvg/index.html"><em>Next</em>: Chapter&nbsp;6 Directory Server Monitoring</a></li></ul></div></div></div></div></div><div class="pc11 imgMax-590" style="margin: 10px;"><a xmlns:str="http://xml.apache.org/xalan/java/java.lang.String" name="6ng8i26ba"></a><h1 class="sol">How Directory Server Provides Encryption</h1>
+<p>For information about how Directory Server encrypts data, see the
+following sections:</p>
+<a name=""></a><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gbfkr/index.html">Secure Sockets Layer (SSL)</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfx/index.html">Digital Signatures</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gbesy/index.html">Key Encryption</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gbghy/index.html">Attribute Encryption</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26bc"></a><h2 class="sol">Secure Sockets Layer (SSL)</h2>
+<p>SSL provides encrypted communications and optional authentication between
+a Directory Server and its clients. SSL can be used over LDAP or DSML over
+HTTP. SSL is enabled by default over LDAP and can be enabled for DSML over
+HTTP.</p>
+<p>Replication can be configured to use SSL for secure communications between
+servers. When replication is configured to use SSL, data sent to and from
+the server is encrypted by using SSL.</p>
+<p>By default, Directory Server allows simultaneous unsecured and secure
+communications, suing different port numbers. Unsecured LDAP communications
+are handled on one port, conventionally port number 389. Secure LDAP communications
+are handled on another port, conventionally port number 636.</p>
+<p>For security reasons, you can also restrict all communications to the
+secure port. Client authentication is also configurable. You can set client
+authentication to required or allowed. This setting determines the level of
+security you enforce.</p>
+<p>SSL enables support for the Start TLS extended operation that provides
+security on a regular LDAP connection. Clients can bind to the non-SSL port
+and then use the Transport Layer Security protocol to initiate an SSL connection.
+The Start TLS operation allows more flexibility for clients, and can help
+simplify port allocation.</p>
+<p>For information about SSL, see the following sections:</p>
+<a name=""></a><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gbflr/index.html">Overview of SSL</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakgz/index.html">Cryptographic Algorithms Used With SSL</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhb/index.html">SSL Handshake</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26be"></a><h3 class="sol">Overview of SSL</h3>
+<p>TCP/IP governs the transport and routing of data over the Internet.
+Other protocols, such as the HTTP, LDAP, or IMAP use TCP/IP to support typical
+application tasks such as displaying web pages or running mail servers.</p>
+<a name="gauzv"></a><h5 class="sol">Figure&nbsp;5–8  Where SSL Runs</h5><br><img alt="Figure shows that SSL runs above the TCP/IP layer but
+below other protocols" title="Figure shows that SSL runs above the TCP/IP layer but
+below other protocols" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ssla.gif"><p></p><p>The SSL protocol runs above TCP/IP and below higher-level protocols
+such as HTTP or IMAP. It uses TCP/IP on behalf of the higher-level protocols,
+and in the process allows an SSL-enabled server to authenticate itself to
+an SSL-enabled client, allows the client to authenticate itself to the server,
+and allows both machines to establish an encrypted connection.</p>
+<p>SSL addresses the following concerns about communication over the Internet
+and other TCP/IP networks:</p>
+<a name=""></a><dl>
+<dt>SSL server authentication allows a user to confirm a server’s
+identity.</dt>
+<dd>
+<p>SSL-enabled client software can use standard techniques of
+public-key cryptography to check that a server’s certificate and public
+ID are valid and have been issued by a certificate authority (CA) listed in
+the client’s list of trusted CAs. This confirmation might be important
+if the user, for example, is sending a credit card number over the network
+and wants to check the receiving server’s identity.</p>
+
+</dd>
+<dt>SSL client authentication allows a server to confirm a
+user’s identity.</dt>
+<dd>
+<p>Using the same techniques as those used for server authentication,
+SSL-enabled server software can check that a client’s certificate and
+public ID are valid and have been issued by a certificate authority (CA) listed
+in the server’s list of trusted CAs. This confirmation might be important
+if the server, for example, is a bank sending confidential financial information
+to a customer and wants to check the recipient’s identity.</p>
+
+</dd>
+<dt>An encrypted SSL connection requires all information sent
+between a client and a server to be encrypted by the sending software and
+decrypted by the receiving software, thus providing a high degree of confidentiality.</dt>
+<dd>
+<p>Confidentiality is important for both parties to any private
+transaction. In addition, all data sent over an encrypted SSL connection is
+protected with a mechanism for detecting tampering—that is, for automatically
+determining whether the data has been altered in transit.</p>
+
+<p>The SSL protocol includes two sub-protocols: the SSL record protocol
+and the SSL handshake protocol. </p>
+
+<p>The SSL record protocol defines the format used to transmit data. The
+SSL handshake protocol involves using the SSL record protocol to exchange
+a series of messages between an SSL-enabled server and an SSL-enabled client
+when they first establish an SSL connection. This exchange of messages is
+designed to facilitate the following actions:</p>
+
+<a name=""></a>
+<ul>
+<li>
+<p>Authenticate the server to the client.</p>
+
+
+</li>
+<li>
+<p>Allow the client and server to select the cryptographic algorithms,
+or ciphers, that they both support.</p>
+
+
+</li>
+<li>
+<p>Optionally authenticate the client to the server.</p>
+
+
+</li>
+<li>
+<p>Use public-key encryption techniques to generate shared secrets.</p>
+
+
+</li>
+<li>
+<p>Establish an encrypted SSL connection.</p>
+
+
+</li>
+</ul>
+
+</dd>
+</dl>
+<p>For more information about the handshake process, see <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhb/index.html">SSL Handshake</a>.</p>
+<a name="6ng8i26bf"></a><h3 class="sol">Cryptographic Algorithms Used With SSL</h3>
+<p>Cipher suites define the following aspects of SSL communication:</p>
+<a name=""></a><ul>
+<li>
+<p>The key exchange Algorithm</p>
+
+
+</li>
+<li>
+<p>The encryption cipher</p>
+
+
+</li>
+<li>
+<p>The encryption cipher key length</p>
+
+
+</li>
+<li>
+<p>The message authentication method</p>
+
+
+</li>
+</ul>
+<p>The SSL protocol supports many ciphers. Clients and servers can support
+different cipher suites, depending on factors such as the version of SSL they
+support, and company policies regarding acceptable encryption strength. The
+SSL handshake protocol determines how the server and client negotiate which
+cipher suites they use to authenticate each other, to transmit certificates,
+and to establish session keys.</p>
+<p>SSL 2.0 and SSL 3.0 protocols support overlapping sets of cipher suites.
+Administrators can enable or disable any of the supported cipher suites for
+both clients and servers. When a client and server exchange information during
+the SSL handshake, they identify the strongest enabled cipher suites they
+have in common and use those for the SSL session. Decisions about which cipher
+suites to enable depend on the sensitivity of the data involved, the speed
+of the cipher, and the applicability of export rules.</p>
+<p>Key-exchange algorithms like KEA and RSA govern the way in which a server
+and client determine the symmetric keys they use during an SSL session. The
+most commonly used SSL cipher suites use the RSA key exchange.</p>
+<p>The list of ciphers enabled for Directory Server, and also the list
+of ciphers supported by Directory Server can be obtained with the <kbd>dsconf</kbd> command. For information about using the <kbd>dsconf</kbd> command
+to list available ciphers and manage ciphers, see <a href="https://docs.oracle.com/docs/cd/E19424-01/820-4809/bcavc/index.html"><cite>Choosing Encryption Ciphers</cite> in <cite>Sun Directory Server Enterprise Edition 7.0 Administration Guide</cite></a>.</p>
+<p>Support for ciphers is provided by the Network Security Services, NSS,
+component. For details about NSS, see the<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS
+project site</a>.</p>
+<a name="6ng8i26bg"></a><h3 class="sol">SSL Handshake</h3>
+<p>The SSL protocol uses a combination of public-key and symmetric key
+encryption. Symmetric key encryption is much faster than public-key encryption,
+but public-key encryption provides better authentication techniques. An SSL
+session always begins with an exchange of messages called the <b>SSL
+handshake</b>. The handshake allows the server to authenticate itself
+to the client by using public-key techniques, and then allows the client and
+the server to cooperate in the creation of symmetric keys used for rapid encryption,
+decryption, and tamper detection. Optionally, the handshake also allows the
+client to authenticate itself to the server.</p>
+<a name=""></a><p>For information about the SSL handshake, see the following sections:</p>
+<ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gbfqu/index.html">Messages Exchanged During SSL Handshake</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhc/index.html">Server Authentication During SSL Handshake</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhd/index.html">Man-In-the-Middle Attack</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhe/index.html">Client Authentication During SSL Handshake</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26bi"></a><h4 class="sol">Messages Exchanged During SSL Handshake</h4><p>The following steps describes the sequence of messages exchanged during
+an SSL handshake. These step describe the programmatic details of the messages
+exchanged during the SSL handshake. </p>
+<a name=""></a><ol type="1">
+<li>
+<p>The client sends the server the client’s SSL version
+number, cipher settings, randomly generated data, and other information the
+server needs to communicate with the client using SSL.</p>
+
+
+</li>
+<li>
+<p>The server sends the client the server’s SSL version
+number, cipher settings, randomly generated data, and other information the
+client needs to communicate with the server over SSL. The server also sends
+its own certificate and, if the client is requesting a server resource that
+requires client authentication, requests the client’s certificate.</p>
+
+
+</li>
+<li>
+<p>The client can use some of the information sent by the server
+to authenticate the server. For details, see <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhc/index.html">Server Authentication During SSL Handshake</a>. If the server cannot be authenticated,
+the user is warned of the problem and informed that an encrypted and authenticated
+connection cannot be established. If the server can be successfully authenticated,
+the client goes on to Step 4.</p>
+
+
+</li>
+<li>
+<p>Using all data generated in the handshake so far, the client,
+with the cooperation of the server, depending on the cipher being used, creates
+the pre-master secret for the session, encrypts it with the server’s
+public key, obtained from the server’s certificate, sent in Step 2,
+and sends the encrypted pre-master secret to the server.</p>
+
+
+</li>
+<li>
+<p>If the server has requested client authentication (an optional
+step in the handshake), the client also signs another piece of data that is
+unique to this handshake and known by both the client and server. In this
+case the client sends both the signed data and the client’s own certificate
+to the server along with the encrypted pre-master secret.</p>
+
+
+</li>
+<li>
+<p>If the server has requested client authentication, the server
+attempts to authenticate the client. For details, see <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhc/index.html">Server Authentication During SSL Handshake</a>. If the client cannot be authenticated,
+the session is terminated. If the client can be successfully authenticated,
+the server uses its private key to decrypt the pre-master secret, then performs
+a series of steps (which the client also performs, starting from the same
+pre-master secret) to generate the master secret.</p>
+
+
+</li>
+<li>
+<p>Both the client and the server use the master secret to generate
+the <b>session keys</b>, which are symmetric keys used to encrypt
+and decrypt information exchanged during the SSL session and to verify its
+integrity—that is, to detect changes in the data between the time it
+was sent and the time it is received over the SSL connection.</p>
+
+
+</li>
+<li>
+<p>The client sends a message to the server informing it that
+future messages from the client are encrypted with the session key. It then
+sends a separate (encrypted) message indicating that the client portion of
+the handshake is finished.</p>
+
+
+</li>
+<li>
+<p>The server sends a message to the client informing it that
+future messages from the server are encrypted with the session key. It then
+sends a separate (encrypted) message indicating that the server portion of
+the handshake is finished.</p>
+
+
+</li>
+<li>
+<p>The SSL handshake is now complete, and the SSL session has
+begun. The client and the server use the session keys to encrypt and decrypt
+the data they send to each other and to validate its integrity.</p>
+
+
+</li>
+</ol>
+<p>Before continuing with a session, directory servers can be configured
+to check that the client’s certificate is present in the user’s
+entry in an LDAP directory. This configuration option provides one way of
+ensuring that the client’s certificate has not been revoked.</p>
+<p>Both client and server authentication involve encrypting some piece
+of data with one key of a public-private key pair and decrypting it with the
+other key:</p>
+<a name=""></a><ul>
+<li>
+<p>In the case of server authentication, the client encrypts
+the pre-master secret with the server’s public key. Only the corresponding
+private key can correctly decrypt the secret, so the client has some assurance
+that the identity associated with the public key is in fact the server with
+which the client is connected. Otherwise, the server cannot decrypt the pre-master
+secret and cannot generate the symmetric keys required for the session, and
+the session is terminated.</p>
+
+
+</li>
+<li>
+<p>In the case of client authentication, the client encrypts
+some random data with the client’s private key—that is, it creates
+a digital signature. The public key in the client’s certificate can
+correctly validate the digital signature only if the corresponding private
+key was used. Otherwise, the server cannot validate the digital signature
+and the session is terminated.</p>
+
+
+</li>
+</ul>
+
+<a name="6ng8i26bj"></a><h4 class="sol">Server Authentication During SSL Handshake</h4><p>SSL-enabled client software always requires server authentication, or
+cryptographic validation by a client of the server’s identity. The server
+sends the client a certificate to authenticate itself. The client uses the
+certificate to authenticate the identity the certificate claims to represent.</p>
+<p>To authenticate the binding between a public key and the server identified
+by the certificate that contains the public key, an SSL-enabled client must
+receive a <tt>yes</tt> answer to the four questions shown in the
+following figure.</p>
+<a name="gauzu"></a><h5 class="sol">Figure&nbsp;5–9  Authenticating a Client Certificate During SSL Handshake</h5><br><img alt="Figure shows authentication of a client certificate." title="Figure shows authentication of a client certificate." src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/svrauth.gif"><p></p><p>An SSL-enabled client goes through the following steps to authenticate
+a server’s identity:</p>
+<a name=""></a><ol type="1">
+<li>
+<p>Is today’s date within the validity period?</p>
+
+<p>The
+client checks the server certificate’s validity period. If the current
+date and time are outside of that range, the authentication process won’t
+go any further. If the current date and time are within the certificate’s
+validity period, the client goes on to  the next step.</p>
+
+
+</li>
+<li>
+<p>Is the issuing CA a trusted CA?</p>
+
+<p>Each SSL-enabled
+client maintains a list of trusted CA certificates, represented by the shaded
+area on the right—hand side of  <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bj/index.html#gauzu">Figure&nbsp;5–9</a>. This list determines which server certificates the client accepts.
+If the distinguished name (DN) of the issuing CA matches the DN of a CA on
+the client’s list of trusted CAs, the answer to this question is yes,
+and the client goes on to the next step. If the issuing CA is not on the list,
+the server is not authenticated unless the client can verify a certificate
+chain ending in a CA that is on the list.</p>
+
+
+</li>
+<li>
+<p>Does the issuing CA’s public key validate the issuer’s
+digital signature?</p>
+
+<p>The client uses the public key from the CA’s
+certificate (which it found in its list of trusted CAs in step 2) to validate
+the CA’s digital signature on the server certificate being presented.
+If the information in the server certificate has changed since it was signed
+by the CA or if the CA certificate’s public key doesn’t correspond
+to the private key used by the CA to sign the server certificate, the client
+won’t authenticate the server’s identity. If the CA’s digital
+signature can be validated, the server treats the user’s certificate
+as a valid “letter of introduction” from that CA and proceeds.
+At this point, the client has determined that the server certificate is valid.</p>
+
+
+</li>
+<li>
+<p>Does the domain name in the server’s certificate match
+the domain name of the server itself?</p>
+
+<p>This step confirms that
+the server is actually located at the same network address specified by the
+domain name in the server certificate. Although step 4 is not technically
+part of the SSL protocol, it provides the only protection against a form of
+security attack known as <b>man-in-the-middle</b>. Clients must
+perform this step and must refuse to authenticate the server or establish
+a connection if the domain names don’t match. If the server’s
+actual domain name matches the domain name in the server certificate, the
+client goes on to  the next step.</p>
+
+
+</li>
+<li>
+<p>The server is authenticated.</p>
+
+<p>The client proceeds
+with the SSL handshake. If the client doesn’t get to step 5 for any
+reason, the server identified by the certificate cannot be authenticated,
+and the user is warned of the problem and informed that an encrypted and authenticated
+connection cannot be established. If the server requires client authentication,
+the server performs the steps described in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhe/index.html">Client Authentication During SSL Handshake</a>.</p>
+
+
+</li>
+</ol>
+<p>After the steps described here, the server must successfully use its
+private key to decrypt the pre-master secret sent by the client.</p>
+
+<a name="6ng8i26bk"></a><h4 class="sol">Man-In-the-Middle Attack</h4><p>The <em>man-in-the-middle</em> is a rogue program that
+intercepts all communication between the client and a server with which the
+client is attempting to communicate via SSL. The rogue program intercepts
+the legitimate keys that are passed back and forth during the SSL handshake,
+substitutes its own, and makes it appear to the client that it is the server,
+and to the server that it is the client.</p>
+<p>The encrypted information exchanged at the beginning of the SSL handshake
+is actually encrypted with the rogue program’s public key or private
+key, rather than the client’s or server’s real keys. The rogue
+program ends up establishing one set of session keys for use with the real
+server, and a different set of session keys for use with the client. This
+allows the rogue program not only to read all the data that flows between
+the client and the real server, but also to change the data without being
+deleted. Therefore, it is extremely important for the client to check that
+the domain name in the server certificate corresponds to the domain name of
+the server with which a client is attempting to communicate—in addition
+to checking the validity of the certificate by performing the other steps
+described in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakhc/index.html">Server Authentication During SSL Handshake</a>
+</p>
+
+<a name="6ng8i26bl"></a><h4 class="sol">Client Authentication During SSL Handshake</h4><p>SSL-enabled servers can be configured to require client authentication,
+or cryptographic validation by the server of the client’s identity.
+When a server configured this way requests client authentication separate
+piece of digitally signed data to authenticate itself. The server uses the
+digitally signed data to validate the public key in the certificate and to
+authenticate the identity the certificate claims to represent.</p>
+<p>The SSL protocol requires the client to create a digital signature by
+creating a one-way hash from data generated randomly during the handshake
+and known only to the client and server. The hash of the data is then encrypted
+with the private key that corresponds to the public key in the certificate
+being presented to the server.</p>
+<p>To authenticate the binding between the public key and the person or
+other entity identified by the certificate that contains the public key, an
+SSL-enabled server must receive a <tt>yes</tt> answer to the first
+four questions shown in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bl/index.html#gauzw">Figure&nbsp;5–10</a>.
+Although the fifth question is not part of the SSL protocol, directory servers
+can be configured to support this requirement to take advantage of the user
+entry in an LDAP directory as part of the authentication process.</p>
+<a name="gauzw"></a><h5 class="sol">Figure&nbsp;5–10  Authentication and Verification During SSL Handshake</h5><br><img alt="Figure shows authentication and verification." title="Figure shows authentication and verification." src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/cert.gif"><p></p><p>An SSL-enabled server goes through the following steps to authenticate
+a user’s identity:</p>
+<a name=""></a><ol type="1">
+<li>
+<p>Does the user’s public key validate the user’s
+digital signature?</p>
+
+<p>The server checks that the user’s digital
+signature can be validated with the public key in the certificate. If so,
+the server has established that the public key asserted to belong to John
+Doe matches the private key used to create the signature and that the data
+has not been tampered with since it was signed.</p>
+
+<p>At this point, however, the binding between the public key and the DN
+specified in the certificate has not yet been established. The certificate
+might have been created by someone attempting to impersonate the user. To
+validate the binding between the public key and the DN, the server must also
+complete steps 3 and 4 in this list.</p>
+
+
+</li>
+<li>
+<p>Is today’s date within the validity period? </p>
+
+<p>The
+server checks the certificate’s validity period. If the current date
+and time are outside of that range, the authentication process won’t
+go any further. If the current date and time are within the certificate’s
+validity period, the server goes onto the next step.</p>
+
+
+</li>
+<li>
+<p>Is the issuing CA a trusted CA?</p>
+
+<p>Each SSL-enabled
+server maintains a list of trusted CA certificates, represented by the shaded
+area on the right—hand side of <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bl/index.html#gauzw">Figure&nbsp;5–10</a>. This list determines which certificates the server accepts. If the
+DN of the issuing CA matches the DN of a CA on the server’s list of
+trusted CAs, the answer to this question is yes, and the server goes on to
+the next step. If the issuing CA is not on the list, the client is not authenticated
+unless the server can verify a certificate chain ending in a CA that is trusted
+or not trusted within their organizations by controlling the lists of CA certificates
+maintained by clients and servers. </p>
+
+
+</li>
+<li>
+<p>Does the issuing CA’s public key validate the issuer’s
+digital signature?</p>
+
+<p>The server uses the public key from the CA’s
+certificate (which it found in its list of trusted CAs in the previous step)
+to validate the CA’s digital signature on the certificate being presented.
+If the information in the certificate has changed since it was signed by the
+CA or if the public key in the CA certificate doesn’t correspond to
+the private key used by the CA to sign the certificate, the server won’t
+authenticate the user’s identity. If the CA’s digital signature
+can be validated, the server treats the user’s certificate as a valid “letter
+of introduction” from that CA and proceeds. At this point, the SSL protocol
+allows the server to consider the client authenticated and proceed with the
+connection as described in  step 6. The directory servers may optionally be
+configured to perform  step 5 before step 6.</p>
+
+
+</li>
+<li>
+<p>Is the user’s certificate listed in the LDAP entry for
+the user?</p>
+
+<p>This optional step provides one way for a system administrator
+to revoke a user’s certificate even if it passes the tests in all the
+other steps. The Certificate Management System can automatically remove a
+revoked certificate from the user’s entry in the LDAP directory. All
+servers that are set up to perform this step then refuses to authenticate
+that certificate or establish a connection. If the user’s certificate
+in the directory is identical to the user’s certificate presented in
+the SSL handshake, the server goes on to the next step.</p>
+
+
+</li>
+<li>
+<p>Is the authenticated client authorized to access the requested
+resources? </p>
+
+<p>The server checks what resources the client is permitted
+to access according to the server’s access control lists (ACLs) and
+establishes a connection with appropriate access. If the server doesn’t
+get to step 6 for any reason, the user identified by the certificate cannot
+be authenticated, and the user is not allowed to access any server resources
+that require authentication. </p>
+
+
+</li>
+</ol>
+
+<a name="6ng8i26bm"></a><h2 class="sol">Digital Signatures</h2>
+<p>Digital signatures can be used by Directory Server to maintain integrity
+of information. If encryption and message digests are applied to the information
+being sent, the recipient can determine that the information was not tampered
+with during transit.</p>
+<p>Tamper detection and related authentication techniques rely on a mathematical
+function called a <em>one-way hash</em>. This function is also
+called a <em>message digest</em>. A one-way hash is a number
+of fixed length with the following characteristics:</p>
+<a name=""></a><ul>
+<li>
+<p>The value of the hash is unique for the hashed data. Any change
+in the data, even deleting or altering a single character, results in a different
+value.</p>
+
+
+</li>
+<li>
+<p>The content of the hashed data cannot, for all practical purposes,
+be deduced from the hash — which is why it is called <b>one-way</b>.</p>
+
+
+</li>
+</ul>
+<p>It is possible to use a private key for encryption and a public key
+for decryption. Although this is not desirable when you are encrypting sensitive
+information, it is a crucial part of digitally signing any data. Instead of
+encrypting the data itself, the signing software creates a one-way hash of
+the data, then uses your private key to encrypt the hash. The encrypted hash,
+along with other information, such as the hashing algorithm, is known as a
+digital signature. <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bm/index.html#gauws">Figure&nbsp;5–11</a> shows
+two items transferred to the recipient of some signed data.</p>
+<a name="gauws"></a><h5 class="sol">Figure&nbsp;5–11  Digital Signatures</h5><br><img alt="Figure shows digital signatures" title="Figure shows digital signatures" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/digsgn.gif"><p></p><p>In <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bm/index.html#gauws">Figure&nbsp;5–11</a>, the original
+data and the digital signature, which is basically a one-way hash (of the
+original data) that has been encrypted with the signer's private key. To validate
+the integrity of the data, the receiving software first uses the signer’s
+public key to decrypt the hash. It then uses the same hashing algorithm that
+generated the original hash to generate a new one-way hash of the same data.
+(Information about the hashing algorithm used is sent with the digital signature,
+although this isn’t shown in the figure.) Finally, the receiving software
+compares the new hash against the original hash. If the two hashes match,
+the data has not changed since it was signed. If they don’t match, the
+data may have been tampered with since it was signed, or the signature may
+have been created with a private key that doesn’t correspond to the
+public key presented by the signer.</p>
+<p>If the two hashes match, the recipient can be certain that the public
+key used to decrypt the digital signature corresponds to the private key used
+to create the digital signature. Confirming the identity of the signer, however,
+also requires some way of confirming that the public key really belongs to
+a particular person or other entity.</p>
+<p>The significance of a digital signature is comparable to the significance
+of a handwritten signature. Once you have signed some data, it is difficult
+to deny doing so later — assuming that the private key has not been
+compromised or out of the owner’s control. This quality of digital signatures
+provides a high degree of non-repudiation — that is, digital signatures
+make it difficult for the signer to deny having signed the data. In some situations,
+a digital signature may be as legally binding as a handwritten signature.</p>
+<a name="6ng8i26bn"></a><h2 class="sol">Key Encryption</h2>
+<p>With most modern cryptography, the ability to keep encrypted information
+secret is based not on the cryptographic algorithm, which is widely known,
+but on a <a name="indexterm-166"></a><em>key</em>. A key is a number that must be used
+with the algorithm to produce an encrypted result or to decrypt previously
+encrypted information. For information about encryption and decryption with
+keys, see the following sections:</p>
+<a name=""></a><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfu/index.html">Symmetric-Key Encryption</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfv/index.html">Public-Key Encryption</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfw/index.html">Key Length and Encryption Strength</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26bp"></a><h3 class="sol">Symmetric-Key Encryption</h3>
+<p>With symmetric-key encryption, the encryption key can be calculated
+from the decryption key, and vice versa. With most symmetric algorithms, the
+same key is used for both encryption and decryption. The following figure
+shows a symmetric-key encryption.</p>
+<a name="gauwb"></a><h5 class="sol">Figure&nbsp;5–12  Symmetric-Key Encryption</h5><br><img alt="Figure shows symmetric-key encryption." title="Figure shows symmetric-key encryption." src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/scrypt.gif"><p></p><p>Implementations of symmetric-key encryption can be highly efficient,
+so that users do not experience any significant time delay as a result of
+the encryption and decryption. Symmetric-key encryption also provides a degree
+of authentication, since information encrypted with one symmetric key cannot
+be decrypted with any other symmetric key. Thus, as long as the symmetric
+key is kept secret by the two parties using it to encrypt communications,
+each party can be sure that it is communicating with the other as long as
+the decrypted messages continue to make sense.</p>
+<p>Symmetric-key encryption is effective only if the symmetric key is kept
+secret by the two parties involved. If anyone else discovers the key, it affects
+both confidentiality and authentication. A person with an unauthorized symmetric
+key not only can decrypt messages sent with that key, but can encrypt new
+messages and send them as if they came from one of the two parties who were
+originally using the key.</p>
+<p>Symmetric-key encryption plays an important role in the SSL protocol,
+which is widely used for authentication, tamper detection, and encryption
+over TCP/IP networks. SSL also uses techniques of public-key encryption, which
+is described in the next section.</p>
+<a name="6ng8i26bq"></a><h3 class="sol">Public-Key Encryption</h3>
+<a name="indexterm-167"></a><p>The most commonly used implementations of public-key encryption are
+based on algorithms patented by RSA Data Security. Therefore, this section
+describes the RSA approach to public-key encryption.</p>
+<p>Public-key encryption (also called asymmetric encryption) involves a
+pair of keys—a <a name="indexterm-168"></a>public key and a <a name="indexterm-169"></a>private key—associated with an entity that needs to authenticate
+its identity electronically or to sign or encrypt data. Each public key is
+published, and the corresponding private key is kept secret. The following
+figure shows a simplified view of the way public-key encryption works.</p>
+<a name="gauvw"></a><h5 class="sol">Figure&nbsp;5–13  Public-Key Encryption</h5><br><img alt="Figure shows public-key encryption" title="Figure shows public-key encryption" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/pcrypt.gif"><p></p><p>Public—key encryption lets you distribute a public key, and only
+you can read data encrypted by this key. In general, to send encrypted data
+to someone, you encrypt the data with that person’s public key, and
+the person receiving the encrypted data decrypts it with the corresponding
+private key.</p>
+<p>Compared with symmetric-key encryption, public-key encryption requires
+more computation and is therefore not always appropriate for large amounts
+of data. However, it’s possible to use public-key encryption to send
+a symmetric key, which can then be used to encrypt additional data. This is
+the approach used by the SSL protocol.</p>
+<p>As it happens, the reverse of the scheme shown in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bq/index.html#gauvw">Figure&nbsp;5–13</a> also works: data encrypted with your private
+key can be decrypted with your public key only. This would not be a desirable
+way to encrypt sensitive data, however, because it means that anyone with
+your public key, which is by definition published, could decrypt the data.
+Nevertheless, private-key encryption is useful, because it means you can use
+your private key to sign data with your digital signature—an important
+requirement for electronic commerce and other commercial applications of cryptography.
+Client software can then use your public key to confirm that the message was
+signed with your private key and that it hasn’t been tampered with since
+being signed. <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfx/index.html">Digital Signatures</a> and subsequent
+sections describe how this confirmation process works.</p>
+<a name="6ng8i26br"></a><h3 class="sol">Key Length and Encryption Strength</h3>
+<p>The strength of encryption is related to the difficulty of discovering
+the key, which in turn depends on both the cipher used and the length of the
+key. For example, the difficulty of discovering the key for the RSA cipher
+most commonly used for public-key encryption depends on the difficulty of
+factoring large numbers, a well-known mathematical problem.</p>
+<p>Encryption strength is often described in terms of the size of the keys
+used to perform the encryption: in general, longer keys provide stronger encryption.
+Key length is measured in bits. For example, 128-bit keys for use with the
+RC4 symmetric-key cipher supported by SSL provide significantly better cryptographic
+protection than 40-bit keys for use with the same cipher. Roughly speaking,
+128-bit RC4 encryption is 3 x 10<sup><font size="-1">26</font></sup> times stronger
+than 40-bit RC4 encryption.</p>
+<p>Different ciphers may require different key lengths to achieve the same
+level of encryption strength. The RSA cipher used for public-key encryption,
+for example, can use only a subset of all possible values for a key of a given
+length, due to the nature of the mathematical problem on which it is based.
+Other ciphers, such as those used for symmetric key encryption, can use all
+possible values for a key of a given length, rather than a subset of those
+values. Thus a 128-bit key for use with a symmetric-key encryption cipher
+would provide stronger encryption than a 128-bit key for use with the RSA
+public-key encryption cipher. This difference explains why the RSA public-key
+encryption cipher must use a 512-bit key (or longer) to be considered
+cryptographically strong, whereas symmetric key ciphers can achieve approximately
+the same level of strength with a 64-bit key. Even this level of strength
+may be vulnerable to attacks in the near future.</p>
+<a name="6ng8i26bs"></a><h2 class="sol">Attribute Encryption</h2>
+<p>Attribute encryption enables sensitive attributes of an entry to be
+stored in encrypted form. By encrypting sensitive attributes, you can prevent
+them from being read while the data is stored in database files, backup files,
+or exported LDIF files, or while the data is exported. <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26bs/index.html#gbgjh">Figure&nbsp;5–14</a> shows a user entry being added to the database, where attribute encryption
+has been configured to encrypt the <tt>salary</tt> attribute.</p>
+<a name="gbgjh"></a><h5 class="sol">Figure&nbsp;5–14  Attribute Encryption</h5><br><img alt="Figure shows attributes encrypted in the database." title="Figure shows attributes encrypted in the database." src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/acia.gif"><p></p><p>The attribute encryption feature supports a wide range of encryption
+algorithms and different platforms. Attribute encryption uses the private
+key of the server’s SSL certificate to generate its own key. This key
+is then used to perform the encryption and decryption operations.</p>
+<p>Attribute encryption is configured at the suffix level. This means that
+an attribute is encrypted for every entry in which it appears in a suffix.
+To encrypt an attribute in an entire directory, you must enable encryption
+for that attribute in every suffix.</p>
+<p>If you choose to encrypt an attribute that some entries use as a naming
+attribute, values that appear in the DN will not be encrypted, but values
+stored in the entry will be encrypted.</p>
+<p>Encrypting the <tt>userPassword</tt> attribute provides no
+security benefit unless the password needs to be stored in clear text, as
+is the for DIGEST-MD5 SASL authentication. If the password already has an
+encryption mechanism defined in the password policy, further encryption provides
+little additional security.</p>
+<p>When encrypted attributes are stored, they are prefaced with a cipher
+tag that indicates what encryption algorithm has been used. An encrypted attribute
+using the DES encryption algorithm would appear as follows:</p>
+<table width="100%" cellpadding="1" border="1">
+<tbody><tr>
+<td nowrap="1">
+<br>
+<pre>{CKM_DES_CBC}3hakc&amp;jla+=snda%</pre>
+</td>
+</tr>
+</tbody></table><p>While attribute encryption offers increased data security, the feature
+does impact performance. you should think carefully about which attributes
+require encryption and encrypt only those attributes that are particularly
+sensitive. Because sensitive data can be accessed directly through index files,
+it is necessary to encrypt the index keys corresponding to the encrypted attributes,
+to ensure that the attributes are fully protected.</p>
+<p>For information about how to encrypt attributes, see <a href="https://docs.oracle.com/docs/cd/E19424-01/820-4809/bcaeg/index.html"><cite>Encrypting Attribute Values</cite> in <cite>Sun Directory Server Enterprise Edition 7.0 Administration Guide</cite></a>.</p>
+</div><div class="d8 d8v1" style="margin: 10px;"><div class="d8w1"><div class="d8w2"><div class="d8w3"><div class="d8w4"><ul><li class="d8left"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzcu/index.html"><em>Previous</em>: How Directory Server Provides Authentication</a></li><li class="d8right"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/fnyvg/index.html"><em>Next</em>: Chapter&nbsp;6 Directory Server Monitoring</a></li></ul></div></div></div></div></div><div class="a5 a5v0" id="a5">
+<ul>
+    <li class="copyright">© 2010, Oracle Corporation and/or its affiliates</li>
+</ul>
+</div>
+</div><div id="footer-banner" style="display: inline-block;"><ul><li><div id="teconsent"></div></li><li><a id="adchoices" class="new-window" target="_blank" href="https://www.oracle.com/legal/privacy/marketing-cloud-data-cloud-privacy-policy.html#12">Ad Choices</a></li></ul></div><script type="text/javascript" src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/notice"></script><script src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_code_docs.js"></script><script src="How%20Directory%20Server%20Provides%20Encryption%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_code.js"></script></body></html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Certificate-based Authentication (Sun Directory Server Enterprise Edition 7.0 Reference) </title><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><link type="text/css" rel="stylesheet" href="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/default.html"><link type="text/css" rel="stylesheet" href="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/www.html"><link type="text/css" rel="stylesheet" href="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/dsc.html"><script type="text/javascript" async="" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/infinity_common.js"></script><script language="javascript1.2" type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/sniff.html"></script><script>window.ohcglobal || document.write('<script src="/en/dcommon/js/global.js">\x3C/script>')</script><script src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/global.js"></script><style id="banner_footer_style" type="text/css">#footer-banner ul li:nth-child(2) {  margin-left: 0;}#footer-banner {  z-index: 9999;  position: fixed;  margin: 0 auto 0 auto;  bottom: 0; left: 0; right: 0;  background-color: #EBEBEB !important;  border-top: 1px solid #ACB7BF;  color: #1958AA;  padding: 0.0em 1em;  text-align: center;  font-size: 12px !important;  line-height: 15px;  font-weight: normal;  font-family: Arial;  clear: both;}#teconsent {  display: inline-block;}#footer-banner ul {  list-style: none;  font-size: 12px !important;  padding: 0;  margin: 0;  margin-right: 20px;}#footer-banner li {  display: inline-block;}#footer-banner li + li:before {  content: "|";  margin-right: 4px;  margin-left: 4px;  color: #aaa;}#footer-banner a {  color: #1958AA;  text-decoration: none;  font-size: 12px !important;}#footer-banner a:focus, #footer-banner a:hover {  color: #1958AA;  text-decoration: underline;}</style><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_docs.js"></script><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/odc.js"></script><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/analytics-production.js" async="true" defer="true"></script><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/common.js" async="true" defer="true"></script><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/analytics.js" async="true" defer="true"></script></head><body><div id="a0v0" class="a0 a0v0"><div class="a2w0"><div id="a2v7" class="a2"><div class="a2w1"><div class="a2w2"><div class="a2w3"><div class="a2w4"><div class="a2topiclinks"><div class="a2x1"></div><a id="sunlogo" title="Oracle Home Page" href="http://www.oracle.com/"><img alt="Oracle Homeage" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/a.html" width="98" height="58" border="0"></a><img alt="test" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/a.html" id="venuespacer" width="1" height="33" border="0"></div></div></div></div></div></div></div><div id="breadcrumb"><a href="http://www.oracle.com/technetwork/indexes/documentation/index.html">Documentation Home</a> &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/index.html">Sun Directory Server Enterprise Edition 7.0 Reference </a>  &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i267g/index.html">Part&nbsp;I Directory Server Reference </a>  &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i269u/index.html">Chapter&nbsp;5 Directory Server Security </a>  &nbsp;&gt; <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ab/index.html">How Directory Server Provides Authentication </a>   &nbsp;&gt; Certificate-based Authentication</div><br><div class="pagetitle" id="sharepage">Sun Directory Server Enterprise Edition 7.0 Reference</div><div class="d8 d8v1" style="margin: 10px;"><div class="d8w1"><div class="d8w2"><div class="d8w3"><div class="d8w4"><ul><li class="d8left"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzel/index.html"><em>Previous</em>: Global Account Lockout</a></li><li class="d8right"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzei/index.html"><em>Next</em>: SASL-based Authentication</a></li></ul></div></div></div></div></div><div class="pc11 imgMax-590" style="margin: 10px;"><a xmlns:str="http://xml.apache.org/xalan/java/java.lang.String" name="6ng8i26ao"></a><h2 class="sol">Certificate-based Authentication</h2>
+<a name=""></a><p>For information about client authentication with certificates, see the
+following sections:</p>
+<ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdg/index.html">Introduction to Certificate-based Authentication</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzen/index.html">Certificates and Certificate Authorities (CA)</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzcw/index.html">Types of Certificates</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdx/index.html">Contents of a Certificate</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdt/index.html">Certificate Management</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26aq"></a><h3 class="sol">Introduction to Certificate-based Authentication</h3>
+<a name="indexterm-146"></a><a name="indexterm-147"></a><a name="indexterm-148"></a><a name="indexterm-149"></a><p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26aq/index.html#gdzdl">Figure&nbsp;5–2</a> shows how certificates
+and the SSL protocol are used together for authentication. To authenticate
+a user to a server, a client digitally signs a randomly generated piece of
+data and sends both the certificate and the signed data across the network.
+For the purposes of this discussion, the digital signature associated with
+some data can be thought of as evidence provided by the client to the server.
+The server authenticates the user’s identity on the strength of this
+evidence.</p>
+<p>Like for password-based authentication illustrated in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ag/index.html#gdzej">Figure&nbsp;5–1</a>, <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26aq/index.html#gdzdl">Figure&nbsp;5–2</a> assumes that the user has already decided to trust the server and
+has requested a resource. The server has requested client authentication in
+the process of evaluating whether to grant access to the requested resource.</p>
+<a name="gdzdl"></a><h5 class="sol">Figure&nbsp;5–2  Certificate-Based Authentication</h5><br><img alt="Figure shows certificate-based authentication" title="Figure shows certificate-based authentication" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/certpwd.gif"><p></p><p>Unlike for password-based authentication illustrated in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ag/index.html#gdzej">Figure&nbsp;5–1</a>, <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26aq/index.html#gdzdl">Figure&nbsp;5–2</a> requires the use of SSL. In <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26aq/index.html#gdzdl">Figure&nbsp;5–2</a> it is assumed that the client has a valid certificate that can be
+used to identify the client to the server.</p>
+<p>Certificate-based authentication is generally considered preferable
+to password-based authentication because it is based on what the user has,
+the private key, as well as what the user knows, the password that protects
+the private key. However, it’s important to note that these two assumptions
+are true only if unauthorized personnel have not gained access to the user’s
+machine or password, the password for the client software’s private
+key database has been set, and the software is set up to request the password
+at reasonably frequent intervals.</p>
+<hr><b>Note – </b><p>Neither password-based authentication nor certificate-based authentication
+address security issues related to physical access to individual machines
+or passwords. Public-key cryptography can only verify that a private key used
+to sign some data corresponds to the public key in a certificate. It is the
+user’s responsibility to protect a machine’s physical security
+and to keep the private-key password secret.</p>
+<hr>
+<p>Certificates replace the authentication portion of the interaction between
+the client and the server. Instead of requiring a user to send passwords across
+the network throughout the day, single sign-on requires the user to enter
+the private-key database password just once, without sending it across the
+network. For the rest of the session, the client presents the user’s
+certificate to authenticate the user to each new server it encounters. Existing
+authorization mechanisms based on the authenticated user identity are not
+affected. </p>
+<a name="6ng8i26ar"></a><h3 class="sol">Certificates and Certificate Authorities (CA)</h3>
+<p>A certificate is an electronic document that identifies an individual,
+a server, a company, or some other entity. A certificate also associates that
+identity with a public key. Like a driver’s license, a passport, or
+other commonly used personal IDs, a certificate provides generally recognized
+proof of someone's or something's identity.</p>
+<p>Certificate authorities, CAs, validate identities
+and issue certificates. CAs can be independent third parties
+or organizations that run their own certificate-issuing server software. The
+methods used to validate an identity vary depending on the policies of a given
+CA. In general, before issuing a certificate, the CA must
+use its published verification procedures for that type of certificate to
+ensure that an entity requesting a certificate is in fact who it claims to
+be.</p>
+<p>A certificate issued by a CA binds a particular public
+key to the name of the entity the certificate identifies, such as the name
+of an employee or a server. Certificates help prevent the use of fake public
+keys for impersonation. Only the public key certified by the certificate works
+with the corresponding private key possessed by the entity identified by the
+certificate.</p>
+<p>In addition to a public key, a certificate always includes the name
+of the entity it identifies, an expiration date, the name of the CA that issued
+the certificate, a serial number, and other information. Most importantly,
+a certificate always includes the digital signature of the issuing CA. The
+CA’s digital signature allows the certificate to function as a “letter
+of introduction” for users who know and trust the CA but don’t
+know the entity identified by the certificate.</p>
+<p>Any client or server software that supports certificates maintains a
+collection of trusted CA certificates. These CA certificates determine which
+other certificates the software can validate, in other words, which issuers
+of certificates the software can trust. In the simplest case, the software
+can validate only certificates issued by one of the CAs for which it has a
+certificate. It’s also possible for a trusted CA certificate to be part
+of a chain of CA certificates, each issued by the CA above it in a certificate
+hierarchy.</p>
+<p>For information about CAs, see the following sections:</p>
+<a name=""></a><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdp/index.html">CA Hierarchies</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzcr/index.html">Certificate Chains</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzea/index.html">Verifying a Certificate Chain</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26at"></a><h4 class="sol">CA Hierarchies</h4><a name="indexterm-150"></a><p>In large organizations, it may be appropriate to delegate the responsibility
+for issuing certificates to several different certificate authorities. For
+example, the number of certificates required may be too large for a single
+CA to maintain; different organizational units may have different policy requirements;
+or it may be important for a CA to be physically located in the same geographic
+area as the people to whom it is issuing certificates.</p>
+<p>It’s possible to delegate certificate-issuing responsibilities
+to subordinate CAs. The X.509 standard includes a model for setting up a hierarchy
+of CAs.</p>
+<a name="gdzcz"></a><h5 class="sol">Figure&nbsp;5–3  Hierarchy of Certificate Authorities</h5><br><img alt="Figure shows a hierarchy of certificate authorities" title="Figure shows a hierarchy of certificate authorities" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/hier.gif"><p></p><p>
+<a name="indexterm-151"></a><a name="indexterm-152"></a>In
+this model, the root CA is at the top of the hierarchy. The root CA’s
+certificate is a <b>self-signed certificate</b>. That is, the
+certificate is digitally signed by the same entity, the root CA, that the
+certificate identifies. The CAs that are directly subordinate to the root
+CA have CA certificates signed by the root CA. CAs under the subordinate CAs
+in the hierarchy have their CA certificates signed by the higher-level subordinate
+CAs.</p>
+<p>Organizations have a great deal of flexibility in terms of the way they
+set up their CA hierarchies. <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26at/index.html#gdzcz">Figure&nbsp;5–3</a> shows
+just one example; many other arrangements are possible.</p>
+
+<a name="6ng8i26au"></a><h4 class="sol">Certificate Chains</h4><p>
+<a name="indexterm-153"></a>CA hierarchies are reflected in certificate chains. A <b>certificate
+chain</b> is a series of certificates issued by successive CAs. <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26au/index.html#gdzdi">Figure&nbsp;5–4</a> shows a certificate chain
+leading from a certificate that identifies some entity through two subordinate
+CA certificates to the CA certificate for the root CA (based on the CA hierarchy
+shown in the following figure).</p>
+<a name="gdzdi"></a><h5 class="sol">Figure&nbsp;5–4  Certificate Chain</h5><br><img alt="Figure shows a certificate chain." title="Figure shows a certificate chain." src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/chn.gif"><p></p><p>A certificate chain traces a path of certificates from a branch in the
+hierarchy to the root of the hierarchy. In a certificate chain, the following
+occur:</p>
+<a name=""></a><ul>
+<li>
+<p>Each certificate is followed by the certificate of its issuer.</p>
+
+
+</li>
+<li>
+<p>In <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26au/index.html#gdzdi">Figure&nbsp;5–4</a>,
+the Engineering CA certificate contains the DN of the CA (that is, USA CA),
+that issued that certificate. USA CA’s DN is also the subject name of
+the next certificate in the chain.</p>
+
+
+</li>
+<li>
+<p>Each certificate is signed with the private key of its issuer.
+The signature can be verified with the public key in the issuer’s certificate,
+which is the next certificate in the chain.</p>
+
+
+</li>
+</ul>
+<p>In <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26au/index.html#gdzdi">Figure&nbsp;5–4</a>, the public
+key in the certificate for the USA CA can be used to verify the USA CA’s
+digital signature on the certificate for the Engineering CA.</p>
+
+<a name="6ng8i26av"></a><h4 class="sol">Verifying a Certificate Chain</h4><p>
+<a name="indexterm-154"></a>Certificate chain verification is the process
+of making sure a given certificate chain is well-formed, valid, properly signed,
+and trustworthy. Directory Server software uses the following steps to
+form and verify a certificate chain, starting with the certificate being presented
+for authentication:</p>
+<a name=""></a><ol type="1">
+<li>
+<p>The certificate validity period is checked against the current
+time provided by the verifier’s system clock.</p>
+
+
+</li>
+<li>
+<p>The issuer’s certificate is located. The source can
+be either the verifier’s local certificate database (on that client
+or server) or the certificate chain provided by the subject (for example,
+over an SSL connection).</p>
+
+
+</li>
+<li>
+<p>The certificate signature is verified using the public key
+in the issuer certificate.</p>
+
+
+</li>
+<li>
+<p>If the issuer’s certificate is trusted by the verifier
+in the verifier’s certificate database, verification stops successfully
+here. Otherwise, the issuer’s certificate is checked to make sure it
+contains the appropriate subordinate CA indication in the Directory Server certificate
+type extension, and chain verification returns to step 1 to start again, but
+with this new certificate.</p>
+
+
+</li>
+</ol>
+<a name="gdzeh"></a><h5 class="sol">Figure&nbsp;5–5  Verifying A Certificate Chain</h5><br><img alt="Figure shows verification of a certificate chain." title="Figure shows verification of a certificate chain." src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/chver.gif"><p></p><p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26av/index.html#gdzeh">Figure&nbsp;5–5</a> shows what happens
+when only Root CA is included in the verifier’s local database. If a
+certificate for one of the intermediate CAs shown in <a href="https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26av/index.html#gdzdj">Figure&nbsp;5–6</a>, such as Engineering CA, is found in the verifier’s local database,
+verification stops with that certificate, as shown in the following figure.</p>
+<a name="gdzdj"></a><h5 class="sol">Figure&nbsp;5–6  Verifying A Certificate Chain to an Intermediate
+CA</h5><br><img alt="Figure shows verification of a certificate chain to an
+intermediate CA." title="Figure shows verification of a certificate chain to an
+intermediate CA." src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/chtrust.gif"><p></p><p>Expired validity dates, an invalid signature, or the absence of a certificate
+for the issuing CA at any point in the certificate chain causes authentication
+to fail. For example, the following figure shows how verification fails if
+neither the Root CA certificate nor any of the intermediate CA certificates
+are included in the verifier’s local database.</p>
+<a name="gdzdf"></a><h5 class="sol">Figure&nbsp;5–7  Certificate Chain That Cannot Be Verified</h5><br><img alt="Figure shows verification of a certificate chain that
+cannot be verified." title="Figure shows verification of a certificate chain that
+cannot be verified." src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/chroot.gif"><p></p><p>For general information about the way digital signatures work, see <a href="https://docs.oracle.com/cd/E19424-01/820-4811/aakfx/index.html">Digital Signatures</a>.</p>
+
+<a name="6ng8i26b0"></a><h3 class="sol">Types of Certificates</h3>
+<p>Directory Server uses the following types of certificate:</p>
+<a name=""></a><dl>
+<dt>Client SSL certificates</dt>
+<dd>
+<p>Client SSL certificates are used to identify clients to servers
+via SSL (client authentication). Typically, the identity of the client is
+assumed to be the same as the identity of a human being, such as an employee
+in an enterprise. Client SSL certificates can also be used for form signing
+and as part of a single sign-on solution.</p>
+
+<p>For example, a bank gives a customer a client SSL certificate that allows
+the bank’s servers to identify that customer and authorize access to
+the customer’s accounts. A company might give a new employee a client
+SSL certificate that allows the company’s servers to identify that employee
+and authorize access to the company’s servers.</p>
+
+</dd>
+<dt>Server SSL certificates</dt>
+<dd>
+<p>Server SSL certificates are used to identify servers to clients
+via SSL (server authentication). Server authentication may be used with or
+without client authentication. Server authentication is a requirement for
+an encrypted SSL session.</p>
+
+<p>For example, internet sites that engage in electronic commerce usually
+support certificate-based server authentication, at a minimum, to establish
+an encrypted SSL session and to assure customers that they are dealing with
+a web site identified with a particular company. The encrypted SSL session
+ensures that personal information sent over the network, such as credit card
+numbers, cannot easily be intercepted.</p>
+
+</dd>
+<dt>S/MIME certificates</dt>
+<dd>
+<p>S/MIME certificates are used for signed and encrypted email.
+As with client SSL certificates, the identity of the client is typically assumed
+to be the same as the identity of a human being, such as an employee in an
+enterprise. A single certificate may be used as both an S/MIME certificate
+and an SSL certificate. S/MIME certificates can also be used for form signing
+and as part of a single sign-on solution.</p>
+
+<p>For example, a company deploys combined S/MIME and SSL certificates
+solely for the purpose of authenticating employee identities, thus permitting
+signed email and client SSL authentication but not encrypted email. Another
+company issues S/MIME certificates solely for the purpose of both signing
+and encrypting email that deals with sensitive financial or legal matters.</p>
+
+</dd>
+<dt>Object-signing certificates</dt>
+<dd>
+<p>Object-signing certificates are used to identify signers of
+Java code, JavaScript scripts, or other signed files.</p>
+
+<p>For example, a software company signs software distributed over the
+Internet to provide users with some assurance that the software is a legitimate
+product of that company. Using certificates and digital signatures in this
+manner can also make it possible for users to identify and control the kind
+of access downloaded software has to their computers.</p>
+
+</dd>
+<dt>CA certificates</dt>
+<dd>
+<p>CA certificates are used to identify CAs. Client and server
+software use CA certificates to determine what other certificates can be trusted.</p>
+
+<p>For example, the CA certificates stored in client software determine
+what other certificates that client can authenticate. An administrator can
+implement some aspects of corporate security policies by controlling the CA
+certificates stored in each user’s client.</p>
+
+</dd>
+</dl>
+<a name="6ng8i26b1"></a><h3 class="sol">Contents of a Certificate</h3>
+<a name="indexterm-155"></a><p>The contents of certificates supported by Directory Server and many
+other software companies are organized according to the X.509 v3 certificate
+specification, which has been recommended by the International Telecommunications
+Union (ITU), an international standards body, since 1988. Examples in this
+section show samples of the data and signature sections of a certificate.</p>
+<a name=""></a><p>Every X.509 certificate consists of the following sections.</p>
+<ul>
+<li>
+<p>A data section, including the following information.</p>
+
+<a name=""></a>
+<ul>
+<li>
+<p>The version number of the X.509 standard supported by the
+certificate.</p>
+
+
+</li>
+<li>
+<p>The certificate’s serial number. Every certificate issued
+by a CA has a serial number that is unique among the certificates issued by
+that CA.</p>
+
+
+</li>
+<li>
+<p>Information about the user’s public key, including the
+algorithm used and a representation of the key itself.</p>
+
+
+</li>
+<li>
+<p>The DN of the CA that issued the certificate.</p>
+
+
+</li>
+<li>
+<p>The period during which the certificate is valid (for example,
+between 1:00 p.m. on November 15, 2003 and 1:00 p.m. November 15, 2004).</p>
+
+
+</li>
+<li>
+<p>The DN of the certificate subject (for example, in a client
+SSL certificate this would be the user’s DN), also called the subject
+name.</p>
+
+
+</li>
+<li>
+<p>Optional <b>certificate extensions,</b> which
+may provide additional data used by the client or server. For example, the
+certificate type extension indicates the type of certificate—that is,
+whether it is a client SSL certificate, a server SSL certificate, a certificate
+for signing email, and so on. Certificate extensions can also be used for
+a variety of other purposes.</p>
+
+
+</li>
+</ul>
+
+
+</li>
+<li>
+<p>A signature section, includes the following information.</p>
+
+<a name=""></a>
+<ul>
+<li>
+<p>The cryptographic algorithm, or cipher, used by the issuing
+CA to create its own digital signature.</p>
+
+
+</li>
+<li>
+<p>The CA’s digital signature, obtained by hashing all
+of the data in the certificate together and encrypting it with the CA's private
+key.</p>
+
+
+</li>
+</ul>
+
+
+</li>
+</ul>
+<a name="gdzeg"></a><hr><h5 class="sol">Example&nbsp;5–1  Data and Signature Sections of a Certificate in
+Human-Readable Format</h5><br><a name=""></a><pre>Certificate:
+Data:
+   Version: v3 (0x2)
+   Serial Number: 3 (0x3)
+   Signature Algorithm: PKCS #1 MD5 With RSA Encryption
+   Issuer: OU=Certificate Authority, O=Example Industry, C=US
+   Validity:
+    Not Before: Fri Oct 17 18:36:25 2003
+    Not  After: Sun Oct 17 18:36:25 2004
+   Subject: CN=Jane Doe, OU=Finance, O=Example Industry, C=US
+   Subject Public Key Info:
+    Algorithm: PKCS #1 RSA Encryption
+    Public Key:
+       Modulus:
+          00:ca:fa:79:98:8f:19:f8:d7:de:e4:49:80:48:e6:2a:2a:86:
+          ed:27:40:4d:86:b3:05:c0:01:bb:50:15:c9:de:dc:85:19:22:
+          43:7d:45:6d:71:4e:17:3d:f0:36:4b:5b:7f:a8:51:a3:a1:00:
+          98:ce:7f:47:50:2c:93:36:7c:01:6e:cb:89:06:41:72:b5:e9:
+          73:49:38:76:ef:b6:8f:ac:49:bb:63:0f:9b:ff:16:2a:e3:0e:
+          9d:3b:af:ce:9a:3e:48:65:de:96:61:d5:0a:11:2a:a2:80:b0:
+          7d:d8:99:cb:0c:99:34:c9:ab:25:06:a8:31:ad:8c:4b:aa:54:
+          91:f4:15
+       Public Exponent: 65537 (0x10001)
+   Extensions:
+    Identifier: Certificate Type
+      Critical: no
+      Certified Usage:
+      SSL Client
+    Identifier: Authority Key Identifier
+      Critical: no
+      Key Identifier:
+        f2:f2:06:59:90:18:47:51:f5:89:33:5a:31:7a:e6:5c:fb:36:
+        26:c9
+   Signature:
+    Algorithm: PKCS #1 MD5 With RSA Encryption
+   Signature:
+ 6d:23:af:f3:d3:b6:7a:df:90:df:cd:7e:18:6c:01:69:8e:54:65:fc:06:
+ 30:43:34:d1:63:1f:06:7d:c3:40:a8:2a:82:c1:a4:83:2a:fb:2e:8f:fb:
+ f0:6d:ff:75:a3:78:f7:52:47:46:62:97:1d:d9:c6:11:0a:02:a2:e0:cc:
+ 2a:75:6c:8b:b6:9b:87:00:7d:7c:84:76:79:ba:f8:b4:d2:62:58:c3:c5:
+ b6:c1:43:ac:63:44:42:fd:af:c8:0f:2f:38:85:6d:d6:59:e8:41:42:a5:
+ 4a:e5:26:38:ff:32:78:a1:38:f1:ed:dc:0d:31:d1:b0:6d:67:e9:46:a8:
+ d:c4</pre>
+<hr>
+<a name="gdzdk"></a><hr><h5 class="sol">Example&nbsp;5–2  Certificate In the 64-Byte Encoded Form Interpreted
+by Software</h5><br><a name=""></a><pre>-----BEGIN CERTIFICATE-----
+MIICKzCCAZSgAwIBAgIBAzANBgkqhkiG9w0BAQQFADA3MQswCQYDVQQGEwJVUzER
+MA8GA1UEChMITmV0c2NhcGUxFTATBgNVBAsTDFN1cHJpeWEncyBDQTAeFw05NzEw
+MTgwMTM2MjVaFw05OTEwMTgwMTM2MjVaMEgxCzAJBgNVBAYTAlVTMREwDwYDVQQK
+EwhOZXRzY2FwZTENMAsGA1UECxMEUHViczEXMBUGA1UEAxMOU3Vwcml5YSBTaGV0
+dHkwgZ8wDQYJKoZIhvcNAQEFBQADgY0AMIGJAoGBAMr6eZiPGfjX3uRJgEjmKiqG
+7SdATYazBcABu1AVyd7chRkiQ31FbXFOGD3wNktbf6hRo6EAmM5/R1AskzZ8AW7L
+iQZBcrXpc0k4du+2Q6xJu2MPm/8WKuMOnTuvzpo+SGXelmHVChEqooCwfdiZywyZ
+NMmrJgaoMa2MS6pUkfQVAgMBAAGjNjA0MBEGCWCGSAGG+EIBAQQEAwIAgDAfBgNV
+HSMEGDAWgBTy8gZZkBhHUfWJM1oxeuZc+zYmyTANBgkqhkiG9w0BAQQFAAOBgQBt
+I6/z07Z635DfzX4XbAFpjlRl/AYwQzTSYx8GfcNAqCqCwaSDKvsuj/vwbf91o3j3
+UkdGYpcd2cYRCgKi4MwqdWyLtpuHAH18hHZ5uvi00mJYw8W2wUOsY0RC/a/IDy84
+hW3WWehBUqVK5SY4/zJ4oTjx7dwNMdGwbWfpRqjd1A==
+-----END CERTIFICATE-----</pre>
+<hr>
+<a name="6ng8i26b2"></a><h3 class="sol">Certificate Management</h3>
+<p>The set of standards and services that facilitate the use of public-key
+cryptography and X.509 v3 certificates in a network environment is called
+the<a name="indexterm-156"></a><b>public key infrastructure</b> (PKI). For information
+about  the certificate management issues addressed by Directory Server,
+see the following sections:</p>
+<a name=""></a><ul>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdq/index.html">Issuing Certificates</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzdy/index.html">Certificates and the LDAP Directory</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzem/index.html">Key Management</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzek/index.html">Renewal and Revocation of Certificates</a>
+</p>
+
+
+</li>
+<li>
+<p>
+<a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzde/index.html">Registration Authorities</a>
+</p>
+
+
+</li>
+</ul>
+<a name="6ng8i26b4"></a><h4 class="sol">Issuing Certificates</h4><a name="indexterm-157"></a><p>The process for issuing a certificate depends on the certificate authority
+that issues it and the purpose for which it is used. The process for issuing
+non-digital forms of identification varies in similar ways. For example, if
+you want to get a generic ID card (not a driver’s license) from the
+Department of Motor Vehicles in California, the requirements are straightforward:
+you need to present some evidence of your identity, such as a utility bill
+with your address on it and a student identity card. If you want to get a
+regular driving license, you also need to take a test — a driving test
+when you first get the license, and a written test when you renew it. If you
+want to get a commercial license for an eighteen-wheeler, the requirements
+are much more stringent. If you live in some other state or country, the requirements
+for various kinds of licenses differ.</p>
+<p>Similarly, different CAs have different procedures for issuing different
+kinds of certificates. In some cases the only requirement may be your mail
+address. In other cases, your UNIX login and password may be sufficient. At
+the other end of the scale, for certificates that identify people who can
+authorize large expenditures or make other sensitive decisions, the issuing
+process may require notarized documents, a background check, and a personal
+interview.</p>
+<p>Depending on an organization’s policies, the process of issuing
+certificates can range from being completely transparent for the user to requiring
+significant user participation and complex procedures. In general, processes
+for issuing certificates should be highly flexible, so organizations can tailor
+them to their changing needs.</p>
+<p>Issuing certificates is one of several management tasks that can be
+handled by separate Registration Authorities.</p>
+
+<a name="6ng8i26b5"></a><h4 class="sol">Certificates and the LDAP Directory</h4><a name="indexterm-158"></a><p>The Lightweight Directory Access Protocol (LDAP) for accessing directory
+services supports great flexibility in the management of certificates within
+an organization. System administrators can store much of the information required
+to manage certificates in an LDAP-compliant directory. For example, a CA can
+use information in a directory to pre-populate a certificate with a new employee’s
+legal name and other information. The CA can leverage directory information
+in other ways to issue certificates one at a time or in bulk, using a range
+of different identification techniques depending on the security policies
+of a given organization. Other routine management tasks, such as key management
+and renewing and revoking certificates, can be partially or fully automated
+with the aid of the directory.</p>
+<p>Information stored in the directory can also be used with certificates
+to control access to various network resources by different users or groups.
+Issuing certificates and other certificate management tasks can thus be an
+integral part of user and group management.</p>
+
+<a name="6ng8i26b6"></a><h4 class="sol">Key Management</h4><a name="indexterm-159"></a><a name="indexterm-160"></a><p>Before a certificate can be issued, the public key it contains and the
+corresponding private key must be generated. Sometimes it may be useful to
+issue a single person one certificate and key pair for signing operations,
+and another certificate and key pair for encryption operations. Separate signing
+and encryption certificates make it possible to keep the private signing key
+on the local machine only, thus providing maximum non-repudiation, and to
+back up the private encryption key in some central location where it can be
+retrieved in case the user loses the original key or leaves the company.</p>
+<p>Keys can be generated by client software or generated centrally by the
+CA and distributed to users via an LDAP directory. There are trade-offs involved
+in choosing between local and centralized key generation. For example, local
+key generation provides maximum non-repudiation, but may involve more participation
+by the user in the issuing process. Flexible key management capabilities are
+essential for most organizations.</p>
+<p>
+<b>Key recovery,</b> or the ability to retrieve backups
+of encryption keys under carefully defined conditions, can be a crucial part
+of certificate management (depending on how an organization uses certificates).
+Key recovery schemes usually involve an <b>m of n</b> mechanism:
+for example, <var>m</var> of <var>n</var> managers
+within an organization might have to agree, and each contribute a special
+code or key of their own, before a particular person’s encryption key
+can be recovered. This kind of mechanism ensures that several authorized personnel
+must agree before an encryption key can be recovered.</p>
+
+<a name="6ng8i26b7"></a><h4 class="sol">Renewal and Revocation of Certificates</h4><a name="indexterm-161"></a><a name="indexterm-162"></a><p>Like a driver’s license, a certificate specifies a period of time
+during which it is valid. Attempts to use a certificate for authentication
+before or after its validity period fails. Therefore, mechanisms for managing
+certificate renewal are essential for any certificate management strategy.
+For example, an administrator may wish to be notified automatically when a
+certificate is about to expire, so that an appropriate renewal process can
+be completed in plenty of time without causing the certificate’s subject
+any inconvenience. The renewal process may involve reusing the same public-private
+key pair or issuing a new one.</p>
+<p>A driver’s license can be suspended even if it has not expired—for
+example, as punishment for a serious driving offense. Similarly, it’s
+sometimes necessary to revoke a certificate before it has expired—for
+example, if an employee leaves a company or moves to a new job within the
+company.</p>
+<p>Certificate revocation can be handled in several different ways. For
+some organizations, it may be sufficient to set up servers so that the authentication
+process includes checking the directory for the presence of the certificate
+being presented. When an administrator revokes a certificate, the certificate
+can be automatically removed from the directory, and subsequent authentication
+attempts with that certificate fails even though the certificate remains valid
+in every other respect. Another approach involves publishing a certificate
+revocation list (CRL)—that is, a list of revoked certificates—to
+the directory at regular intervals and checking the list as part of the authentication
+process. For some organizations, it may be preferable to check directly with
+the issuing CA each time a certificate is presented for authentication. This
+procedure is sometimes called real-time status checking.</p>
+
+<a name="6ng8i26b8"></a><h4 class="sol">Registration Authorities</h4><p>Interactions between entities identified by certificates (sometimes
+called end entities) and CAs are an essential part of certificate management.
+These interactions include operations such as registration for certification,
+certificate retrieval, certificate renewal, certificate revocation, and key
+backup and recovery. In general, a CA must be able to authenticate the identities
+of end entities before responding to the requests. In addition, some requests
+need to be approved by authorized administrators or managers before being
+serviced.</p>
+<p>As previously discussed, the means used by different CAs to verify an
+identity before issuing a certificate can vary widely, depending on the organization
+and the purpose for which the certificate is used. To provide maximum operational
+flexibility, interactions with end entities can be separated from the other
+functions of a CA and handled by a separate service called a<a name="indexterm-163"></a><a name="indexterm-164"></a> <b>Registration Authority</b> RA.</p>
+<p>An RA acts as a front end to a CA by receiving end entity requests,
+authenticating them, and forwarding them to the CA. After receiving a response
+from the CA, the RA notifies the end entity of the results. RAs can be helpful in scaling a PKI across different departments,
+geographical areas, or other operational units with varying policies and authentication
+requirements.</p>
+
+</div><div class="d8 d8v1" style="margin: 10px;"><div class="d8w1"><div class="d8w2"><div class="d8w3"><div class="d8w4"><ul><li class="d8left"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzel/index.html"><em>Previous</em>: Global Account Lockout</a></li><li class="d8right"><a href="https://docs.oracle.com/cd/E19424-01/820-4811/gdzei/index.html"><em>Next</em>: SASL-based Authentication</a></li></ul></div></div></div></div></div><div class="a5 a5v0" id="a5">
+<ul>
+    <li class="copyright">© 2010, Oracle Corporation and/or its affiliates</li>
+</ul>
+</div>
+</div><div id="footer-banner" style="display: inline-block;"><ul><li><div id="teconsent"></div></li><li><a id="adchoices" class="new-window" target="_blank" href="https://www.oracle.com/legal/privacy/marketing-cloud-data-cloud-privacy-policy.html#12">Ad Choices</a></li></ul></div><script type="text/javascript" src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/notice"></script><script src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_code_docs.js"></script><script src="Certificate-based%20Authentication%20(Sun%20Directory%20Server%20Enterprise%20Edition%207.0%20Reference)_files/ora_code.js"></script></body></html>
