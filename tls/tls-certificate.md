@@ -324,12 +324,15 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryp
 - https://www.youtube.com/watch?v=T4Df5_cojAs
 
 ----
-can-read above but actually clear
+can-read above but actually clear indeed
 [OK here clear]
 Add CRL
 windows emplae
 can add to trustore cert
 CSR for CA itself
++ linkedin
 
+
++ https://github.com/scoulomb/misc-notes/tree/master/tls/README.md
 
 [see certificate](../lab-env/README.md#ssh-summary)
