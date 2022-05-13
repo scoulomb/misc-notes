@@ -286,13 +286,46 @@ See actual application here: https://github.com/scoulomb/myDNS/blob/master/2-adv
 This is known as RSA handshake diagram is aligned with explanation given here:
 https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake. (I mirrored the page [cloudfare.md](cloudfare.md)).
 
-An alternative is Diffie-Hellman (DH) handshake. In RSA handshale step (4), client send pre-master secret to server using its public key.
+### Diffie-Hellman handshake and RSA handshake
+
+An alternative is Diffie-Hellman (DH) handshake. In RSA handshale step (4) in previous section, client send pre-master secret to server using server certificate public key to encrypt it.
+
 In DH handshake, they exchange a DH parameter to compute separately a matching pre-master. 
 <!-- same principle as master key computation -->
-See here how it is possible: https://www.encryptionconsulting.com/diffie-hellman-key-exchange-vs-rsa/.
-In that case client will use server public key to verify a signature provided by server and not to exchange pre-master key (as for client certificate). 
+See here the concept: https://www.encryptionconsulting.com/diffie-hellman-key-exchange-vs-rsa/.
 
-Some CA like let's encrypt are free.
+In that case client will use server certificate public key to verify a signature provided by server (as for client certificate in RSA handhake) and will not send to server a pre-master key . 
+
+This what is shown here: https://tls.ulfheim.net/ and https://github.com/scoulomb/illustrated-tls.
+Master secret is computed in step "Client/Server encryption keys calculation"
+
+In diffie-hellman Shared encryption keys calculation is done on 
+
+- Client (PreMasterSecret encryption key calaculation) via
+    - server random (from Server Hello)
+    - client random (from Client Hello)
+    - server public key (from Server Key Exchange)
+    - client private key (from Client Key Generation) 
+- Server  (MasterSecret encryption key calaculation which is equal to PreMasterSecret) via
+    - server random (from Server Hello)
+    - client random (from Client Hello)
+    - client public key (from Client Key Exchange)
+    - server private key (from Server Key Generation) 
+
+Key here are specific to a TLS connection.
+<!-- Random is common paint, while key are secret colors -->
+
+We use: https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman to reach same secret (Client MasterSecret == Server MasterSecret)
+
+
+From master and premaster key we compute on both side the same key data
+
+- client MAC key
+- server MAC key
+- client write key
+- server write key
+- client write IV
+- server write IV
 
 
 ## Link with http over socket
@@ -316,6 +349,12 @@ Bob does not have the gurantee he is talking to Alice.
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryptography and computer security, a self-signed certificate is a certificate that is not signed by a certificate authority (CA).
 
+Some CA like let's encrypt are free.
+
+## Multidomain appendix
+
+See [appendix](./multidomain.md).
+
 ## Links
 
 - https://medium.com/sitewards/the-magic-of-tls-x509-and-mutual-authentication-explained-b2162dec4401
@@ -324,7 +363,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryp
 - https://www.youtube.com/watch?v=T4Df5_cojAs
 
 ----
-can-read above but actually clear indeed
+can-read above but actually clear indeed YES including DH and multidomain
 [OK here clear]
 Add CRL
 windows emplae
