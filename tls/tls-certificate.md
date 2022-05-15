@@ -278,7 +278,7 @@ else robber
 end
 @enduml
 ````
-
+<!--Tanenbaum p913, figure is similar clear stop, note server can send a chain of certificate when not known, it is RSA as in this diagram -->
 
 See actual application here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
 
@@ -288,45 +288,124 @@ https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake. (I mirr
 
 ### Diffie-Hellman handshake and RSA handshake
 
+#### Difference
+
 An alternative is Diffie-Hellman (DH) handshake. In RSA handshale step (4) in previous section, client send pre-master secret to server using server certificate public key to encrypt it.
 
-In DH handshake, they exchange a DH parameter to compute separately a matching pre-master. 
+In DH handshake, they exchange a DH parameter (client pub/priv and server pub/priv key generated during negotiation and specific for that exchange) to compute separately a matching pre-master. 
 <!-- same principle as master key computation -->
-See here the concept: https://www.encryptionconsulting.com/diffie-hellman-key-exchange-vs-rsa/.
+See here the concept: https://www.encryptionconsulting.com/diffie-hellman-key-exchange-vs-rsa/, https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
+
+![public key shared secret](./media/Public_key_shared_secret.svg.png)
 
 In that case client will use server certificate public key to verify a signature provided by server (as for client certificate in RSA handhake) and will not send to server a pre-master key . 
 
 This what is shown here: https://tls.ulfheim.net/ and https://github.com/scoulomb/illustrated-tls.
-Master secret is computed in step "Client/Server encryption keys calculation"
 
-In diffie-hellman Shared encryption keys calculation is done on 
+#### Pre-Master secret and master secret is computed in step "Client/Server encryption keys calculation"
 
-- Client (PreMasterSecret encryption key calaculation) via
-    - server random (from Server Hello)
-    - client random (from Client Hello)
-    - server public key (from Server Key Exchange)
-    - client private key (from Client Key Generation) 
-- Server  (MasterSecret encryption key calaculation which is equal to PreMasterSecret) via
-    - server random (from Server Hello)
-    - client random (from Client Hello)
-    - client public key (from Client Key Exchange)
-    - server private key (from Server Key Generation) 
 
-Key here are specific to a TLS connection.
-<!-- Random is common paint, while key are secret colors -->
+**Client encryption key** is computed via
+- server random (from Server Hello)
+- client random (from Client Hello)
+- server public key (from Server Key Exchange)
+- client private key (from Client Key Generation) 
+
+The client multiplies the server's public key by the client's private key using the curve25519() algorithm. The 32-byte result is called the PreMasterSecret/
+
+
+The client then calculates 48 bytes of the MasterSecret from the PreMasterSecret using the following method:
+
+````
+seed = "master secret (here a string)" + client_random + server_random
+a0 = seed
+a1 = HMAC-SHA256(key=PreMasterSecret, data=a0)
+a2 = HMAC-SHA256(key=PreMasterSecret, data=a1)
+p1 = HMAC-SHA256(key=PreMasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=PreMasterSecret, data=a2 + seed)
+MasterSecret = p1[all 32 bytes] + p2[first 16 bytes]
+````
+<!-- consistent with 
+master_secret = PRF(pre_master_secret,
+            "master secret",
+             ClientHello.random +
+             ServerHello.random) [0..47];
+where seed => PRF
+-->
+
+Once we have master secret (**same in RSA method**), we compute encrpytion key
+
+````
+seed = "key expansion" + server_random + client_random
+a0 = seed
+a1 = HMAC-SHA256(key=MasterSecret, data=a0)
+a2 = HMAC-SHA256(key=MasterSecret, data=a1)
+a3 = HMAC-SHA256(key=MasterSecret, data=a2)
+a4 = ...
+p1 = HMAC-SHA256(key=MasterSecret, data=a1 + seed)
+p2 = HMAC-SHA256(key=MasterSecret, data=a2 + seed)
+p3 = HMAC-SHA256(key=MasterSecret, data=a3 + seed)
+p4 = ...
+p = p1 + p2 + p3 + p4 ...
+client write mac key = [first 20 bytes of p]
+server write mac key = [next 20 bytes of p]
+client write key = [next 16 bytes of p]
+server write key = [next 16 bytes of p]
+client write IV = [next 16 bytes of p]
+server write IV = [next 16 bytes of p]
+````
+
+
+**Server encryption key** is computed via
+- server random (from Server Hello)
+- client random (from Client Hello)
+- client public key (from Client Key Exchange)
+- server private key (from Server Key Generation) 
+
+The server multiplies the client's public key by the server's private key using the curve25519() algorithm. The 32-byte result is called the PreMasterSecret.
+
+This is identical to the PreMasterSecret found by the client, therefore the following calculations are indentical. 
+
+<!--pirvate keys are secret colors -->
 
 We use: https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman to reach same secret (Client MasterSecret == Server MasterSecret)
 
+### Exchange key and their usage 
 
-From master and premaster key we compute on both side the same key data
+We saw following key were used for symetric encrpyption (derivated from Master secret)
 
-- client MAC key
-- server MAC key
-- client write key
+- client write mac key 
+- server write mac key 
+- client write key 
 - server write key
 - client write IV
 - server write IV
 
+Why several keys?
+
+From https://crypto.stackexchange.com/questions/1139/what-is-the-purpose-of-four-different-secrets-shared-by-client-and-server-in-ssl
+
+> The encryption part requires a key (and an IV for symmetric encryption algorithms which use CBC mode, and this is subject to a few subtleties which depend on the SSL protocol version, so I will not detail these here). The MAC also needs a key. Using the same key for two distinct algorithms is, as a general rule, not recommended at all: there may be unwanted interactions between the two algorithms, an improbable but not impossible event which has not been thoroughly studied. So, to be on the safe side, we generated two keys, one for encryption and one for the MAC. The two keys come from the master secret, but the derivation mechanism is like a hash function, so it supposedly makes it impossible to guess the MAC key even if you know the encryption key, and vice versa. Since TLS has a key derivation function (the "PRF") which can produce outputs of arbitrary length...
+
+See Tanenbaum p915 (figure 8.51), for the MAC usage when transmitting data with SSL. We can see message is fragmented into blocks, block is compressed, MAC is added and then block is chiffred, and a header is added. MAC guarantees data integrity.
+
+<!-- see also: https://stackoverflow.com/questions/31009358/tls-mac-message-verification -->
+
+### SSL in short 
+
+SSL/TLS establishes a secured connexion between 2 sockets ensuring
+- Parameter negotiation between client and server
+- Authentification of server by client (and vice versa in mTLS) (certificate) 
+- Secret of communication (encrpyption key)
+- protection of data integrity (MAC)
+
+<!-- https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-how-tls-provide-authentication-confidentiality-integrity -->
+
+SSL has two sub-protocol to
+- Establih a secure connexion
+- Use secure  connection
+
+Ref. Tanenbaum p915
 
 ## Link with http over socket
 
@@ -363,7 +442,7 @@ See [appendix](./multidomain.md).
 - https://www.youtube.com/watch?v=T4Df5_cojAs
 
 ----
-can-read above but actually clear indeed YES including DH and multidomain
+can-read above but actually clear indeed YES including DH and multidomain YES
 [OK here clear]
 Add CRL
 windows emplae
@@ -371,7 +450,5 @@ can add to trustore cert
 CSR for CA itself
 + linkedin
 
-
-+ https://github.com/scoulomb/misc-notes/tree/master/tls/README.md
 
 [see certificate](../lab-env/README.md#ssh-summary)
