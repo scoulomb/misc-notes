@@ -2,9 +2,11 @@
 
 ## Solution 1: Wildcard
 
-Use wildcard certificate in CN
+Use wildcard certificate in CN [Data.Subject field](https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ao/index.html).
 
 ## Solution 2: SAN certificate
+
+SAN is `Data.subjectAltName` [field](https://fr.wikipedia.org/wiki/Subject_Alternative_Name).
 
 ### What are SAN certs
 
@@ -32,6 +34,11 @@ field in the Subject field of the certificate** MUST be used. Although
 the use of the Common Name is existing practice, it is deprecated and
 Certification Authorities are encouraged to use the dNSName instead.
 
+We can have in SAN:
+- also a wildcard 
+- same top domain to be more specific
+
+See part 1, certificate at (3'16) https://www.linkedin.com/learning/learning-ssl-tls/certificates?autoplay=true&resume=false&u=75507506 
 
 ## Solution 3: SNI 
 

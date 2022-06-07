@@ -69,7 +69,8 @@ Oracle doc: https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ao/index.html
     - d3: **Information about the user’s public key, including the algorithm used and a representation of the key itself.**
     - d4: **The DN of the CA that issued the certificate.**
     - d5: **The period during which the certificate is valid** (for example, between 1:00 p.m. on November 15, 2003 and 1:00 p.m. November 15, 2004).
-    - d6: **The DN of the certificate subject** (for example, in a client SSL certificate this would be the user’s DN), also called the subject name. See also SAN: https://en.wikipedia.org/wiki/Subject_Alternative_Name and https://support.dnsimple.com/articles/what-is-common-name/#common-name-vs-subject-alternative-name. We can also use wildcard.
+    - d6: **The DN of the certificate subject** (for example, in a client SSL certificate this would be the user’s DN), also called the subject name.
+    See also SAN: https://en.wikipedia.org/wiki/Subject_Alternative_Name and https://support.dnsimple.com/articles/what-is-common-name/#common-name-vs-subject-alternative-name. See [multidomain certificate](./multidomain.md).
     - d7: Optional certificate extensions, which may provide additional data used by the client or server. For example, the certificate type extension indicates the type of certificate—that is, whether it is a client SSL certificate, a server SSL certificate, a certificate for signing email, and so on. Certificate extensions can also be used for a variety of other purposes.
 
 - A signature section, includes the following information.
@@ -77,6 +78,29 @@ Oracle doc: https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ao/index.html
     - s2: **The CA’s digital signature, obtained by hashing all of the data in the certificate together and encrypting it with the CA's private key.**
 
 
+### More details on sections and certificate hierarchy
+
+
+See https://en.wikipedia.org/wiki/Root_certificate#/media/File:Chain_Of_Trust.svg
+
+![](./media/2560px-Chain_Of_Trust.svg.png)
+
+The root CA will be used to sign lower hierarchy certificate.
+Lower hierarchy certificate will contain:
+- A DN (distinguished name) [(d6)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections)
+- public key of the certificate itself [(d3)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections) 
+- reference DN of the issuer: root CA (or subordinate CA), or upper certificate in the chain)  [(d4)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections)
+<!-- wikipedia has owner and issuer but both are issuer -->
+- contain digital signature of the root CA (signed with CA private key), subordinate CA (signed with subordinate CA private key) or previous certificate in the chain (signed with previous certificate private key) [(s1, s2)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections).
+
+
+Root CA will contain
+- CA name [(d6)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections)
+- Root CA public key key [(d3)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections), matching root CA private key
+- reference DN of issuer: itself [(d4)](../tls-certificate.md#every-x509-certificate-consists-of-the-following-sections)
+- contain Root CA signature signed with root CA private key -- **Self-signed** --
+
+**So a root CA is always a [Self-Signed Certificate?](../tls-certificate.md#self-signed-certificate). ** 
 
 ### chain certificate and certificate verification 
 
@@ -102,7 +126,7 @@ Here is how certificate and chain of certificate are verified
 > 3. The certificate signature is verified using the public key in the issuer certificate.(verify s2 by using d3 in the next certificate in the chain )
 > If the issuer’s certificate is trusted by the verifier in the verifier’s certificate database, verification stops successfully here. Otherwise, the issuer’s certificate is checked to make sure it contains the appropriate subordinate CA indication in the Directory Server certificate type extension, and chain verification returns to step 1 to start again, but with this new certificate.
 
-## Server Authentication During SSL Handshake
+### Server Authentication During SSL Handshake
 
 Quoting Oracle Doc on SSL those steps are added for SSL certificate.
 As depicted here: https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ba/index.html (Server Authentication During SSL Handshake)
@@ -116,7 +140,10 @@ During SSL (RSA) handshake we will see below that server private key (matching p
 
 > If the server requires client authentication, the server performs the steps described in Client Authentication During SSL Handshake.
 
+### Private CA
 
+**CA are usually public and trusted by browser (Comdo, Verisign).
+But some oganisations creates private CA, in that case we need to add to the trust the private CA (or intermediate <> subordinate CA), or actually any certificate in the chain).** To not confuse with server exception.
 
 ### Client Authentication During SSL Handshake
 
@@ -428,6 +455,9 @@ Bob does not have the gurantee he is talking to Alice.
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Self-signed_certificate): In cryptography and computer security, a self-signed certificate is a certificate that is not signed by a certificate authority (CA).
 
+Also quoting: https://www.keyfactor.com/blog/self-signed-certificate-risks/
+> Another strategy is to issue self-signed SSL certificates. A self-signed certificate is one that is not signed by a CA at all – neither private nor public. In this case, the certificate is signed with its own private key, instead of requesting it from a public or a private CA.
+
 Some CA like let's encrypt are free.
 
 ## Multidomain appendix
@@ -441,14 +471,9 @@ See [appendix](./multidomain.md).
 - https://www.youtube.com/watch?v=4nGrOpo0Cuc
 - https://www.youtube.com/watch?v=T4Df5_cojAs
 
-----
-can-read above but actually clear indeed YES including DH and multidomain YES
-[OK here clear]
-Add CRL
-windows emplae
-can add to trustore cert
-CSR for CA itself
-+ linkedin
+<!-- above ccl ok -->
 
+## Complements 
 
-[see certificate](../lab-env/README.md#ssh-summary)
+- [see SSH certificate](../lab-env/README.md#ssh-summary)
+- [see IN learning](./in-learning-complement/learning-ssl-tld.md).
