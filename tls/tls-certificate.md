@@ -479,3 +479,5 @@ See [appendix](./multidomain-appendix.md).
 <!-- well consitent with this page and good complement on top, no need to full read 1 shot -->
 - [see SSH certificate](../lab-env/README.md#ssh-summary) we use key in cert for encrpytion and cert are signed.
 <!--did not check in details if signature is used as in SSL during handshake, SSH review OK -->
+
+Optional todo: OBS save
