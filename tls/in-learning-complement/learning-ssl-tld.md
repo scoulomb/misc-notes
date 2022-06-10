@@ -103,7 +103,7 @@ We will define a subordinate CA of private CA we defined in [MS AD CS certificat
 
  - Go to `AWS certificate manager` > `private certificate CA` where we a single option to define a subordinate CA. 
 - AWS provides a CSR for the CA. 
-- In Windows Server certificate management (certsrv) UI, go to: > `Request a certificate` > `advanced` > `submit a certificate request`
+- In Windows Server certificate management (certsrv) web UI, go to: > `Request a certificate` > `advanced` > `submit a certificate request`
 Using subordinate CA template.
 - Copy the CSR provided by AWS
 - And we can download the certificate (`.cer` file) and the chain.
@@ -118,7 +118,7 @@ This is compliant with
 See [cert hierarchy](../tls-certificate.md#more-details-on-sections-and-certificate-hierarchy) where here we did not sign a user certificate but a subordinate CA certificate.
 
 
-## Part 3: PKI certticate acqusition
+## Part 3: PKI certificate acqusition
 
 (user, webserver certificate)
 
@@ -140,14 +140,14 @@ https://www.linkedin.com/learning/learning-ssl-tls/ssl-vs-tls?autoplay=true&resu
 
 #### Acquire a webserver certificate using Microsoft AD CS
 
-**GUI certsrv**
+**Desktop GUI certsrv**
 
 we can see templates -> custom webserver
 Certif template -> rigth click manage and see details.
 
-**GUI certlm - `manage conmpute certificate` (also avail in win10)** to acquire PKI cert (can be done on any machine who jonied domain and not only)
+**Desktop GUI certlm - `manage conmpute certificate` (also avail in win10)** to acquire PKI cert (can be done on any machine who joined domain and not only)
 
-We request new cert from here, we template `custom web server`
+We request new cert from here, we use template `custom web server`
 We provide subject name (common name) and SAN (important cf. domain mismatch). Some field can be mandatory and enforced template.
 Then click enroll.
 At the end FakeDomain CA has issued webserver certificate.
@@ -250,7 +250,7 @@ Quoting: https://httpd.apache.org/docs/2.4/en/mod/mod_ssl.html
 > This directive sets the all-in-one file where you can assemble the Certificates of Certification Authorities (CA) whose clients you deal with. These are used for Client Authentication. Such a file is simply the concatenation of the various PEM-encoded Certificate files, in order of preference. This can be used alternatively and/or additionally to SSLCACertificatePath.
 
 So it means that if we acquire a client certificate like we did in this section with [windows](#acquire-a-client-certificate-using-microsoft-ad-cs),
-We would trust client as the the CA is included in `SSLCACertificateFile`.
+We would trust client if the the CA (or chain) is included in `SSLCACertificateFile`.
 
 See also here an example of Apache config:
 https://github.com/open-denon-heos/remote-control/blob/main/apache-setup/heos.conf
@@ -312,3 +312,206 @@ We verify signature using public  key.
 ## Part 4: PKI certificate usage
 
 <!-- all above is clear and OK -->
+
+### Hashing and digital signature
+
+#### Hashing
+
+- Hashing does not necessarilty a PKI certificate but can be
+- Used to verify integrity of nretwork messages, files abd machine boot-up settings
+- Does not provide data confidentiality (!= encryption)
+- Used with SSL and TLS
+- Use a one-way algorithm that results in a unique value on data which is  hashed (hash, message digest).
+For example in filesystem, we compute hash and save it. Later when we recompute the hash, If message/file has a different hash we know something was changed. It could have been modified by an unauthorized party.
+- Hashing algo are SHA-(1,2,3), MD-5, RIPEMD
+
+#### Digital signature
+
+- Used to provide
+    - data authentification (trust who send message -> signed with private key),
+    - integrity (data non tampered by 3rd party)
+    - and non repudation
+- Do not provide data condidentiality
+- Used with SSL and TLS (see [TLS cert](../tls-certificate.md#man-in-the-middle-attach-and-need-of-a-ca)), application script and [device drivers](#acquire-a-code-signing-certificate).
+
+Digital signature relies on [Hashing](#hashing) and PKI certificate (wrongly called SSL, TLS certificate)
+
+From https://security.stackexchange.com/questions/67512/what-role-do-hashes-play-in-tls-ssl-certificate-validation
+
+> For example, with RSA signatures the signature can be thought of as a hash of the data being signed, "encrypted" with the signer's private key:
+
+![](../media/Digital_Signature_diagram.svg).
+
+Example of mail signature (different from encryption)
+- We generate hash value of the message content 
+- We encrpt has with sender private key
+- Recipient will verify signature with public key
+
+Encryption of message will require recipient public key.
+
+In TLS/SSL we also use PKI cert for [signature and encryption], see [TLS cert](../tls-certificate.md#man-in-the-middle-attach-and-need-of-a-ca).
+So both are used in section [below](#website-with-pki-cert).
+
+
+### Configure a website with a certificate
+
+In regedit we can disable use of SSL.
+Can also do this in IE internet option.
+We need a PKI cert in the host, run `certmgr`.
+We got it from [acquire-a-webserver-certificate-using-microsoft-ad-cs](#acquire-a-webserver-certificate-using-microsoft-ad-cs).
+<!-- case where ca same place as webserver --> 
+
+If we go to  `https://IIS-url`, page can not be displayed because no bindings defined for port 443.
+We set it in IIS and need to select SSL cert.
+When refeshing page worknig and see cert in pad lock.
+
+### Configure a webbrowser with a (client) certificate
+
+In IIS adminstrative tool.
+We can see we have a server cert from [previous section](#configure-a-website-with-a-certificate).
+Any client can access the server and we want to restrict that.
+We can require a SSL certificate for client
+
+When exchanging server, server will exchange list of accepted CA (or chain) and client will select a certificate (among the one it has) thay matches what is trustd by server if any.
+
+Thus on client side we start `MMC`, add snapping, add user certificate.
+We will add certificate that can be used for client authentification.
+We will request a new client certificate via `MMC` (possible here as machine where web client is also machine where we have the CA server) or `certsrv`webpage and click enroll. This certificate is issued by by CA FakeDomain1.
+This what we did in [acquire client cert section](#acquire-a-client-certificate-using-microsoft-ad-cs).
+
+This CA is trusted by server.
+
+Indeed here we are in the case where machine is the same for
+- web client
+- web server
+- certificate authority FakeDomain1
+
+And where same CA FakeDomain1 delivers
+- server certificate 
+    - So client trusts FakeDomain1 private CA (otherwise need to import private CA in browser, as not public CA)
+- client certificate
+    - So server trust certificate delivered by FakeDomain1 private CA (otherwise need to configure server to trust this CA)
+
+
+Go to brower, go to `tools > internet options> local intranet`, we will enable to prompt for client cert even if have 1 match client cert for the example.
+
+Go to page, we are prompt client certificate,  we are able to access website.
+
+
+This exactly what we have seen in [OpenSSL section](#acquire-a-webserver-certificate-using-openssl) with the directive `SSLCACertificateFile`.
+<!-- and same CA for client and server -->
+
+This is known as mTLS.
+
+### Configure a code-signing cert with Microsft Powershell
+
+
+<!-- clear ok, all above ok yes including last notes OK re-cf-10/06PM-->
+
+- Use code sign-in cert to sign software, script
+- Establish trust, could allow enterprise machine to only script which are signed/
+
+- `MMC`, add remove snap in, snap in to show user cert, can see personal cert
+-`Certificate authority` > `custom code sign in template`.
+We can see template and customize it. This is what we had [created](#configure-a-code-signing-cert-with-microsft-powershell) 
+- We can then acquire a code signing certtidcate via `certsrv` using the template as previously done in section [acquire a code signing certificate](#acquire-a-code-signing-certificate).
+- In `MMC`, a code signing certificate is now availalble.
+- In `MMC` console note we have a trusted publisher section it is empty
+- We have a powershell script `Test.ps1` we want to sign
+- And here is `Sign_Sscript.ps`
+
+````
+$cert=(Get-ChildItem cert:\CurrentUser\My -CodeSigningCert)[0] # take first code sign in cert
+Set-AuthenticodeSignature -Certicicate $cert - FilePath c:\Scripts\Test.ps1 
+````
+
+- After execution `Test.ps1` is signed, we can see the signature in the file
+
+- If we run the script where `Get-ExecutionPolicy` is allsigned we have a warning that script is signed but that we should only run scripts from trusted publishers. 
+- As script is signed, right click on the file where we can view certificate and can install it (add to trust store). 
+- In `MMC` console note we have a trusted publisher section which now contains the cettificate (issued by FakeDomain1) 
+- Script can be runned without warning
+
+This leverage [Digital signature concept](#digital-signature).
+
+
+### Encrypting file systems and certificate
+
+See difference with [Digital signature and encryption](#digital-signature).
+<!-- clear ok, all above okOK -->
+
+Here we will use certificate to encrypt files (Encrypting File System).
+
+- On server where we setup [CA](#ms-ad-cs-certificate-authority-step-1) we go to `certification authortity tool`/`certsrv desktop GUI`: 
+- We can see templates EFS recovery agent
+- Rigth click and manage, to duplicate template and customize template like expiration date
+- Then we issue the new certificate templates `custom EFS`. this is similar to what we did for [client cert acqusition](#acquire-a-client-certificate-using-microsoft-ad-cs).
+
+
+- In `MMC` we can add a snap-in, `to manager cert for myuser account`
+- Then we can request a new cert and enroll
+- Note from `certlm`, custom EFS certificate enrollment is not possbile because it is a user certificate, not computer. Same case as [Acquire a code signing certificate](#acquire-a-code-signing-certificate).
+<!-- See https://www.linkedin.com/learning/learning-ssl-tls/encrypting-file-system-and-certificates?autoplay=true&resume=false&u=75507506 at 4'16 -->
+- After this we can see certificate in MMC.
+
+Note if we do not do it, it generated automatically when we encrypt file but we more control when doing that way (expiration date) 
+
+### Windows tooling
+
+I notice `certlm.msc` (manage computer certificate, `Local computer \ Personal \ Certificates`):
+    - contains server and client authentificationis
+    - is `MMC` with local computer account certificates snap-in.
+
+
+I notice `certmgr.msc` (manage user certificate, `Current user \ Personal \ certificates`):
+    - contains server and client authentification but also codesiging 
+    - is `MMC` with user account certificates snap-in.
+
+see: https://serverfault.com/questions/407452/whats-the-difference-b-w-mmc-exe-and-certmgr-msc
+
+
+We also have a MMC snap-in to manage service account certificate.
+
+We also have  `/certsrv` web UI (cert enrollment)
+
+we also have manage file encryption certificate UI. it is actually a wizard which will generate a EFS certificate visible in `Current user \ Personal \ certificates`
+
+<!-- very clear + accurate above OK-->
+
+### Configure a TLS VPN
+
+<!-- here -->
+
+Configure a TLS/SSL VPN.
+- In server manager,
+    - add roles and features, server roles, check direct access and VPN installed.
+    - In server manager, routing and remote, select server, configure and enable routing and remote access, choose custom config, VPN access
+- Start menu > certmgr to view certificate, we have cert `srv2016-1` issue by FakeDomain1 CA,it is a cert generated for website certificate [previously](#configure-a-website-with-a-certificate)
+<!-- https://www.linkedin.com/learning/learning-ssl-tls/configure-a-website-with-a-certificate?autoplay=true&resume=false&u=75507506, 2'41s -->
+- In routing and remote access, right click, properties, ipv4 static pool, in security tab, uncheck use http, and select own certificate
+<!-- if we uncheckt it means we select certificate as webserver, in demo example both are the same-->
+- In active directory users and computers > Domain admin set to allow access
+- Configure client (windows 10), we check with ping we can access server, change in registry to disable Certificate Revocation check (SSTP service) by creating `NoCertRevocationCheck` key
+- Network sharing center, add new connection, workspace and give VPN address
+- This creates connection, virtual network adapter on which we connect
+- Connection is succesfull
+
+Here we use cert for VPN connection similarly to server certificate.
+
+We can also setup VPN on NAS. See [QNAP VPN](../../NAS-setup/NAS-setup#configure-a-vpn-to-lan-via-nas),
+In QVPN (OpenVPN) we have option to downlaod cert separately or included with congifuration.
+
+See also: vhttps://github.com/scoulomb/myPublicCloud/blob/master/Azure/Networking/basic.md#vpn-gateway
+It is point to site VPN in training example, or when using OpenVPN.
+See https://docs.microsoft.com/fr-fr/azure/vpn-gateway/vpn-gateway-howto-point-to-site-resource-manager-portal
+
+## Next steps 
+
+- We learnt PKI and relationship wiht SSL And TLS
+- We could discover how to
+    - automate certificate deployment
+        - Through ActiveDirectory group policy
+    - Try other templates
+    - Try other PKI product (pub/priv ca)
+    - protocols and vulnerabilities of older protocols (SSL, TLS < 1.3)
+

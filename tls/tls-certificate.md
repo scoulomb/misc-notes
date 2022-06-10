@@ -70,7 +70,7 @@ Oracle doc: https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ao/index.html
     - d4: **The DN of the CA that issued the certificate.**
     - d5: **The period during which the certificate is valid** (for example, between 1:00 p.m. on November 15, 2003 and 1:00 p.m. November 15, 2004).
     - d6: **The DN of the certificate subject** (for example, in a client SSL certificate this would be the user’s DN), also called the subject name.
-    See also SAN: https://en.wikipedia.org/wiki/Subject_Alternative_Name and https://support.dnsimple.com/articles/what-is-common-name/#common-name-vs-subject-alternative-name. See [multidomain certificate](./multidomain.md).
+    See also SAN: https://en.wikipedia.org/wiki/Subject_Alternative_Name and https://support.dnsimple.com/articles/what-is-common-name/#common-name-vs-subject-alternative-name. See [multidomain certificate](./multidomain-appendix.md).
     - d7: Optional certificate extensions, which may provide additional data used by the client or server. For example, the certificate type extension indicates the type of certificate—that is, whether it is a client SSL certificate, a server SSL certificate, a certificate for signing email, and so on. Certificate extensions can also be used for a variety of other purposes.
 
 - A signature section, includes the following information.
@@ -311,7 +311,7 @@ See actual application here: https://github.com/scoulomb/myDNS/blob/master/2-adv
 
 
 This is known as RSA handshake diagram is aligned with explanation given here:
-https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake. (I mirrored the page [cloudfare.md](cloudfare.md)).
+https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake. (I mirrored the page [cloudfare-doc.md](cloudfare-doc.md)).
 
 ### Diffie-Hellman handshake and RSA handshake
 
@@ -462,7 +462,7 @@ Some CA like let's encrypt are free.
 
 ## Multidomain appendix
 
-See [appendix](./multidomain.md).
+See [appendix](./multidomain-appendix.md).
 
 ## Links
 
@@ -475,5 +475,7 @@ See [appendix](./multidomain.md).
 
 ## Complements 
 
-- [see SSH certificate](../lab-env/README.md#ssh-summary)
 - [see IN learning](./in-learning-complement/learning-ssl-tld.md).
+<!-- well consitent with this page and good complement on top, no need to full read 1 shot -->
+- [see SSH certificate](../lab-env/README.md#ssh-summary) we use key in cert for encrpytion and cert are signed.
+<!--did not check in details if signature is used as in SSL during handshake, SSH review OK -->
