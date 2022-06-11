@@ -422,15 +422,19 @@ See Tanenbaum p915 (figure 8.51), for the MAC usage when transmitting data with 
 
 SSL/TLS establishes a secured connexion between 2 sockets ensuring
 - Parameter negotiation between client and server
-- Authentification of server by client (and vice versa in mTLS) (certificate) 
+- Authentification of server by client (and vice versa in mTLS) (certificate, [signature](./in-learning-complement/learning-ssl-tld.md#digital-signature)) 
 - Secret of communication (encrpyption key)
-- protection of data integrity (MAC)
+- protection of data integrity (MAC). See [MD5 and MAC key](./bitcoin-appendix.md#note)
+
+Search for handshake, signature, encrypt, integrity in sequence diagram!
 
 <!-- https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-how-tls-provide-authentication-confidentiality-integrity -->
 
 SSL has two sub-protocol to
 - Establih a secure connexion
 - Use secure  connection
+
+SSL is over TCP.
 
 Ref. Tanenbaum p915
 
@@ -494,5 +498,5 @@ See [appendix](./multidomain-appendix.md).
     <!-- http redirect on F5:https://clouddocs.f5.com/api/irules/HTTP__redirect.html similar to Apache 2 redirect as in https://github.com/open-denon-heos/remote-control -->
 <!-- ok concluded Termination -->
 <!-- Linkedin saved in NAS OK --- >
-
+<!-- tanenabum OK and note added on MAC juge OK -->
 

@@ -347,7 +347,7 @@ Example of mail signature (different from encryption)
 - We encrpt has with sender private key
 - Recipient will verify signature with public key
 
-Encryption of message will require recipient public key.
+(asymetric) Encryption of message will require recipient public key.
 
 In TLS/SSL we also use PKI cert for [signature and encryption], see [TLS cert](../tls-certificate.md#man-in-the-middle-attach-and-need-of-a-ca).
 So both are used in section [below](#website-with-pki-cert).

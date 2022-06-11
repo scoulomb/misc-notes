@@ -58,4 +58,8 @@
     > - A fingerprint is the MD5 digest of the der-encoded Certificate Info, which is an ASN.1 type specified as part of the X.509 specification.
     > - The Certificate Fingerprint is a digest (hash function) of a certificate in x509 binary format. It can be calculated by different algorithms, such as SHA1 for Microsoft Internet Explorer.
 
+## Note
 
+Note tanenmbaum p914, MAC uses MD5 for data integrity. `Datablock + MD5` is encrypted with derived key from nonce and preliminary key (MAC key).
+See link with [Exchange key and their usage](./tls-certificate.md#exchange-key-and-their-usage).
+and [SSL in short](./tls-certificate.md#ssl-in-short).
