@@ -318,7 +318,7 @@ We verify signature using public  key.
 #### Hashing
 
 - Hashing does not necessarilty a PKI certificate but can be
-- Used to verify integrity of nretwork messages, files abd machine boot-up settings
+- Used to verify integrity of network messages, files and machine boot-up settings
 - Does not provide data confidentiality (!= encryption)
 - Used with SSL and TLS
 - Use a one-way algorithm that results in a unique value on data which is  hashed (hash, message digest).
@@ -352,6 +352,7 @@ Encryption of message will require recipient public key.
 In TLS/SSL we also use PKI cert for [signature and encryption], see [TLS cert](../tls-certificate.md#man-in-the-middle-attach-and-need-of-a-ca).
 So both are used in section [below](#website-with-pki-cert).
 
+Note PKI certificate is [itself signed](../tls-certificate.md#more-details-on-sections-and-certificate-hierarchy)
 
 ### Configure a website with a certificate
 
