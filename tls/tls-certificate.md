@@ -493,5 +493,6 @@ See [appendix](./multidomain-appendix.md).
     <!-- we can combine F5 passthrough and OpenShift Termination passtrough so SSL in app pod or ESB (links cloudif)or have TLS termination on F5 and then all clear until route -->
     <!-- http redirect on F5:https://clouddocs.f5.com/api/irules/HTTP__redirect.html similar to Apache 2 redirect as in https://github.com/open-denon-heos/remote-control -->
 <!-- ok concluded Termination -->
+<!-- Linkedin saved in NAS OK -->
 
-Optional todo: OBS save, confirm and no recheck YES
+

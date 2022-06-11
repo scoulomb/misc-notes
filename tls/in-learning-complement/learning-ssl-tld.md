@@ -516,3 +516,31 @@ See https://docs.microsoft.com/fr-fr/azure/vpn-gateway/vpn-gateway-howto-point-t
     - Try other PKI product (pub/priv ca)
     - protocols and vulnerabilities of older protocols (SSL, TLS < 1.3)
 
+
+
+
+<!--  
+Saved in NAS
+
+/smb-share:server=scoulombel-nas.local,share=home/scoulomb-data/DATA/Learn_CS/Learning-SSL-TLS-IN-Learning
+
+Sync to pcloud out of scope
+
+IN learning disable 2FA
+Pass IN +  __
+
+Used chrome extension for download rather than OBS: 
+https://chrome.google.com/webstore/detail/video-downloader-for-link/kphgkkafifebebedaofnmifmgakpgpcd
+And NSA transfer
+
+
+Realized we start notes from PKI hierachy section but fine (checking transcript)
+But already clear so OK
+
+* Note in what u shoukd know:
+And Active Directory Domain Controller for FakeDomain1 OK
+* Note iN sysmetric and asymetric encryption
+TPM to store certificate OK
+ * aT 4'02 same example of mail depicted later
+ * At 6'13 TLS handshake with less details that we have in TLD-cettifcate.md and consistent
+-->
