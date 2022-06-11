@@ -494,4 +494,4 @@ See [appendix](./multidomain-appendix.md).
     <!-- http redirect on F5:https://clouddocs.f5.com/api/irules/HTTP__redirect.html similar to Apache 2 redirect as in https://github.com/open-denon-heos/remote-control -->
 <!-- ok concluded Termination -->
 
-Optional todo: OBS save, confirm and no recheck
+Optional todo: OBS save, confirm and no recheck YES
