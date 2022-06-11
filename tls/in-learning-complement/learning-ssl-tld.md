@@ -275,7 +275,7 @@ We can see the issued certificate and can export the certificate.
 - Self-signed: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-g.md (not key generation `-newkey` in OpenSSL command)
 - public (sub)CA:  https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
 
-We could also offload cert in loab balancer or ESB.
+We could also offload cert in [loab balancer or ESB](../tls-certificate.md#complements).
 
 <!-- ok, links with links cloud/move tls term -->
 
@@ -542,5 +542,9 @@ And Active Directory Domain Controller for FakeDomain1 OK
 * Note iN sysmetric and asymetric encryption
 TPM to store certificate OK
  * aT 4'02 same example of mail depicted later
- * At 6'13 TLS handshake with less details that we have in TLD-cettifcate.md and consistent
+ * At 6'13 TLS handshake with less details that we have in tls-certifcate.md and consistent
+
+ actually start notes same content as tls-certificates.md (more or less)
+ so could bring full course
+ this IN class is really a complement with concrete examples (have to stop here OK)
 -->
