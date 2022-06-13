@@ -487,14 +487,18 @@ See [appendix](./multidomain-appendix.md).
 <!-- ok conlduded BC -->
 - F5 SSL offload and termination:
     - https://support.f5.com/csp/article/K65271370 (see [locally](./f5-doc/Most%20Common%20SSL%20Methods%20for%20LTM%20SSL%20Offload%2C%20SSL%20Pass-Through%20and%20Full%20SSL%20Proxy.html))
-    <!-- link with cloudif -->
     - Similalry OpenShift has 
         - https://docs.openshift.com/container-platform/4.7/networking/routes/secured-routes.html
         > - Secure routes provide the ability to use several types of TLS termination to serve certificates to the client. The following sections describe how to create re-encrypt, edge, and passthrough routes with custom certificates.
         - See also
             - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-i.md#details-on-http-and-https 
             - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-f.md#openshift-route
-    <!-- we can combine F5 passthrough and OpenShift Termination passtrough so SSL in app pod or ESB (links cloudif)or have TLS termination on F5 and then all clear until route -->
+    <!-- 
+    See links with 1a / links cloudif
+    - https://github.com/scoulomb/private_script/blob/main/Links-mig-auto-cloud/README.md#notes-1
+    - https://github.com/scoulomb/private_script/blob/main/Links-mig-auto-cloud/README.md#notes-2
+    - https://github.com/scoulomb/private_script/blob/main/Links-mig-auto-cloud/README.md#notes-3
+    -->
     <!-- http redirect on F5:https://clouddocs.f5.com/api/irules/HTTP__redirect.html similar to Apache 2 redirect as in https://github.com/open-denon-heos/remote-control -->
 <!-- ok concluded Termination -->
 <!-- Linkedin saved in NAS OK --- >
