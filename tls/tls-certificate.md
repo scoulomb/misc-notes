@@ -491,8 +491,9 @@ See [appendix](./multidomain-appendix.md).
         - https://docs.openshift.com/container-platform/4.7/networking/routes/secured-routes.html
         > - Secure routes provide the ability to use several types of TLS termination to serve certificates to the client. The following sections describe how to create re-encrypt, edge, and passthrough routes with custom certificates.
         - See also
-            - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-i.md#details-on-http-and-https 
-            - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-f.md#openshift-route
+            - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-g.md
+            - https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md#default-certificate
+
     <!-- 
     See links with 1a / links cloudif
     - https://github.com/scoulomb/private_script/blob/main/Links-mig-auto-cloud/README.md#notes-1
