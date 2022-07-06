@@ -506,3 +506,4 @@ See [appendix](./multidomain-appendix.md).
 <!-- tanenabum OK and note added on MAC juge OK -->
 - [Link wiht oauth](./oauth-appendix.md)
 <!-- ccl ok -->
+- [Ingress and certificate with compose](../replicate-k8s-ingress-locally-with-compose/README.md)
