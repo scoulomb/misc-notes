@@ -116,12 +116,51 @@ https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-app
 
 [Article part 2](article-part-2.md)
 
+### DNS and ingress
+
 This is exactly what we did for ingress here: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-g.md
 
 And we went further with real CA: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
 
 
+### TLS complements and IN learning
+
 And it is linked to [TLS complements](../tls/tls-certificate.md#complements).
+In particular in [IN learning](../tls/in-learning-complement/learning-ssl-tld.md#acquire-a-webserver-certificate-using-openssl), we see we reference in Apache virtual server config:
+- SSLCertificateFile /cert/www.fakesite.local.crt # certificate
+- SSLCertificateKeyFile /cert/www.fakesitelocal.key  # private key of specific cert
+
+Those are exactly equivalent to what we have in Docker [volume in article](./article-part-2.md#extend-docker-compose-config-for-https)
+
+### Self-signed 
+
+About self-signed [certificate generation in article](article-part-2.md#generate-self-signed-certificates), see comment here in [IN learning](../tls/in-learning-complement/learning-ssl-tld.md#acquire-a-webserver-certificate-using-openssl)
+> Note we could also create a webserver certificate which is self-signed (creation would be similar to CA certificate)
+and  here in [IN learning](../tls/in-learning-complement/learning-ssl-tld.md#link-with-cert-experiements-with-python-nodeport-and-k8s-ingresses).
+
+<!-- view cert: openssl x509 -in appa.prd.coulombel.it.crt -text -->
+
+### SNI
+
+Note Kubernetes ingress controller can support SNI extension:
+https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+
+Ingress `spec.tls[i].hosts[j]` section must match a `spec.rules[m].host` section (convert yaml to json to see structure).
+In [article ingress specific example](article-part-2.md#kubernetes-ingress-scenario) example we have the 2 hosts mapped to same certificate (so SNI feature is actually not used here), and no FQDN defined in cert but it could point to a wildcard or SAN certificate (where SAN could have wildcard). 
+As suggested in [multidomain appendix](../tls/multidomain-appendix.md#also-note-cn-is-deprecated).
+Quoting [article ingress specific example](article-part-2.md#kubernetes-ingress-scenario) 
+> We assume here that the ssl certificate is a wildcat one for *.test.com, else you need to have multiple secrets.
+
+We could also have used SNI on top.
+
+However the jwilder nginx proxy uses SNI behind the scene to work, see https://dimuthukasunwp.github.io/Articles/Hosting-multiple-sites-or-applications-using-Docker-and-NGINX-reverse-proxy-with-Letsencrypt-SSL.html
+> The ability to serve content from different domains using different certificates from one host is possible thanks to SNI
+
+Explain why even if we use a wildcard or SAN certificate (where SAN could have wildcard), we need to duplicate the cert [with the correct naming convention](article-part-2.md#extend-docker-compose-config-for-https) and use SNI.
+
+> What the jwilder/nginx-proxy image needs it that the certificates are named like the `VIRTUAL_HOST` entries. 
+
+<!-- so exploit less wildcard or SAN certificate (where SAN could have wildcard)  OK CLEAR STOP YES-->
 
 <!--
 https://towardsdev.com/3-ways-to-add-a-caption-to-an-image-using-markdown-f2ca30562be6

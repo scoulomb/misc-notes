@@ -188,7 +188,7 @@ From [Linux OpenSSL pki env](#linux-openssl-pki-environment) we have :
 - CApprivate.key
 - FakeDomain2CA.pem
 
-**Step 1**: We will generate pub/priv key pair to be used for that specific
+**Step 1**: We will generate pub/priv key pair to be used for that specific certificate we are creating (one for each cert)
 
 ````
 openssl genrsa -aes255 -out www.fakesitelcal.key 2048
@@ -272,7 +272,7 @@ We can see the issued certificate and can export the certificate.
 
 ### Link with cert experiements with Python (NodePort) and k8s ingresses
 
-- Self-signed: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-g.md (not key generation `-newkey` in OpenSSL command)
+- Self-signed: https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-g.md (note key generation `-newkey` in OpenSSL command)
 - public (sub)CA:  https://github.com/scoulomb/myDNS/blob/master/2-advanced-bind/5-real-own-dns-application/6-use-linux-nameserver-part-h.md
 
 We could also offload cert in [loab balancer or ESB](../tls-certificate.md#complements).

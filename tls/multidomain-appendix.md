@@ -36,7 +36,9 @@ Certification Authorities are encouraged to use the dNSName instead.
 
 We can have in SAN:
 - also a wildcard 
-- same top domain to be more specific
+- same top domain to be more specific 
+
+We can also have different domain
 
 See part 1, certificate at (3'16) https://www.linkedin.com/learning/learning-ssl-tls/certificates?autoplay=true&resume=false&u=75507506 
 
@@ -68,6 +70,8 @@ Without this extension a HTTPS server would not be able to provide service for m
 > -    00 13 - 0x13 (19) bytes of hostname follows
 > -    65 78 61 ... 6e 65 74 - "example.ulfheim.net" 
 
+We can combine SNI and SAN: https://discussions.citrix.com/topic/320041-san-certificate-with-sni-should-it-work/
+> The NetScaler appliance now supports SNI with a SAN extension certificate. During handshake initiation, the host name provided by the client is first compared to the common name and then to the subject alternative name. If the name matches, the corresponding certificate is presented to the client.
 
 ### F5 and SNI - TLS termination 
 
