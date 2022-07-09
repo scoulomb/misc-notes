@@ -188,6 +188,11 @@ We had seen OCSP in [IN course](../tls/in-learning-complement/learning-ssl-tld.m
 It is also supported here: https://github.com/nginx-proxy/nginx-proxy#ocsp-stapling
 <!-- stop ocsp and do not explore more readme of proxy, not also https://github.com/nginx-proxy/nginx-proxy#virtual-ports but from proxy to docker app, why  -v /var/run/docker.sock:/tmp/docker.sock:ro, as to run docker in docker osef, network part osef OK -->
 
+## k3s
+
+Note we could use k3s instead of compose in production, see [lab env: QNAP](../lab-env/others.md#use-container-station-with-k3d-image) and [lab env: WSL](../lab-env/others.md#use-wsl-and-k3d). And then could even use ArgoCD: https://github.com/scoulomb/misc-notes/blob/master/lab-env/others.md#but-discover-contaner-station-can-deploy-a-k3d-natively, https://argo-cd.readthedocs.io/en/stable/getting_started/ and https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/, so that CI just bump docker image in deployment.
+SSS
+
 <!--
 https://towardsdev.com/3-ways-to-add-a-caption-to-an-image-using-markdown-f2ca30562be6
 -->
