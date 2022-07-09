@@ -147,20 +147,46 @@ https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
 
 Ingress `spec.tls[i].hosts[j]` section must match a `spec.rules[m].host` section (convert yaml to json to see structure).
 In [article ingress specific example](article-part-2.md#kubernetes-ingress-scenario) example we have the 2 hosts mapped to same certificate (so SNI feature is actually not used here), and no FQDN defined in cert but it could point to a wildcard or SAN certificate (where SAN could have wildcard). 
-As suggested in [multidomain appendix](../tls/multidomain-appendix.md#also-note-cn-is-deprecated).
+
 Quoting [article ingress specific example](article-part-2.md#kubernetes-ingress-scenario) 
-> We assume here that the ssl certificate is a wildcat one for *.test.com, else you need to have multiple secrets.
+> We assume here that the ssl certificate is a wildcard one for *.test.com, else you need to have multiple secrets.
+
+As suggested in [multidomain appendix](../tls/multidomain-appendix.md#also-note-cn-is-deprecated).
+
 
 We could also have used SNI on top.
 
 However the jwilder nginx proxy uses SNI behind the scene to work, see https://dimuthukasunwp.github.io/Articles/Hosting-multiple-sites-or-applications-using-Docker-and-NGINX-reverse-proxy-with-Letsencrypt-SSL.html
 > The ability to serve content from different domains using different certificates from one host is possible thanks to SNI
 
-Explain why even if we use a wildcard or SAN certificate (where SAN could have wildcard), we need to duplicate the cert [with the correct naming convention](article-part-2.md#extend-docker-compose-config-for-https) and use SNI.
+If we use a wildcard or SAN certificate (where SAN could have wildcard), we can duplicate the cert [with the correct naming convention](article-part-2.md#extend-docker-compose-config-for-https). This is what is suggested in the artcile.
 
 > What the jwilder/nginx-proxy image needs it that the certificates are named like the `VIRTUAL_HOST` entries. 
 
-<!-- so exploit less wildcard or SAN certificate (where SAN could have wildcard)  OK CLEAR STOP YES-->
+But actually jwilder also support wildcard or san certificate (where SAN could have wildcard).
+Quoting doc: https://github.com/nginx-proxy/nginx-proxy
+
+> **Wildcard Certificates**:
+> Wildcard certificates and keys should be named after the domain name with a .crt and .key extension. For example VIRTUAL_HOST=foo.bar.com would use cert name bar.com.crt and bar.com.key.
+SNI
+
+> **SNI**: If your certificate(s) supports multiple domain names, you can start a container with CERT_NAME=<name> to identify the certificate to be used. For example, a certificate for *.foo.com and *.bar.com could be named shared.crt and shared.key. A container running with VIRTUAL_HOST=foo.bar.com and CERT_NAME=shared will then use this shared cert.
+
+SAN name can probaly also be a wildcard.
+
+In doc they call it **SNI**, because it is a SNI feature to manage a **SAN** cert.
+
+It would avoid cert duplication also with Compose.
+
+Thus we can combine SNI and SAN.
+
+<!-- so can exploit wildcard or SAN certificate (where SAN could have wildcard)  unlike what is shown in artcile OK CLEAR STOP YES -->
+
+### OCSP
+
+We had seen OCSP in [IN course](../tls/in-learning-complement/learning-ssl-tld.md#pki-components)
+It is also supported here: https://github.com/nginx-proxy/nginx-proxy#ocsp-stapling
+<!-- stop ocsp and do not explore more readme of proxy, not also https://github.com/nginx-proxy/nginx-proxy#virtual-ports but from proxy to docker app, why  -v /var/run/docker.sock:/tmp/docker.sock:ro, as to run docker in docker osef, network part osef OK -->
 
 <!--
 https://towardsdev.com/3-ways-to-add-a-caption-to-an-image-using-markdown-f2ca30562be6
