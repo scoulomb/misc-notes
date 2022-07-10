@@ -2,12 +2,18 @@
 
 ## Use recent machine
 
+Bare metal dual boot + Docker (+ Compose) + A kubernetes distribution + Tools (ArgoCD...).
+
+
+
 - Make OS recovery tool: https://www.dell.com/support/home/fr-fr/drivers/osiso/recoverytool
 - Boot to usb: https://www.dell.com/support/kbdoc/fr-fr/000126121/acc%C3%A8s-%C3%A0-la-configuration-syst%C3%A8me-uefi-bios-sous-windows-sur-votre-syst%C3%A8me-dell (access option via windows, search uefi and advanced startup)
 - But had issue with Intel RST: https://help.ubuntu.com/rst
 
 
 ## Use Vagrant 
+
+VM + Docker (+ Compose) + A kubernetes distribution + Tools (ArgoCD...).
 
 ### Could use Rancher
 
@@ -57,18 +63,25 @@ We can setup Kube
 
 ### Ubuntu station 
 
+VM + Docker (+ Compose) + A kubernetes distribution + Tools (ArgoCD...).
+
 I wanted to use Ubuntu station but error ticket open: https://service.qnap.com/fr-fr/user/support-detail-single/5002s00000LvvLbAAJ#
 
 Ticket solved but consumes a lot of CPU.
 
 ### Use container station with k3*d* image 
 
+
+VM + Docker + A kubernetes distribution inside Docker + Tools (ArgoCD...).
+
 https://hub.docker.com/r/rancher/k3d
 
 To run the container set prvilege option.
 > Create > advanced settings > device > run container in privileged mode 
 
-### But discover contaner station can deploy a k3*s* natively
+### But discover container station can deploy a k3*s* natively
+
+NAS + Docker (+ Compose) + A kubernetes distribution inside Docker (k3s wraps k3d) + Tools (ArgoCD...).
 
 > Preference > kubernetes
 
@@ -110,8 +123,25 @@ even with
 https://www.qnap.com/fr-fr/how-to/tutorial/article/comment-utiliser-browser-station
 
 
-### Use WSL and k3s
+### Use WSL
+
+WSL2 + Docker (+ Compose) + https://docs.docker.com/desktop/windows/#kubernetes + Tools (ArgoCD...).
+
+Setup: https://docs.docker.com/desktop/windows/install/
+
+<!-- 
+Already used this for git secret project and faced dns issue here corp solved with 8.8.8.8 DNS: https://github.com/scoulomb/misc-notes/blob/master/github-security/README.md -->
+
+Note from https://docs.microsoft.com/en-us/windows/wsl/compare-versions
+> WSL 2 uses the latest and greatest in virtualization technology to run a Linux kernel inside of a lightweight utility virtual machine (VM). However, WSL 2 is not a traditional VM experience.
+
+Access files:
+- https://devblogs.microsoft.com/commandline/access-linux-filesystems-in-windows-and-wsl-2/ (mount windows folder to wsl)
+- https://dev.to/miftahafina/accessing-wsl2-files-from-windows-file-explorer-308o (access wsl folder from windows, requires network)
+
+
 
 Not tried
 
-<!-- some dns issue here corp -->
+
+Links with [replicate k8s ingress locally with compose](../replicate-k8s-ingress-locally-with-compose/README.md#k3s).

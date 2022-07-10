@@ -6,7 +6,11 @@ For example to explore tools like ArgoCD:
 - https://argo-cd.readthedocs.io/en/stable/
 - https://www.youtube.com/watch?v=MeU5_k9ssrs
 
+So stack is VM/Bare metal + Docker (+ Compose) + A kubernetes distribution + Tools (ArgoCD...).
+
 ## Setup physical (old) machine with Ubuntu and ssh access
+
+Bare metal + Docker + A kubernetes distribution + Tools (ArgoCD...).
 
 ### Create a Ubuntu bootable key with Rufus
 

@@ -190,8 +190,19 @@ It is also supported here: https://github.com/nginx-proxy/nginx-proxy#ocsp-stapl
 
 ## k3s
 
-Note we could use k3s instead of compose in production, see [lab env: QNAP](../lab-env/others.md#use-container-station-with-k3d-image) and [lab env: WSL](../lab-env/others.md#use-wsl-and-k3d). And then could even use ArgoCD: https://github.com/scoulomb/misc-notes/blob/master/lab-env/others.md#but-discover-contaner-station-can-deploy-a-k3d-natively, https://argo-cd.readthedocs.io/en/stable/getting_started/ and https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/, so that CI just bump docker image in deployment.
-SSS
+Compose in production: https://docs.docker.com/compose/production/
+    
+Note we could use k3s instead of compose in production, see [lab env: QNAP](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively).
+
+And then could even use ArgoCD as in [lab-env](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively), https://argo-cd.readthedocs.io/en/stable/getting_started/ and https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/, so that CI just bump docker image in deployment.
+
+Argocd had some port forwarding issue specific to qnap, so setup would be closer to [minikube](../lab-env/README.md). <!-- reason why described in [lab-env](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively) -->
+
+Could automate some setup (k3s, argoCD) via Ansible playbook (example: https://github.com/scoulomb/myDNS/blob/master/3-DNS-solution-providers/1-Infoblox/4-Ansible-API/README.md) or others (https://github.com/scoulomb/dev_vm/tree/master/saltstack/salt).
+
+ Note [lab env: WSL](../lab-env/others.md#use-wsl) also offer a Kubernetes by default (similar to QNAP k3s): https://docs.docker.com/desktop/windows/#kubernetes.
+ But it is not k3s: https://web.archive.org/web/20210620005051/https://www.grottedubarbu.fr/kubernetes-fast-windows/
+It is possible to have k3s distribution though: https://www.grottedubarbu.fr/k3s-on-wsl2/
 
 <!--
 https://towardsdev.com/3-ways-to-add-a-caption-to-an-image-using-markdown-f2ca30562be6
