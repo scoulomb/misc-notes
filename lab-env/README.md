@@ -6,11 +6,15 @@ For example to explore tools like ArgoCD:
 - https://argo-cd.readthedocs.io/en/stable/
 - https://www.youtube.com/watch?v=MeU5_k9ssrs
 
-So stack is VM/Bare metal + Docker (+ Compose) + A kubernetes distribution + Tools (ArgoCD...).
+## Generic Linux stack is
+
+> `Bare metal Linux (or Bare metal Windows or Linux + VM Linux) + Docker (+ Compose) + A kubernetes distribution (deployed in VM/Docker) + Tools (ArgoCD...)`.
 
 ## Setup physical (old) machine with Ubuntu and ssh access
 
-Bare metal + Docker + A kubernetes distribution + Tools (ArgoCD...).
+Stack is 
+
+> `Bare metal Linux + Docker + A kubernetes distribution + Tools (ArgoCD...)`.
 
 ### Create a Ubuntu bootable key with Rufus
 
@@ -345,6 +349,29 @@ Advantage is that NAS always plugged so provide IP to box. Alternative solution 
 In local network we can define private DNS: 
 http://192.168.1.1/network/dns
 
+<!-- above ok -->
+
+## Kubernetes distribution alternative
+
+See [kubernetes distribution](kubernetes-distribution.md)
+<!-- OK -->
+
 ## Other methods
 
-See [other methods](./others.md)
+- See [Other Kubernetes setup on Linux based stack](./others.md), where we do not use for lab environment a dedicated machine for Linux based setup.
+<!-- ok -->
+- See [Other Kubernetes setup on Windows based stack](./other-windows-based-setup.md), where we setup Kubernetes on top of Windows without **Linux** or a **standard Linux VM**.
+<!-- ok, no need to read again cristal clear in the end forbidden -->
+<!-- do NOT repoint from home-assitant and open-denon-heos, host network limitation, had used WSL here in corp  https://github.com/scoulomb/misc-notes/blob/master/github-security/README.md  -->
+
+## Related links
+
+- [replicate k8s ingress locally with compose](../replicate-k8s-ingress-locally-with-compose/README.md#k3s): alternative to k3s. <!-- antibes tri first option-->
+<!-- OK -->
+- [Volumes](https://github.com/scoulomb/myk8s/blob/master/Volumes/non-cloud-volume-additional-appendix.md): show impacts of Kubernetes distribution choices on volumes and also Ingresses <!-- antibes tri discussion-->
+<!-- OK -->
+
+<!-- can fully conclude, all OK, and other points tibo osef, tri setup well described
+OK CCL
+Understand cgroup to go from process up to Docker, put current finding which is sufficient, do it only if JM asks 
+ALL OK STOP-->

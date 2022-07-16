@@ -192,18 +192,21 @@ It is also supported here: https://github.com/nginx-proxy/nginx-proxy#ocsp-stapl
 
 Compose in production: https://docs.docker.com/compose/production/
     
-Note we could use k3s instead of compose in production, see [lab env: QNAP](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively).
+Note we could use k3s instead of compose in production, see:
+<!-- what was done for Antibes tri -->
+- [lab env: Kubernetes distribution, k3s](../lab-env/README.md#kubernetes-distribution-alternative) (and section below) 
+- [lab env: Kubernetes distribution, k3s](../lab-env/kubernetes-distribution.md#k3s) 
+- [lab env: QNAP and k3s](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively).
 
 And then could even use ArgoCD as in [lab-env](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively), https://argo-cd.readthedocs.io/en/stable/getting_started/ and https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/, so that CI just bump docker image in deployment.
 
 Argocd had some port forwarding issue specific to qnap, so setup would be closer to [minikube](../lab-env/README.md). <!-- reason why described in [lab-env](../lab-env/others.md#but-discover-container-station-can-deploy-a-k3s-natively) -->
+<!-- argocd sop explo here -->
 
 Could automate some setup (k3s, argoCD) via Ansible playbook (example: https://github.com/scoulomb/myDNS/blob/master/3-DNS-solution-providers/1-Infoblox/4-Ansible-API/README.md) or others (https://github.com/scoulomb/dev_vm/tree/master/saltstack/salt).
 
- Note [lab env: WSL](../lab-env/others.md#use-wsl) also offer a Kubernetes by default (similar to QNAP k3s): https://docs.docker.com/desktop/windows/#kubernetes.
- But it is not k3s: https://web.archive.org/web/20210620005051/https://www.grottedubarbu.fr/kubernetes-fast-windows/
-It is possible to have k3s distribution though: https://www.grottedubarbu.fr/k3s-on-wsl2/
-
+ Note [lab env: WSL](../lab-env/other-windows-based-setup.md#docker-desktop-for-windows) also offer a Kubernetes by default.
+ 
 <!--
 https://towardsdev.com/3-ways-to-add-a-caption-to-an-image-using-markdown-f2ca30562be6
 -->
