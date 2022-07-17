@@ -315,7 +315,7 @@ Pod is restarted.
 
 ### kubeadm
 
-We can use `kubeadm` (as done here https://github.com/scoulomb/myk8s/tree/master/Setup, https://github.com/scoulomb/myk8s/blob/master/Volumes/non-cloud-volume-additional-appendix.md)...
+We could here use `kubeadm` (as done here with VM https://github.com/scoulomb/myk8s/tree/master/Setup, https://github.com/scoulomb/myk8s/blob/master/Volumes/non-cloud-volume-additional-appendix.md, and next section [other.md](others.md))...
 
 When using `kubeadm`
 1. We install first control plane (master) node node:  https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#initializing-your-control-plane-node (`kubeadm init <args>`).
@@ -960,7 +960,7 @@ See notes here: https://github.com/scoulomb/myk8s/blob/master/container-engine/c
 
 master/server nodes describe taints but also deploys more kube-system container, or process for scheduler, etcd...
 
-
+````
 scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ docker ps
 CONTAINER ID   IMAGE                                 COMMAND                  CREATED        STATUS        PORTS                                                                                                                                  NAMES
 38a2b8271294   gcr.io/k8s-minikube/kicbase:v0.0.30   "/usr/local/bin/entr…"   20 hours ago   Up 20 hours   127.0.0.1:49162->22/tcp, 127.0.0.1:49161->2376/tcp, 127.0.0.1:49160->5000/tcp, 127.0.0.1:49159->8443/tcp, 127.0.0.1:49158->32443/tcp   multinode-demo-m02
@@ -1114,4 +1114,163 @@ root        2893  0.2  0.5 750840 44156 ?        Ssl  Jul15   2:35 /coredns -con
 root      180485  0.0  0.0   5904  2744 pts/1    Rs+  11:35   0:00 ps -aux
 scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$
 ````
+
+</details>
+
+
+## Tear down/clean-up
+
+<details>
+  <summary>Click to expand!</summary>
+  
+
+We saw we can do:
+- `k3d cluster stop mycluster`,
+- `minikube stop`: https://minikube.sigs.k8s.io/docs/commands/stop/
+
+And both have delete
+
+k3s not really something to stop as kubernetes as no VM, Docker layer managed by k3s.
+Do not confuse with: https://rancher.com/docs/k3s/latest/en/installation/uninstall/
+
+We can at least remove all resources
+
+From  https://stackoverflow.com/questions/47128586/how-to-delete-all-resources-from-kubernetes-one-time
+
+````
+kubectl delete all --all -n {namespace} 
+````
+
+can we do?
+
+````
+kubectl delete all --all --all-namespaces
+````
+
+looking here: https://stackoverflow.com/questions/33509194/command-to-delete-all-pods-in-all-kubernetes-namespaces, yes
+
+
+It will delete `kube-system` but those pod, deployment, will be recreated by Operator unlike `hello pod` one (we removed `hello deployment`)
+
+````
+
+Note if machine restart (minikube stop) and do `minikube start --nodes 2 -p multinode-demo --driver=docker` will "Restarting existing docker container for "multinode-demo"", if container still running because we just did a stop it will: "Updating the running docker "multinode-demo-m02" container ..."
+
+ Docker which are cluster nodes keeps the same id
+
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED        STATUS         PORTS
+    NAMES
+38a2b8271294   gcr.io/k8s-minikube/kicbase:v0.0.30   "/usr/local/bin/entr…"   45 hours ago   Up 2 minutes   127.0.0.1:49162->22/tcp, 127.0.0.1:49161->2376/tcp, 127.0.0.1:49160->5000/tcp, 127.0.0.1:49159->8443/tcp, 127.0.0.1:49158->32443/tcp   multinode-demo-m02
+2bc06cebf32e   gcr.io/k8s-minikube/kicbase:v0.0.30   "/usr/local/bin/entr…"   45 hours ago   Up 2 minutes   127.0.0.1:49157->22/tcp, 127.0.0.1:49156->2376/tcp, 127.0.0.1:49155->5000/tcp, 127.0.0.1:49154->8443/tcp, 127.0.0.1:49153->32443/tcp   multinode-demo
+
+````
+
+
+
+````
+minikube stop ;  or machine reboot
+minikube start --nodes 2 -p multinode-demo --driver=docker
+sleee 5
+
+kubectl apply -f deployment.yaml
+kubectl get pods --all-namespaces
+
+kubectl delete all --all --all-namespaces
+kubectl get pods --all-namespaces
+````
+
+Output is
+
+````
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ kubectl apply -f deployment.yaml
+deployment.apps/hello created
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                     READY   STATUS              RESTARTS        AGE
+default       hello-99b498c79-5cchb                    1/1     Running             0               30s
+default       hello-99b498c79-8wdln                    0/1     ContainerCreating   0               30s
+default       hello-99b498c79-c9v7p                    1/1     Running             0               30s
+default       hello-99b498c79-df2g9                    1/1     Running             0               30s
+default       hello-99b498c79-gbm9k                    1/1     Running             0               30s
+default       hello-99b498c79-hzrdt                    1/1     Running             0               30s
+default       hello-99b498c79-jfcqz                    1/1     Running             0               30s
+default       hello-99b498c79-jzv55                    1/1     Running             0               30s
+default       hello-99b498c79-njghp                    1/1     Running             0               30s
+default       hello-99b498c79-r44ff                    1/1     Running             0               30s
+default       hello-99b498c79-r4kdq                    1/1     Running             0               30s
+default       hello-99b498c79-r4kmc                    1/1     Running             0               30s
+default       hello-99b498c79-s4s6s                    1/1     Running             0               30s
+default       hello-99b498c79-t6vgk                    1/1     Running             0               30s
+default       hello-99b498c79-wr8tx                    1/1     Running             0               30s
+kube-system   coredns-64897985d-89p5s                  1/1     Running             1 (8m26s ago)   14m
+kube-system   etcd-multinode-demo                      1/1     Running             3 (8m26s ago)   26m
+kube-system   kindnet-d6nw9                            1/1     Running             1 (8m26s ago)   14m
+kube-system   kindnet-p8xl8                            0/1     CrashLoopBackOff    12 (64s ago)    14m
+kube-system   kube-apiserver-multinode-demo            1/1     Running             3 (8m26s ago)   26m
+kube-system   kube-controller-manager-multinode-demo   1/1     Running             3 (8m26s ago)   26m
+kube-system   kube-proxy-hxvk8                         0/1     CrashLoopBackOff    12 (2m5s ago)   14m
+kube-system   kube-proxy-w7wqx                         1/1     Running             1 (8m26s ago)   14m
+kube-system   kube-scheduler-multinode-demo            1/1     Running             3 (8m26s ago)   26m
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ kubectl delete all --all --all-namespaces
+pod "hello-99b498c79-5cchb" deleted
+pod "hello-99b498c79-8wdln" deleted
+pod "hello-99b498c79-c9v7p" deleted
+pod "hello-99b498c79-df2g9" deleted
+pod "hello-99b498c79-gbm9k" deleted
+pod "hello-99b498c79-hzrdt" deleted
+pod "hello-99b498c79-jfcqz" deleted
+pod "hello-99b498c79-jzv55" deleted
+pod "hello-99b498c79-njghp" deleted
+pod "hello-99b498c79-r44ff" deleted
+pod "hello-99b498c79-r4kdq" deleted
+pod "hello-99b498c79-r4kmc" deleted
+pod "hello-99b498c79-s4s6s" deleted
+pod "hello-99b498c79-t6vgk" deleted
+pod "hello-99b498c79-wr8tx" deleted
+pod "coredns-64897985d-89p5s" deleted
+pod "etcd-multinode-demo" deleted
+pod "kindnet-d6nw9" deleted
+pod "kindnet-p8xl8" deleted
+pod "kube-apiserver-multinode-demo" deleted
+pod "kube-controller-manager-multinode-demo" deleted
+pod "kube-proxy-hxvk8" deleted
+pod "kube-proxy-w7wqx" deleted
+pod "kube-scheduler-multinode-demo" deleted
+service "kubernetes" deleted
+service "kube-dns" deleted
+daemonset.apps "kindnet" deleted
+daemonset.apps "kube-proxy" deleted
+deployment.apps "hello" deleted
+deployment.apps "coredns" deleted
+
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                     READY   STATUS    RESTARTS       AGE
+kube-system   etcd-multinode-demo                      1/1     Running   3 (9m6s ago)   32s
+kube-system   kube-apiserver-multinode-demo            1/1     Running   3 (9m6s ago)   32s
+kube-system   kube-controller-manager-multinode-demo   1/1     Running   3 (9m6s ago)   32s
+kube-system   kube-scheduler-multinode-demo            1/1     Running   3 (9m6s ago)   32s
+
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ kubectl describe po kube-apiserver-multinode-demo -n kube-system | grep -A 15 Events:
+Events:
+  Type    Reason          Age   From     Message
+  ----    ------          ----  ----     -------
+  Normal  SandboxChanged  42m   kubelet  Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          42m   kubelet  Container image "k8s.gcr.io/kube-apiserver:v1.23.3" already present on machine
+  Normal  Created         42m   kubelet  Created container kube-apiserver
+  Normal  Started         42m   kubelet  Started container kube-apiserver
+  Normal  SandboxChanged  16m   kubelet  Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          16m   kubelet  Container image "k8s.gcr.io/kube-apiserver:v1.23.3" already present on machine
+  Normal  Created         16m   kubelet  Created container kube-apiserver
+  Normal  Started         16m   kubelet  Started container kube-apiserver
+  Normal  SandboxChanged  10m   kubelet  Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          10m   kubelet  Container image "k8s.gcr.io/kube-apiserver:v1.23.3" already present on machine
+  Normal  Created         10m   kubelet  Created container kube-apiserver
+  Normal  Started         10m   kubelet  Started container kube-apiserver
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$
+
+````
+
+We can see kube-sytem pod were re-created by internal controller.
+We keep restart histort as pod name is the same. Thus restart > age.
+
 </details>
