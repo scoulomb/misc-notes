@@ -261,6 +261,8 @@ See https://github.com/kubernetes/minikube/issues/5392#issuecomment-539289653
 
 See parallel with [Minikube Linux driver](./kubernetes-distribution.md#so-if-we-summarize-minikube-driver-mode-linux)
 
+<!-- consider hyper-v or vbox driver not usable pn top of hyper-v but do not enter here -->
+
 ## k3s on WSL 2
 
 > `Windows Host  + Hyper-v + WSL2 + k3s + Tools (ArgoCD...).`

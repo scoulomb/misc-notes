@@ -21,14 +21,20 @@ https://minikube.sigs.k8s.io/docs/drivers/#linux
 - Podman - container (experimental)
 - SSH - remote ssh
 
-Here is an example with bare metal (deployed on a VM): https://github.com/scoulomb/myk8s/tree/master/Setup/MinikubeSetup
 
 In our [setup](./README.md) we propose to use docker driver.
-In that case Docker image will actually be deployed in Docker.
-A Kubernetes node is actually a Docker container, and container pod runs inside the container node (Docker in Docker).
-If we use VM driver, kubernetes nodes will be virtual machine.
+- In that case Docker container (container in pod) will actually be deployed in Docker container (node emulation) in the `host`,
+- A Kubernetes node is actually a Docker container, and container pod runs inside the container node (Docker in Docker).
+- If we use VM driver, kubernetes nodes will be virtual machine in the host.
+- If we use None driver (bare metal), we will have the only option to deploy a single node directly on the machine.
+- SSH option enable to have node deployed in remote machine/VM.
 
-In our setup host is bare metal but it could be itself a VM.
+In our setup `host` is bare metal but it could be itself a VM.
+
+<!-- kuberntes process can be itself deployed in node (bare-metail in Node) or in Docker,
+see ETCD: https://etcd.io/docs/v3.4/op-guide/container/#bare-metal and [here](#comment-on-master-nodes) case of deployment in Docker-->
+
+Here is an example with None driver (bare metal) deployed on a VM: https://github.com/scoulomb/myk8s/tree/master/Setup/MinikubeSetup, [other.md](others.md#use-archlinuxubuntu).
 
 ### So if we summarize minikube driver mode (Linux)
 
@@ -315,7 +321,10 @@ Pod is restarted.
 
 ### kubeadm
 
-We could here use `kubeadm` (as done here with VM https://github.com/scoulomb/myk8s/tree/master/Setup, https://github.com/scoulomb/myk8s/blob/master/Volumes/non-cloud-volume-additional-appendix.md, and next section [other.md](others.md))...
+We could here use `kubeadm` (as done here with VM https://github.com/scoulomb/myk8s/tree/master/Setup, https://github.com/scoulomb/myk8s/blob/master/Volumes/non-cloud-volume-additional-appendix.md, and next section [other.md](others.md#use-archlinuxubuntu))...
+
+
+<!-- setup with Minikube described [](#minikube-docker-in-docker-and-local-multicluster) -->
 
 When using `kubeadm`
 1. We install first control plane (master) node node:  https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#initializing-your-control-plane-node (`kubeadm init <args>`).
@@ -386,6 +395,7 @@ From https://rancher.com/docs/k3s/latest/en/installation/ha/, https://web.archiv
 See also https://github.com/k3s-io/k3s/issues/1401
 
 We will first check k3d and setup k3s.
+We will not check k3s HA setup (high availability, multinode) on host. But k3s is a particular case of k3s HA.
 
 ### k3d
 
