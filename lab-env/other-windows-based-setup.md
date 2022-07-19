@@ -13,7 +13,27 @@ This requires a good understanding of [Kubernetes distribution](./kubernetes-dis
 > `Windows Host  + Hyper-v + WSL2 + [Docker Desktop for windows] = { Docker (+ Compose) + https://docs.docker.com/desktop/windows/#kubernetes} + Tools (ArgoCD...).`
 
 <!-- 
-Already used this for git secret project and faced dns issue here corp solved with 8.8.8.8 DNS: https://github.com/scoulomb/misc-notes/blob/master/github-security/README.md -->
+Already used this for git secret project and faced dns issue here corp solved with 8.8.8.8 DNS: https://github.com/scoulomb/misc-notes/blob/master/github-security/README.md
+
+````
+$ sudo rm -rf /etc/resolv.conf
+$ sudo vim /etc/resolv.conf
+$ cat /etc/resolv.conf
+nameserver 8.8.8.8
+$ nslookup google.fr
+Server:         8.8.8.8
+Address:        8.8.8.8#53
+
+Non-authoritative answer:
+Name:   google.fr
+Address: 142.250.201.163
+Name:   google.fr
+Address: 2a00:1450:4007:81a::2003
+````
+
+wsl trigger via menu also start Ubuntu 
+See also https://unix.stackexchange.com/questions/589683/wsl-dns-not-working-when-connected-to-vpn
+-->
 
 ### Install WSL
 
@@ -60,6 +80,7 @@ Share file: \\wsl$\Ubuntu\home\scoulomb-wsl
 As described here https://dev.to/miftahafina/accessing-wsl2-files-from-windows-file-explorer-308o (access wsl folder from windows, requires network which may be locked in corporate envrionmet)
 
 From WSL can also do `cd /mnt/c`.
+<!-- use when corp -->
 
 Can also land in current path by lanching `wsl` from powershell/cmd.
 <!-- manage to write file from here on corp laptop, in my personal laptop seem permission issue -->
