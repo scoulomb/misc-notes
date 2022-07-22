@@ -87,6 +87,7 @@ Note we have
 - Powershell
 - Can start vm from program 
 - Windows terminal: https://docs.microsoft.com/fr-fr/windows/wsl/install#ways-to-run-multiple-linux-distributions-with-wsl (from windows 11)
+<!-- jm manges to get it, osef-->
 
 ### File sharing in WSL
 
@@ -134,6 +135,8 @@ We can access to both docker and docker-compose on windows + wsl :)
 Note windows/wsl accept `docker compose` and `docker-compose` command.
 When we do `docker-compose` from windows it actually creates it in WSL.
 Can be easily checked via `docker ps` in WSL.
+
+Linux in recent version also accepts it.
 
 #### Advanced demo
 
