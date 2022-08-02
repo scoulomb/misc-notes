@@ -7,3 +7,4 @@
 - [Replicate Kubernetes Ingress locally with Docker Compose](./replicate-k8s-ingress-locally-with-compose/README.md) <!-- ccl -->
 - [Github security](./github-security/README.md) <!--ccl -->
 - [OAuth explained to myself](./oauth/README.md) <!--ccl -->
+- [Jupyter](./Jupyter/README.md)

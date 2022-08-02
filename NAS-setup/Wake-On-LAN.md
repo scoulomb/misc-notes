@@ -249,3 +249,4 @@ I will not explore further...seems a box issue
 <!-- WOL/WOW concluded OK STOP HERE -->
 <!-- disclosed mac@ OK:https://security.stackexchange.com/questions/67893/is-it-dangerous-to-post-my-mac-address-publicly#:~:text=Disclosing%20the%20MAC%20address%20in,you%20and%20your%20immediate%20gateway). -->
 
+We can use [VPN](README.md#configure-a-vpn-to-lan-via-nas) as alternative. 
