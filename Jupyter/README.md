@@ -93,3 +93,4 @@ Combined with [Wake On WAN/LAN](../NAS-setup/Wake-On-LAN.md) applied to laptop c
 We could deploy this container inside the PAAS and OC client car target control plane from inside the PaaS in some cases
 This would avoid going through jumpsrv, and requires container to access  DNS of the PAAS (corp DNS in resolv.conf)  -->
 
+<!-- [Here we had setup Jupyer](../lab-env/others.md#use-archlinuxubuntu) -->
