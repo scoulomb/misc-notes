@@ -1,7 +1,7 @@
 ## WOL
 
+**Objective**: Turn on the NAS remotely from LAN or WAN.
 
-https://github.com/scoulomb/misc-notes/blob/8a067074b1e0b6ceb57b3fce8c6885bf4dc8175e/NAS-setup/README.md
 
 ### Get MAC @dresss of NAS
 
@@ -121,7 +121,7 @@ Similar to https://github.com/scoulomb/http-over-socket/blob/main/1-client/cli.p
 
 Code from wikipedia: https://en.wikipedia.org/wiki/Wake-on-LAN
 
-````
+````python
 scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ cat mywol.py
 import socket
 
@@ -151,12 +151,21 @@ listening on wlo1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 16:55:18.726292 IP scoulomb-HP-Pavilion-TS-Sleekbook-14.54274 > 255.255.255.255.echo: UDP, length 102
 ````
 
-We can replace in our SFR lan by `192.168.1.255`.
+We can replace in our SFR BOX lan by `192.168.1.255`.
 
 **Notes**:
 Note that it matches default value of pywakeonlan: https://github.com/remcohaszing/pywakeonlan#as-a-standalone-script
 
-### Etherwake does not use UDP
+Is it possible to not use broadcast IP and use directly NAS IP on the LAN which is `192.168.1.88`.
+
+```python
+s.sendto(magic, ('192.168.1.88', 9))
+```
+From test it did not work.
+
+### Comment on Etherwake
+
+#### Etherwake does not use UDP
 
 Our etherwake version does not allow to go through UDP (no IP and Port): Cf `-b` field does not allow to set an IP and port not pressent as option.
 
@@ -167,9 +176,39 @@ Assumption is confirmed in the code https://coral.googlesource.com/busybox/+/ref
 It uses `SOCK_PACKET` or `SOCK_RAW`, see here:https://man7.org/linux/man-pages/man2/socket.2.html
 And not `SOCK_DGRAM` (UDP) or `SOCK_STREAM` (TCP): https://stackoverflow.com/questions/5815675/what-is-sock-dgram-and-sock-stream
 
+
+
+#### How to not specify mac address with Etherwake 
+
+See https://linux.die.net/man/8/ether-wake
+
+> The single required parameter is a station (MAC) address or a **host ID that can be translated to a MAC address by an ethers(5) database specified in nsswitch.conf(5)**
+
+
+For this do 
+
+
+```shell
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ sudo arp -d 192.168.1.88
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ arp -e | grep nas
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ cat /etc/ethers
+24:5e:be:3f:2b:f7 192.168.1.88
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ arp -e | head -n 2
+Address                  HWtype  HWaddress           Flags Mask            Iface
+10.42.0.212              ether   6e:34:d0:f4:94:98   C                     cni0
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ arp -e | grep nas
+nas                      ether   24:5e:be:3f:2b:f7   CM                    wlo1
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ sudo etherwake -i wlo1  192.168.1.88
+```
+
+<!-- could not set with custom DNS,
+Also it shows name "nas" in arp table, no clue how got it
+in etherwake command we have to use ip
+-->
+
 ### How does it work?
 
-#### ARP
+#### Reminder on ARP
 
 From https://en.wikipedia.org/wiki/Address_Resolution_Protocol
 
@@ -187,7 +226,7 @@ See OSI layer and encapsulation: https://en.wikipedia.org/wiki/Encapsulation_(ne
 
 #### WOL
 
-WOL works in a similar fashion:
+WOL works in a similar fashion but does not use ARP.
 
 From: https://en.wikipedia.org/wiki/Wake-on-LAN
 
@@ -213,12 +252,6 @@ See here: https://en.wikipedia.org/wiki/Routing
 
 It confirms we can apply unicast, multicast, broadcast at L2 or L3. See https://reussirsonccna.fr/unicast-multicast-broadcast-oui-mais-quelle-couche/ (anycast not sure at L2).
 
-### How to not specify mac address with etherwake (not tried)
-
-See https://linux.die.net/man/8/ether-wake
-
-> The single required parameter is a station (MAC) address or a **host ID that can be translated to a MAC address by an ethers(5) database specified in nsswitch.conf(5)**
-
 ### Remote WOL (WOW - Wake On Wan)
 
 See wiki"  "wake on internet"
@@ -226,7 +259,7 @@ See wiki"  "wake on internet"
 Can use to test: https://www.depicus.com/wake-on-lan/woli
 
 What I did is
-- Set static IP@ adress for NAS in LAN: http://192.168.1.1/network/dhcp
+- Set static IP@ address for NAS in LAN: http://192.168.1.1/network/dhcp (this is recommended to lose MAC mappingt)
 - Activated proxy wake on LAN: http://192.168.1.1/network/nat (DNAT)
 
 From https://la-communaute.sfr.fr/t5/installation-et-param%C3%A9trage/wake-on-lan-sur-nb6/td-p/1868922/page/2, we need
@@ -235,18 +268,211 @@ From https://la-communaute.sfr.fr/t5/installation-et-param%C3%A9trage/wake-on-la
 - L'ip publique de votre box
 - Masque : 255.255.255.255
 - Port : 9
+<!-- I will only try port 9 -->
 
 So I tried by changing Python code to `s.sendto(magic, ('109.29.148.109', 9))`
  
- It did not work...
- 
- etherwake will not work here as explained above.
+It did not work...
+We managed to have it working with 2 following actions:
+- Do not target from LAN but outside (use phone wifi hotspot with 4G)
+  - Unlike simple NAT, we can not use public IP inside the LAN.
+<!-- cf. 5 	Nashttp 	TCP 	Port 	9080 	192.168.1.88 	8080 and access UI via 109.29.148.109:9080 (tested OK), mentioned somewhere else -->
+- Modify the sender to send more packets (some are loss)
 
-I will not explore further...seems a box issue
+````python
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ cat mywol2.py 
+import socket
 
-<!-- worked via web ui, did not manage to reproduce -->
+def wol(lunaMacAddress: bytes):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    #s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
+    magic = b'\xff' * 6 + lunaMacAddress * 16
+    s.sendto(magic, ('109.29.148.109', 9))
+
+if __name__ == '__main__':
+    # pass to wol the mac address of the ethernet port of the appliance to wakeup
+    for x in range(0,10):
+       wol(b'\x24\x5e\xbe\x3f\x2b\xf7')
+````
+
+
+`etherwake` will not work here for [reasons explained above](#etherwake-does-not-use-udp).
+
+### Android app
+
+We can use https://play.google.com/store/apps/details?id=com.laruedavid.wakeonlan&hl=en_US&gl=US
+
+#### Setup 1: WOL
+
+```shell
+`255.255.255.255` or `192.168.1.255`
+`24:5E:BE:3F:2B:F7` 
+Port: 9
+```
+
+This will work only when phone is connected to Home LAN/WIFI network.
+<!-- both IP tested OK, re-tested `192.168.1.255` -->
+
+Note use non broadcast IP (`192.168.1.88`) does not work.
+<!-- re-tested OK -->
+This is consistent with [socket and python section](#socket-and-python).
+
+#### Setup 2: WOW
+
+##### Setup 2a: WOW
+
+```shell
+`109.29.148.109`
+`24:5E:BE:3F:2B:F7` 
+Port: 9
+```
+
+This will work only when phone is NOT connected to Home LAN/WIFI network. For instance use 4G network.
+
+#### Setup 2b: WOW with cloud server
+
+To fix this we can tick option use cloud, because in that request will not be sent from the phone 
+So working when not connected to Home LAN WIFI (4G) and also connected to Home LAN/WIFI.
+
+I recommend this setup which works from anywhere.
+
+Note the applications also sends several packets.
+
+This application helps us debugging [WOW above section](#remote-wol-wow---wake-on-wan).
+
+<!-- both tested OK -->
+
+### Show tcp dump 
+
+We will send WOL packet via android app and observe the packet received via a laptop  (tcpdump) in same LAN as NAS.
+
+We can access same info via Wireshark (tested in LAB laptop)
+
+<!--
+We will not do a dump inside the NAS
+As complex to install tcpdump
+
+We will not try sending packet from LAB laptop and observe packet from another laptop
+If observe packet and send packet from LAB laptop we have some noise effect
+-->
+
+#### Android WOL
+
+We use setup [setup-1-wol](#setup-1-wol) with `192.168.1.255` broadcast IP.
+
+````shell
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ sudo tcpdump udp port 9
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on wlo1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+15:37:27.878316 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.880688 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.885418 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.887570 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.889846 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.891836 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.893949 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.896225 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.898621 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+15:37:27.900951 IP sylvain-s-S10.57731 > 192.168.1.255.discard: UDP, length 102
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+````
+
+
+#### Android WOW
+
+Android phone in 4G. Not using cloud server.
+
+We use setup [setup-2-wow](#setup-2a-wow).
+
+````shell
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ sudo tcpdump udp port 9
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on wlo1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+15:40:50.938713 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.940980 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.943379 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.948054 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.950418 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.952635 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.954897 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.957160 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.959396 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:40:50.963811 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+````
+
+We use setup [setup-2b-wow-with-cloud-server](#setup-2b-wow-with-cloud-server).
+
+Android phone in 4G (or not). Using cloud server.
+<!-- tested same output when 4G or Not -->
+
+````shell
+scoulomb@scoulomb-HP-Pavilion-TS-Sleekbook-14:~$ sudo tcpdump udp port 9
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on wlo1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+15:44:20.930362 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.932528 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.934762 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.936929 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.939084 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.943370 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.945549 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.947802 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.951843 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+15:44:20.954025 IP box.36037 > 192.168.1.255.discard: UDP, length 102
+^C
+10 packets captured
+10 packets received by filter
+0 packets dropped by kernel
+````
+
+We can see it is the box which sends the WOL packet via a broadcast IP `192.168.1.255`
+
+ We also tested that if proxy WOL is disabled no packed is received inside the LAN.
+
+### Use Wireshark 
+
+We will do an [Android WOL](#android-wol).
+
+And check wireshark.
+
+![](./media/wireshark-screenshoft-wol-from-2022-08-07%2015-59-32.png)
+
+We can see all the network stack.
+And the both broadcast at udp level (`192.168.1.255`) and Ethernet level (`Ethernet II [...] Dst: Broadcast (ff:ff:ff:ff:ff:ff)`)
+
+You can see corresponding export in [wireshark-export](./media/wireshark-export-android-wol-192-168-1-255.txt). (`File` > `Export packet dissection` > `As plain text`).
+
+If we use [etherwake](#etherwake), we will have only ethernet frame as expected. This can be seen in this [export](./media/wireshark-export-etherwake.txt).
+
+### QManager APP 
+
+It can do WOL on LAN only, it is proposed when app can not manage to connect to NAS.
+
+### In practise
+
+- Use Android with [setup-2b-wow-with-cloud-server](#setup-2b-wow-with-cloud-server) from anywhere
+- Use Laptop [etherwake](#etherwake)  inside LAN 
+
+````shell
+sudo etherwake -i wlo1  24:5e:be:3f:2b:f7 
+sudo etherwake -i wlo1  192.168.1.88 # IF ethers file 
+````
+<!-- tested OK -->
+
+
+<!-- worked via web ui, will not make test-->
 <!-- WOL/WOW concluded OK STOP HERE -->
-<!-- disclosed mac@ OK:https://security.stackexchange.com/questions/67893/is-it-dangerous-to-post-my-mac-address-publicly#:~:text=Disclosing%20the%20MAC%20address%20in,you%20and%20your%20immediate%20gateway). -->
+<!-- disclosed mac@ OK:https://security.stackexchange.com/questions/67893/is-it-dangerous-to-post-my-mac-address-publicly#:~:text=Disclosing%20the%20MAC%20address%20in,you%20and%20your%20immediate%20gateway). 
+But anybody can turn on my NAS when WOL proxy is activated - set pwd not possible with my model - https://wiki.dd-wrt.com/wiki/index.php/WOL osef -->
 
-We can use [VPN](README.md#configure-a-vpn-to-lan-via-nas) as alternative. 
+We can use [VPN](README.md#configure-a-vpn-to-lan-via-nas) as alternative for WOW (not tested) via Android or not.
+
+<!-- ok re-concluded STOP --> 

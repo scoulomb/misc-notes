@@ -1,0 +1,27 @@
+No.     Time           Source                Destination           Protocol Length Info
+     72 7.960175866    LiteonTe_c5:99:c1     QNAP_3f:2b:f7         WOL      116    MagicPacket for QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+
+Frame 72: 116 bytes on wire (928 bits), 116 bytes captured (928 bits) on interface wlo1, id 0
+Ethernet II, Src: LiteonTe_c5:99:c1 (20:68:9d:c5:99:c1), Dst: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+    Destination: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+    Source: LiteonTe_c5:99:c1 (20:68:9d:c5:99:c1)
+    Type: Wake on LAN (0x0842)
+Wake On LAN, MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+    Sync stream: ffffffffffff
+    MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
+        MAC: QNAP_3f:2b:f7 (24:5e:be:3f:2b:f7)
