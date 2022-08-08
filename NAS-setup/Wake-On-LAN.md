@@ -210,6 +210,8 @@ in etherwake command we have to use ip
 
 #### Reminder on ARP
 
+##### ARP - Get IP
+
 From https://en.wikipedia.org/wiki/Address_Resolution_Protocol
 
 > Two computers in an office (Computer 1 and Computer 2) are connected to each other in a local area network by Ethernet cables and network switches, with no intervening gateways or routers. Computer 1 has a packet to send to Computer 2. Through DNS, it determines that Computer 2 has the IP address 192.168.0.55.
@@ -219,12 +221,23 @@ From https://en.wikipedia.org/wiki/Address_Resolution_Protocol
 > Computer 2 responds with an ARP response message containing its MAC and IP addresses. As part of fielding the request, Computer 2 may insert an entry for Computer 1 into its ARP table for future use.
 
 > Computer 1 receives and caches the response information in its ARP table and can now send the packet.[7]
-ARP probe
+
+##### ARP - Use IP
 
 Then when message exchanged can use TCP/UDP layer  encapsulation over ethernet.
 See OSI layer and encapsulation: https://en.wikipedia.org/wiki/Encapsulation_(networking)
 
-#### WOL
+[From Tanenbaum, Reseau 5eme edition] chapitre 5, La couche reseau, section 5.6: Couche reseau dans l'Internet (p465), ARP (p497), p498 (bottom page):
+<!-- used OCR APP -->
+
+> Maintenant que le logiciel IP de l’hote 1 détient l'adresse Ethernet de l’hote 2, il peut créer une trame a destination de E2, placer le paquet IP (contenant I’adresse IP de destination 192.32.65.5) dans son champ de données, et l'expédier sur son réseau. Les adresses IP et Ethernet de ce paquet sont indiquées a la figure 5.61.
+> La carte Ethernet de "l'hote 2 détecte la trame, reconnait son adresse Ethernet, la récupére et provoque une interruption.
+> Le pilote de la carte extrait le paquet de la trame et le met au logiciel IP, lequel constate qu'il est correctement adressé et le traite. 
+
+Read ARP section and full section 5.6 for more details.
+In particular page 499, when it is explained what happens when IP not in LAN (double ARP).
+
+#### WOL - How does it work
 
 WOL works in a similar fashion but does not use ARP.
 
@@ -251,6 +264,31 @@ Cf. https://fr.wikipedia.org/wiki/Broadcast_(informatique)
 See here: https://en.wikipedia.org/wiki/Routing
 
 It confirms we can apply unicast, multicast, broadcast at L2 or L3. See https://reussirsonccna.fr/unicast-multicast-broadcast-oui-mais-quelle-couche/ (anycast not sure at L2).
+
+So here it works exactly the same as [ARP - Use IP](#arp---use-ip), and can modify
+
+[From Tanenbaum, Reseau 5eme edition] chapitre 5, La couche reseau, section 5.6: Couche reseau dans l'Internet (p465), ARP (p497), p498 (bottom page) to
+
+> logiciel IP de l’hote 1 utilise l'adresse Ethernet  `FF:FF:FF:FF:FF:FF` de broadcast, il peut créer une trame a destination de broadcast, placer le paquet IP (contenant I’adresse IP de broadcast `192.168.1.255`/`255.255.255.255`) dans son champ de données, et l'expédier sur son réseau.
+> Les carte Ethernet de tous les hotes sur le LAN détecte la trame, reconnait l'adresse Ethernet `FF:FF:FF:FF:FF:FF` de broadcast, la récupére et provoque une interruption.
+> Le pilote de la carte extrait le paquet de la trame et le met au logiciel IP, lequel constate qu'il est correctement adressé et le traite. (pour toures les cartes)
+> Si le Body contient lac MAC @ de la carte alors le WOL est enclenche.
+
+See Ethernet WOL frame (trame) in section [tcp dump](#show-tcp-dump) and [Wireshark](#use-wireshark).
+
+[From Tanenbaum, Reseau 5eme edition] chapitre 5, La couche reseau, section 5.6: Couche reseau dans l'Internet (p465), Adressage par classe et classe speciale (p478), p480 (middle page): Address `255.255.255.255` (`11111111 11111111 11111111 11111111` ) means all host in local LAN, and `network | 1111[....]1111` means all host in remote LAN.
+Thus why we can use `192.168.1.255` (even if local) and `255.255.255.255`
+
+IP `0.0.0.0` means this network, host (use at startup). Also used by server to listen all interface and client to bind this host.
+See:
+- https://github.com/scoulomb/http-over-socket/blob/main/2-server/server.py
+- https://github.com/scoulomb/misc-notes/tree/master/Jupyter#lan
+- https://github.com/scoulomb/docker-under-the-hood/blob/main/NAT-tanenbaum-appendix/README.md
+<!-- for WOW we use proxy/NAT so using pub ip -->
+
+In box we can see local subnet is `192.168.1.255` as DHCP can be only set within this range at http://192.168.1.1/network/dhcp.
+
+p478,515 Do not confuse broadcast IP with multicast IP.
 
 ### Remote WOL (WOW - Wake On Wan)
 
