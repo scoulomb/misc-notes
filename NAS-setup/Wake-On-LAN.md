@@ -235,7 +235,12 @@ See OSI layer and encapsulation: https://en.wikipedia.org/wiki/Encapsulation_(ne
 > Le pilote de la carte extrait le paquet de la trame et le met au logiciel IP, lequel constate qu'il est correctement adressé et le traite. 
 
 Read ARP section and full section 5.6 for more details.
-In particular page 499, when it is explained what happens when IP not in LAN (double ARP).
+In particular (Tanenbaum, p499), when it is explained what happens when IP not in LAN (double ARP).
+We also have proxy arp concept possibility on top (Tanenbaum, p500).
+
+See also ARP gratuit (assume arp response is a broadcast) (Tanenbaum, p499).
+<!-- 1. store mac in response, 2. reponse in broadcast and 3. arp gratuit: look for its own ip to have all computer to update their cache OK STOP CLEAR YES -->
+<!-- order != from book ok -->
 
 #### WOL - How does it work
 
@@ -264,6 +269,10 @@ Cf. https://fr.wikipedia.org/wiki/Broadcast_(informatique)
 See here: https://en.wikipedia.org/wiki/Routing
 
 It confirms we can apply unicast, multicast, broadcast at L2 or L3. See https://reussirsonccna.fr/unicast-multicast-broadcast-oui-mais-quelle-couche/ (anycast not sure at L2).
+
+`See also [Tanenbaum, Reseau 5eme edition] chapitre 5, La couche reseau, section 5.2.6: Routage hierarchique (p465)` -> L3 layer
+<!-- not ethernet which is L2 ( arp links l2/l3, wiki : ARP has been implemented with many combinations of network and data link layer technologies -->
+<!-- do not dive further on routing algo -->
 
 So here it works exactly the same as [ARP - Use IP](#arp---use-ip), and can modify
 
