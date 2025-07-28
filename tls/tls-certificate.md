@@ -261,16 +261,17 @@ actor CA
 
 == one time request: certificate creation ==
 
-Bob -> Bob: Generate a private key / public key pair 
+Bob -> Bob: Generates a private key / public key pair 
 ' (pub determined from priv) 
-Bob -> Bob: Fill Certificate Signing Request (CSR).\nCSR contains public key, CN.
+Bob -> Bob: Fill Certificate Signing Request (CSR).\nCSR contains public key, CN/SAN.
 ' https://fr.wikipedia.org/wiki/Demande_de_signature_de_certificat
-Bob -> Bob: Sign CSR with private key (signature mode)
-Bob -> CA : send money + CSR request to CA 
-CA -> CA: Validate CSR\n(CSR signature with public key in cert, DNS owner...)
-CA -> CA : sign Bob certificate by encoding it\nusing CA private key (signature mode)
-CA -> Bob : provide certificate (fullchain.pem) to Bob\n(which embeds provided pub key)\nand a private key of the certificate (privkey.pem)
-' my understanding: this privkey is not used in SSL handshake, we use generated private key, this key could be used to sign with this certificate 
+Bob -> Bob: Sign CSR with Bob's (entity cert issued to) private key (privkey.pem)(signature mode)
+Bob -> CA : send money + CSR request to CA (CSR contains Bob's public key)
+CA -> CA: Validate CSR\n(CSR signature with public key in cert, DNS owner of CN/SAN via DCV validation (HTTP_01, DNS_01, TLS-ALPN-01...)
+CA -> CA : CA signs Bob certificate by encoding it\nusing CA private key (signature mode)
+CA -> Bob : provide certificate (fullchain.pem) to Bob\nCert contains Bob's public key he initially provided (the entity cert issued to)
+' Certificate does not contain CA public key, to verify the certificate, clients (like browsers) use the CA’s public key, which is typically stored in a trusted root certificate store on the client device.
+' CA does not provide private key, there is no pub/priv key for the certificate (we use the one in the CSR)
 
 ==  SSL handshake exchange ==
 
@@ -278,10 +279,11 @@ Alice -> Bob : (1) send 'client hello' message.\nIt includes which TLS version t
 
 alt original bob
     Bob -> Alice : (2) send 'server hello' with BOB certificate\nwhich contains BOB public key, cipher and "server random".\nIf the client is requesting a server resource that requires client authentication,\nrequests the client’s certificate.
-    Alice -> Alice : (3) Authentification - Alice (client) can use some of the information sent by the server (Bob)\nto authenticate the server.(signature)\nSee "Server Authentication During SSL Handshake"
+    Alice -> Alice : (3) Authentication - Alice (client) can use some of the information sent by the server (Bob)\nto authenticate the server.(signature)\nSee "Server Authentication During SSL Handshake"
+    Alice -> Alice: check if certificate if signed by a trusted CA (trusted root in the certificate store) - See "chain certificate and certificate validatino"
     Alice -> Alice: get BOB public key from certificate
-    Alice -> Alice : (4) Alice depending on the cipher being used (chosen base on step 1+2),\ncreates the pre-master secret for the session,\nencrypts it with the (Bob) server’s public key,\nobtained from (Bob) the server’s certificate, sent in Step 2
-    Alice -> Bob : (4) sends pre-master secret to the server (encryption).
+    Alice -> Alice : (4) Alice depending on the cipher being used (chosen base on step 1+2),\ncreates the pre-master secret for the session,\nEncrypts it with the (Bob) server’s public key,\nobtained from (Bob) the server’s certificate, sent in Step 2
+    Alice -> Bob : (4) sends pre-master secret to the server
     Alice -> Bob : (5) If the server has requested client authentication,\nthe client also signs another piece of data (signature) that is unique to this handshake\nand known by both the client and server. \nIn this case the client sends both the signed data and the client’s own certificate to the server along with the encrypted pre-master secret.
     Bob -> Bob: (6) If the server has requested client authentication,\nthe server attempts to authenticate the client. See "Client Authentication During SSL Handshake"
     ' Error in Oracle doc as point to server
