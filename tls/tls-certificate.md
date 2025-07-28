@@ -250,61 +250,70 @@ Bob -> Bob : decode message with key wiht BOB private key
 This matches that documentation (and many others): https://docs.oracle.com/cd/E19424-01/820-4811/6ng8i26ba/index.html (Messages Exchanged During SSL Handshake) and https://www.youtube.com/watch?v=7W7WPMX7arI.
 
 
-````
+````plantuml
 @startuml
-title ASymetric cryptography and man in the middle attack, and certificate authority
-    
+title Asymmetric Cryptography, TLS Handshake, and Certificate Authority Trust Model
+
 actor Alice 
 actor Robber 
 actor Bob
 actor CA
 
-== one time request: certificate creation ==
+legend left
+| Symbol         | Meaning                                |
+|----------------|----------------------------------------|
+| <<signed>>     | Digital signature                      |
+| <<encrypted>>  | Encrypted with public key              |
+| <<verified>>   | Validation step                        |
+end legend
 
-Bob -> Bob: Generates a private key / public key pair 
-' (pub determined from priv) 
-Bob -> Bob: Fill Certificate Signing Request (CSR).\nCSR contains public key, CN/SAN.
-' https://fr.wikipedia.org/wiki/Demande_de_signature_de_certificat
-Bob -> Bob: Sign CSR with Bob's (entity cert issued to) private key (privkey.pem)(signature mode)
-Bob -> CA : send money + CSR request to CA (CSR contains Bob's public key)
-CA -> CA: Validate CSR\n(CSR signature with public key in cert, DNS owner of CN/SAN via DCV validation (HTTP_01, DNS_01, TLS-ALPN-01...)
-CA -> CA : CA signs Bob certificate by encoding it\nusing CA private key (signature mode)
-CA -> Bob : provide certificate (fullchain.pem) to Bob\nCert contains Bob's public key he initially provided (the entity cert issued to)
-' Certificate does not contain CA public key, to verify the certificate, clients (like browsers) use the CA’s public key, which is typically stored in a trusted root certificate store on the client device.
-' CA does not provide private key, there is no pub/priv key for the certificate (we use the one in the CSR)
+== Certificate Issuance Phase ==
 
-==  SSL handshake exchange ==
+Bob -> Bob: (A1) Generate asymmetric key pair\n(private (privkey.pem)/public key)
+Bob -> Bob: (A2) Create Certificate Signing Request (CSR)\nIncludes public key, CN, SAN
+Bob -> Bob: (A3) <<signed>> Sign CSR with Bob's private key\n(Proves possession of private key)
+Bob -> CA  : (A4) Submit CSR + payment to CA
+CA  -> CA  : (A5) <<verified>> Validate CSR\n- Verify CSR signature\n- Validate domain ownership (DCV via HTTP-01, DNS-01, TLS-ALPN-01...)
+CA  -> CA  : (A6) <<signed>> Issue certificate\nSigned with CA's private key
+CA  -> Bob : (A7) Return signed certificate (e.g., fullchain.pem)
 
-Alice -> Bob : (1) send 'client hello' message.\nIt includes which TLS version the client supports,\nthe cipher suites supported,\nand a string of random bytes\nknown as the "client random."
+note right
+CA only delivers signed certificate with private key. No private key is delivered. CA's and Bob's private key are not shared. Certificate contains only Bob's public key. Certificate public key is known by clients.
+Clients verify Bob's certificate using the CA's public key\nstored in their trusted root store (we can add private CA here)\nIntermediate certificates may be included. See "chain certificate and certificate verification"\nRevocation via OCSP or CRL.
 
-alt original bob
-    Bob -> Alice : (2) send 'server hello' with BOB certificate\nwhich contains BOB public key, cipher and "server random".\nIf the client is requesting a server resource that requires client authentication,\nrequests the client’s certificate.
-    Alice -> Alice : (3) Authentication - Alice (client) can use some of the information sent by the server (Bob)\nto authenticate the server.(signature)\nSee "Server Authentication During SSL Handshake"
-    Alice -> Alice: check if certificate if signed by a trusted CA (trusted root in the certificate store) - See "chain certificate and certificate validatino"
-    Alice -> Alice: get BOB public key from certificate
-    Alice -> Alice : (4) Alice depending on the cipher being used (chosen base on step 1+2),\ncreates the pre-master secret for the session,\nEncrypts it with the (Bob) server’s public key,\nobtained from (Bob) the server’s certificate, sent in Step 2
-    Alice -> Bob : (4) sends pre-master secret to the server
-    Alice -> Bob : (5) If the server has requested client authentication,\nthe client also signs another piece of data (signature) that is unique to this handshake\nand known by both the client and server. \nIn this case the client sends both the signed data and the client’s own certificate to the server along with the encrypted pre-master secret.
-    Bob -> Bob: (6) If the server has requested client authentication,\nthe server attempts to authenticate the client. See "Client Authentication During SSL Handshake"
-    ' Error in Oracle doc as point to server
-    Bob -> Bob: (6) server uses its private key (Bob private key) to decrypt the pre-master secret,\nThen performs a series of steps (which the client also performs,\nstarting from the same pre-master secret) to generate the master secret.
-    Alice -> Alice: (6) Generates master secret 
-    note left 
-    master_secret = PRF(pre_master_secret,
-                        "master secret",
-                         ClientHello.random +
-                         ServerHello.random) [0..47];
+end note
+
+== TLS Handshake Phase ==
+
+Alice -> Bob : (1) ClientHello\n- TLS versions\n- Cipher suites\n- Client random
+
+alt Bob is legitimate
+    Bob -> Alice : (2) ServerHello\n- Server certificate\n- Chosen cipher suite\n- Server random\n- (Optional) Request client cert
+    Alice -> Alice : (3) <<verified>> Server Authentication\n- Validate cert chain (see "chain certificate and certificate verification")\n- Check expiration, revocation, trust anchor\n- Extract Bob's public key
+    Alice -> Alice : (4) Generate pre-master secret\n<<encrypted>> Encrypt with Bob's public key
+    Alice -> Bob   : (4) Send encrypted pre-master secret
+    Alice -> Bob   : (5) (Optional) Client Authentication\n<<signed>> Send client cert\n<<signed>> Sign handshake data
+    Bob -> Bob     : (6) <<verified>> Verify client signature (if received)
+    Bob -> Bob     : (6) <<encrypted>> Decrypt pre-master secret
+    Alice -> Alice : (6) Derive master secret
+    note left
+    master_secret = PRF(pre_master_secret,\n                  "master secret",\n                  ClientRandom + ServerRandom)
     end note
-    ' https://www.acunetix.com/blog/articles/establishing-tls-ssl-connection-part-5/' 
-    Bob -> Bob: (7) Generate session keys from the client random,\nthe server random, and the premaster secret/master secret
-    Alice -> Alice:  (7) Also generate session keys and should reach same result as Bob
-    Alice -> Bob: (8) send client is ready with session key (symetric)
-    Bob -> Alice: (9) send server is ready with session key (symetric)
-    Alice -> Bob: (10) The SSL handshake is now complete,\nand the SSL session has begun.\nThe client and the server use the session keys to encrypt and decrypt the data\nthey send to each other and to validate its integrity.
-else robber
-    Robber -> Alice:  steal certificate and replace by its own in step (2)
-    Alice -> Alice : Server Authentication During SSL Handshake - Fail
+    Bob -> Bob     : (6) Derive same master secret
+    Bob -> Bob     : (7) Derive session keys
+    Alice -> Alice : (7) Derive same session keys
+    Alice -> Bob   : (8) <<encrypted>> Finished message
+    Bob -> Alice   : (9) <<encrypted>> Finished message
+    Alice -> Bob   : (10) Secure session established\nSymmetric encryption begins
+
+    note right
+    In TLS 1.3:\n- Simplified handshake\n- Ephemeral key exchange (ECDHE) in clientHello and ServerHello\n- No pre-master/master secret distinction\nInstead, a shared secret is derived directly from the ephemeral key exchange (ECDHE).\n- Forward secrecy (no need additional diagram but copilot can do)
+    end note
+else Robber intercepts
+    Robber -> Alice: (2) Sends fake certificate with Robber's public key
+    Alice -> Alice : Server Authentication fails\n- Certificate not signed by trusted CA\n- Trust chain broken
 end
+
 @enduml
 ````
 <!--Tanenbaum p913, figure is similar clear stop, note server can send a chain of certificate when not known, it is RSA as in this diagram -->
